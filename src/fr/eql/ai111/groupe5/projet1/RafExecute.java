@@ -59,14 +59,14 @@ public class RafExecute {
                     break;
                 case 3 :
                     dept = temp;
-                    nbrEspace = 3 - dept.length();
+                    nbrEspace = 2 - dept.length();
                     for (int i = 0; i < nbrEspace; i++){
                         dept+= espace;
                     }
                     break;
                 case 4 :
                     promo = temp;
-                    nbrEspace = 20 - promo.length();
+                    nbrEspace = 19 - promo.length();
                     for (int i = 0; i < nbrEspace; i++){
                         promo+= espace;
                     }
@@ -75,7 +75,7 @@ public class RafExecute {
                     year = temp;
                     break;
                 case 6:
-                    stagiaireX = surname + " " + name + " " + dept + " " + promo + " " + year ;
+                    stagiaireX = surname + "*" + name + "*" + dept + "*" + promo + "*" + year ;
                     listStringStagiaires.add(stagiaireX);
                     index = 0;
                     System.out.println(stagiaireX);
@@ -106,6 +106,8 @@ public class RafExecute {
 
     public static void main(String[] args) throws IOException {
         RafExecute rafExecute = new RafExecute();
-        rafExecute.createListStagiaires();
+        Arbre arbre = new Arbre();
+
+        arbre.arbreInsertion(rafExecute.createListStagiaires());
     }
 }
