@@ -21,7 +21,7 @@ public class RafExecute {
 
         FileReader reader = null;
         try {
-            reader = new FileReader("C:/Users/Formation/Desktop/PROJET1/Stagiaires.txt");
+            reader = new FileReader("C:/FolderProjet/Stagiaires.txt");
         } catch (FileNotFoundException e) {
             logger.warn("Le fichier à lire n'existe pas.");
         }
@@ -78,7 +78,7 @@ public class RafExecute {
                     stagiaireX = surname + "*" + name + "*" + dept + "*" + promo + "*" + year ;
                     listStringStagiaires.add(stagiaireX);
                     index = 0;
-                    System.out.println(stagiaireX);
+//                    System.out.println(stagiaireX);
                     surname = "";
                     name = "";
                     dept = "";
