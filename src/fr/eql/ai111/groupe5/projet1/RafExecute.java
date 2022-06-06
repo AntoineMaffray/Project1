@@ -101,7 +101,6 @@ public class RafExecute {
             arbre.arbreInsertion(rafExecute.createListStagiaires());
         }
 
-        System.out.println(arbre.arbreSearch(JOptionPane.showInputDialog("Recherche par nom: ")));
-
+        arbre.arbreSearch(JOptionPane.showInputDialog("Recherche par nom"));
     }
 }

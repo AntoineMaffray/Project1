@@ -120,4 +120,110 @@ public class Methods {
         Stagiaire stagiaireX = new Stagiaire(surname, name, dept, promo, year);
         return stagiaireX;
     }
+
+    public Character incrementAlphabet (Integer indexChar){
+
+        char lettre = ' ';
+
+        switch (indexChar){
+            case 0:
+                lettre = ' ';
+                break;
+            case 1:
+                lettre = 'A';
+                break;
+            case 2:
+                lettre = 'B';
+                break;
+            case 3:
+                lettre = 'C';
+                break;
+            case 4:
+                lettre = 'D';
+                break;
+            case 5:
+                lettre = 'E';
+                break;
+            case 6:
+                lettre = 'F';
+                break;
+            case 7:
+                lettre = 'G';
+                break;
+            case 8:
+                lettre = 'H';
+                break;
+            case 9:
+                lettre = 'I';
+                break;
+            case 10:
+                lettre = 'J';
+                break;
+            case 11:
+                lettre = 'K';
+                break;
+            case 12:
+                lettre = 'L';
+                break;
+            case 13:
+                lettre = 'M';
+                break;
+            case 14:
+                lettre = 'N';
+                break;
+            case 15:
+                lettre = 'O';
+                break;
+            case 16:
+                lettre = 'P';
+                break;
+            case 17:
+                lettre = 'Q';
+                break;
+            case 18:
+                lettre = 'R';
+                break;
+            case 19:
+                lettre = 'S';
+                break;
+            case 20:
+                lettre = 'T';
+                break;
+            case 21:
+                lettre = 'U';
+                break;
+            case 22:
+                lettre = 'V';
+                break;
+            case 23:
+                lettre = 'W';
+                break;
+            case 24:
+                lettre = 'X';
+                break;
+            case 25:
+                lettre = 'Y';
+                break;
+            case 26:
+                lettre = 'Z';
+                break;
+        }
+        return lettre;
+    }
+
+    public String testAlphabet (Character lettre){
+        int indexChar = 0;
+        String test = "";
+
+        for (indexChar = 0; indexChar < 27; indexChar++){
+            test += incrementAlphabet(indexChar);
+            for (indexChar = 0; indexChar < 27; indexChar++){
+
+            }
+        }
+
+
+
+        return test;
+    }
 }
