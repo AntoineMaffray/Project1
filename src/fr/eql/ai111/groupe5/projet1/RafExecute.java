@@ -1,9 +1,12 @@
 package fr.eql.ai111.groupe5.projet1;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.swing.JOptionPane;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -14,8 +17,7 @@ import java.util.StringTokenizer;
 
 public class RafExecute {
 
-    LogManager logManager;
-    Logger logger;
+    private static final Logger logger  = LogManager.getLogger();
 
     public List<String> createListStagiaires() throws IOException {
 
@@ -90,24 +92,16 @@ public class RafExecute {
         return listStringStagiaires;
     }
 
-    public void writeIntoRaf (List<String> listStringStagiaires){
-        try {
-            RandomAccessFile rafDataBase =
-                    new RandomAccessFile("C:/Users/Formation/Desktop/PROJET1/Raf.bin", "rw");
-            for (String lss : listStringStagiaires) {
-                String tempLss = lss;
-                rafDataBase.writeChars(tempLss);
-            }
-        } catch (IOException e) {
-            logger.warn("Le chemin de création du fichier n'existe pas ou le fichier ne contient pas de données.");
-        }
-
-    }
-
     public static void main(String[] args) throws IOException {
         RafExecute rafExecute = new RafExecute();
         Arbre arbre = new Arbre();
+        File file = new File("C:/FolderProjet/Raf.bin");
 
-        arbre.arbreInsertion(rafExecute.createListStagiaires());
+        if(!file.exists()){
+            arbre.arbreInsertion(rafExecute.createListStagiaires());
+        }
+
+        System.out.println(arbre.arbreSearch(JOptionPane.showInputDialog("Recherche par nom: ")));
+
     }
 }

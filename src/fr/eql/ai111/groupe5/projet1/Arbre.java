@@ -1,10 +1,12 @@
 package fr.eql.ai111.groupe5.projet1;
 
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.List;
@@ -13,15 +15,17 @@ public class Arbre {
 
 
 //    CONSTANTES
-    long ref6 = 260; // en bytes
-    long ref7 = 278; // en bytes
-    long elt = 300; // en bytes
-    int eltrough = 130; // en caractères
+    long REF6 = 260; // en bytes - emplacement de la référence de l'enfant gauche
+    long REF7 = 278; // en bytes - emplacement de la référence de l'enfant droit
+    long REF8 = 296; // en bytes - emplacement de la référence du parent
+    long ELT = 318; // en bytes - taille intégral d'un objet
+    int ELTROUGH = 130; // en caractères - taille des informations (sans réf de structure)
 
     private static final Logger logger  = LogManager.getLogger();
 
-
     public void arbreInsertion (List<String> listStringStagiaires) throws IOException {
+
+        Methods methods = new Methods();
 
         // Ouverture des différentes instances de lecture et éciture
         RandomAccessFile rafDataBase = new RandomAccessFile("C:/FolderProjet/Raf.bin", "rw");
@@ -32,13 +36,13 @@ public class Arbre {
         String newAdd = "";
         String parent = "";
         String child = "0";
-        char removeDollars;
+        char removeDollars = 0;
         long parentPlace = 0;
         String wrote = "";
 
         root = listStringStagiaires.get(0);
         rafDataBase.seek(0);
-        rafDataBase.writeChars(root + "*" + "$$$$$$$$" + "*" + "$$$$$$$$" + "*" + "V" + "*");
+        rafDataBase.writeChars(root + "*" + "$$$$$$$$" + "*" + "$$$$$$$$" + "*" + "$$$$$$$$" + "*" + "V" + "*");
 
         // Premiere boucle d'itération de la liste
         for (int indexList = 1; indexList < listStringStagiaires.size(); indexList++) {
@@ -46,85 +50,161 @@ public class Arbre {
         newAdd = lss;
         int charIndex = 0;
 
+        // Boucle de définition de la place du nouvel enfant (newAdd) et sa référence
             do {
                 wrote = "";
                 parent = "";
                 rafDataBase.seek(parentPlace);
-                for (int i = 0; i < eltrough; i++) {
+                for (int i = 0; i < ELTROUGH; i++) {
                     parent += rafDataBase.readChar();
                 }
                 Character newChar = newAdd.charAt(charIndex);
-                Character knotChar = parent.charAt(charIndex);
-
-                // Boucle de vérification du mot lettre à lettre pour comparaison au noeud
-                // Sortir une méthode qui prend en argument deux char et qui renvoie une comparaison entre ces deux char
-                if (newChar == knotChar) {
-                    charIndex = 1;
-                    do {
-                        newChar = newAdd.charAt(charIndex);
-                        knotChar = parent.charAt(charIndex);
-                        if (newChar == 'é' && knotChar == 'é' || newChar == 'è' && knotChar == 'è'
-                        || newChar == 'ï' && knotChar == 'ï') {
-                            charIndex++;
-                            newChar = newAdd.charAt(charIndex);
-                            knotChar = parent.charAt(charIndex);
-                        }
-                        charIndex ++;
-                    } while (newChar == knotChar);
-                }
+                Character parentChar = parent.charAt(charIndex);
 
                 // Comparaison inférieure -> Entrée dans la branche de gauche
-                if (newChar < knotChar) {
-                    rafDataBase.seek(parentPlace + ref6);
+                if (newChar < parentChar || methods.compareCharToChar(newAdd, parent, newChar, parentChar, charIndex) == -1) {
+                    rafDataBase.seek(parentPlace + REF6);
                     child = String.valueOf(rafDataBase.readChar());
 
+                    // Si un enfant existe à cet emplacement, on descend au niveau inférieur
                     if (!child.equals("$")) {
-                        for (int i = 0; i < 7; i++) {
-                            removeDollars = rafDataBase.readChar();
-                            if (removeDollars != '$') {
-                                child += removeDollars;
-                            }
-                        }
-                        parentPlace = Long.parseLong(child);
+                        parentPlace = Long.parseLong(methods.removeDollarFromRef(rafDataBase, removeDollars, child));
 
-
+                    // S'il n'y a pas d'enfant à cet emplacement, on écrit le nouvel enfant
                     } else if (child.equals("$")) {
-                        rafDataBase.seek(parentPlace + ref6);
-                        rafDataBase.writeChars(String.valueOf(rafDataBase.length()));
-                        rafDataBase.seek(rafDataBase.length());
-                        rafDataBase.writeChars(newAdd + "*" + "$$$$$$$$" + "*" + "$$$$$$$$" + "*" + "V" + "*");
+                        methods.writeLeftChildInRaf(rafDataBase, parentPlace, REF6, REF8, ELT, newAdd);
                         parentPlace = 0;
                         wrote = "done";
                     }
 
-
                     // Comparaison supérieure -> Entrée dans la branche de droite
-                } else if (newChar > knotChar) {
-                    rafDataBase.seek(parentPlace + ref7);
+                } else if (newChar > parentChar || methods.compareCharToChar(newAdd, parent, newChar, parentChar, charIndex) == 1) {
+                    rafDataBase.seek(parentPlace + REF7);
                     child = String.valueOf(rafDataBase.readChar());
 
+                    // Si un enfant existe à cet emplacement, on descend au niveau inférieur
                     if (!child.equals("$")) {
-                        for (int i = 0; i < 7; i++) {
-                            removeDollars = rafDataBase.readChar();
-                            if (removeDollars != '$') {
-                                child += removeDollars;
-                            }
-                        }
-                        parentPlace = Long.parseLong(child);
+                    parentPlace = Long.parseLong(methods.removeDollarFromRef(rafDataBase, removeDollars, child));
 
+                    // S'il n'y a pas d'enfant à cet emplacement, on écrit le nouvel enfant
                     } else if (child.equals("$")) {
-                        rafDataBase.seek(parentPlace + ref7);
-                        rafDataBase.writeChars(String.valueOf(rafDataBase.length()));
-                        rafDataBase.seek(rafDataBase.length());
-                        rafDataBase.writeChars(newAdd + "*" + "$$$$$$$$" + "*" + "$$$$$$$$" + "*" + "V" + "*");
+                        methods.writeRightChildInRaf(rafDataBase, parentPlace, REF7, REF8, ELT, newAdd);
                         parentPlace = 0;
                         wrote = "done";
                     }
                 }
+            } while (!wrote.equals("done")) ;
+        }
+        rafDataBase.close();
+    }
 
+    public ObservableList<Stagiaire> arbreSearch (String newAdd) throws IOException{
 
+        Methods methods = new Methods();
+
+        // Ouverture des différentes instances de lecture et éciture
+        RandomAccessFile rafDataBase = new RandomAccessFile("C:/FolderProjet/Raf.bin", "rw");
+
+        // Variables de l'Arbre
+        rafDataBase.seek(0);
+        String parent = "";
+        String child = "0";
+        char removeDollars = 0;
+        long parentPlace = 0;
+        String wrote = "";
+        ObservableList <Stagiaire> listSearch = FXCollections.observableArrayList();
+
+        rafDataBase.seek(0);
+        for (int i = 0; i < ELTROUGH; i++) {
+            parent += rafDataBase.readChar();
+        }
+            // Boucle de définition de la place du nouvel enfant (newAdd) et sa référence
+        do {
+            int charIndex = 0;
+            wrote = "";
+            parent = "";
+            rafDataBase.seek(parentPlace);
+            for (int i = 0; i < ELTROUGH; i++) {
+                parent += rafDataBase.readChar();
+            }
+            Character newChar = newAdd.charAt(charIndex);
+            Character parentChar = parent.charAt(charIndex);
+
+            // Comparaison inférieure -> Entrée dans la branche de gauche
+            if (newChar < parentChar || methods.searchCharToChar(newAdd, parent, newChar, parentChar, charIndex) == -1) {
+                rafDataBase.seek(parentPlace + REF6);
+                child = String.valueOf(rafDataBase.readChar());
+                System.out.println(child);
+                if (child =="$"){
+                    System.out.println("problem");
+                    wrote = "done";
+                }
+                parentPlace = Long.parseLong(methods.removeDollarFromRef(rafDataBase, removeDollars, child));
+
+                // Comparaison supérieure -> Entrée dans la branche de droite
+            } else if (newChar > parentChar || methods.searchCharToChar(newAdd, parent, newChar, parentChar, charIndex) == 1) {
+                rafDataBase.seek(parentPlace + REF7);
+                child = String.valueOf(rafDataBase.readChar());
+                System.out.println(child);
+                if (child =="$"){
+                    System.out.println("problem");
+                    wrote = "done";
+                }
+                parentPlace = Long.parseLong(methods.removeDollarFromRef(rafDataBase, removeDollars, child));
+            } else if (newChar == parentChar || methods.searchCharToChar(newAdd, parent, newChar, parentChar, charIndex) == 0) {
+                rafDataBase.seek(parentPlace);
+                listSearch.add(methods.createObjectStagiaire(parent));
+            }
         } while (!wrote.equals("done")) ;
+        rafDataBase.close();
 
+        for (Stagiaire search : listSearch) {
+            System.out.println(search);
+        }
+        return listSearch;
     }
+
+    public ObservableList <Stagiaire> arbreParcours (String newAdd) throws IOException {
+
+        Methods methods = new Methods();
+
+        // Ouverture des différentes instances de lecture et éciture
+        RandomAccessFile rafDataBase = new RandomAccessFile("C:/FolderProjet/Raf.bin", "rw");
+
+        // Variables de l'Arbre
+        rafDataBase.seek(0);
+        String parent = "";
+        String child = "0";
+        long childPlace = 0;
+        char removeDollars = 0;
+        long parentPlace = 0;
+        int indexPath = 0;
+        String wrote = "";
+        ObservableList <Stagiaire> listSearch = FXCollections.observableArrayList();
+
+        // Descente dans la branche la plus à gauche
+
+        do{
+            rafDataBase.seek(childPlace+REF6);
+            child = String.valueOf(rafDataBase.readChar());
+            if (child != "$"){
+                childPlace = Long.parseLong(methods.removeDollarFromRef(rafDataBase, removeDollars, child));
+                rafDataBase.seek(childPlace);
+            }
+        }while (child != "$");
+        indexPath = 1;
+        rafDataBase.seek(childPlace);
+        for (int i = 0; i < ELTROUGH; i++) {
+            child += rafDataBase.readChar();
+        }
+        listSearch.add(methods.createObjectStagiaire(child));
+        rafDataBase.seek(childPlace+REF8);
+        for (int i = 0; i < ELTROUGH; i++) {
+            parent += rafDataBase.readChar();
+        }
+        listSearch.add(methods.createObjectStagiaire(parent));
+
+        return listSearch;
     }
+
 }

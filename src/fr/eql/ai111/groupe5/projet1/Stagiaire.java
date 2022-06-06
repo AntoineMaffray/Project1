@@ -35,4 +35,15 @@ public class Stagiaire {
     public String getYear() {
         return year;
     }
+
+    @Override
+    public String toString() {
+        return "Stagiaire{" +
+                "surname='" + surname + '\'' +
+                ", name='" + name + '\'' +
+                ", dept='" + dept + '\'' +
+                ", promo='" + promo + '\'' +
+                ", year='" + year + '\'' +
+                '}';
+    }
 }
