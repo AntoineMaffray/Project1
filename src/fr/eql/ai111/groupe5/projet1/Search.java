@@ -7,7 +7,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -38,6 +37,7 @@ public class Search {
             ("C:\\Users\\sabri\\Workspace\\PROJET1GROUPE5\\src\\fr\\eql\\ai111\\groupe5\\projet1\\stagiaires.txt");
     ObservableList<Stagiaire> data = createListStagiaire();
 
+    int count = 1;
 
     public Search(Stage primaryStage) {
 
@@ -105,12 +105,7 @@ public class Search {
         criteria.getItems().addAll
                 ("Nom", "Prénom", "Département", "Promotion", "Année");
         Button btnAjoutCritere = new Button("+");
-        btnAjoutCritere.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                ajoutCritere();
-            }
-        });
+
 
         //Creation boutons + Actions
         Button btnRechercher = new Button("Rechercher");
@@ -177,6 +172,17 @@ public class Search {
             vbox.setPadding(new Insets(0, 0, 20, 0));
             vbox.getChildren().addAll(menuBar, label, hbox, table);
 
+        btnAjoutCritere.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(count < 5){
+                    ++count;
+                    vbox.getChildren().add(3, ajoutCritere());
+                }
+
+            }
+        });
+
 
             Scene scene = new Scene(vbox);
             scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
@@ -240,11 +246,17 @@ public class Search {
 
             return false;
         }
-             private void ajoutCritere() {
+             private HBox ajoutCritere() {
                 TextField champ = new TextField();
                 ChoiceBox criteria = new ChoiceBox();
                 criteria.getItems().addAll
                 ("Prénom", "Département", "Promotion", "Année");
+
+                 HBox hbox = new HBox();
+                 hbox.setSpacing(10);
+                 hbox.getChildren().addAll(criteria, champ);
+
+                 return hbox;
             }
 }
 
