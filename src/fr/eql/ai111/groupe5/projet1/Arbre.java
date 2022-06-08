@@ -111,7 +111,6 @@ public class Arbre {
         String child = "0";
         char removeDollars = 0;
         long parentPlace = 0;
-        char temp;
         String wrote = "";
         ObservableList <Stagiaire> listSearch = FXCollections.observableArrayList();
 
@@ -134,24 +133,27 @@ public class Arbre {
             // Comparaison inférieure -> Entrée dans la branche de gauche
             if (newChar < parentChar || methods.searchCharToChar(newAdd, parent, newChar, parentChar, charIndex) == -1) {
                 rafDataBase.seek(parentPlace + REF6);
-                temp = rafDataBase.readChar();
-                child = String.valueOf(temp);
+                child = String.valueOf(rafDataBase.readChar());
                 System.out.println(child);
+                if (child =="$"){
+                    System.out.println("problem");
+                    wrote = "done";
+                }
                 parentPlace = Long.parseLong(methods.removeDollarFromRef(rafDataBase, removeDollars, child));
 
                 // Comparaison supérieure -> Entrée dans la branche de droite
             } else if (newChar > parentChar || methods.searchCharToChar(newAdd, parent, newChar, parentChar, charIndex) == 1) {
                 rafDataBase.seek(parentPlace + REF7);
-                temp = rafDataBase.readChar();
-                child = String.valueOf(temp);
+                child = String.valueOf(rafDataBase.readChar());
                 System.out.println(child);
+                if (child =="$"){
+                    System.out.println("problem");
+                    wrote = "done";
+                }
                 parentPlace = Long.parseLong(methods.removeDollarFromRef(rafDataBase, removeDollars, child));
-
-                // Comparaison égale -> remontée du résultat
             } else if (newChar == parentChar || methods.searchCharToChar(newAdd, parent, newChar, parentChar, charIndex) == 0) {
                 rafDataBase.seek(parentPlace);
                 listSearch.add(methods.createObjectStagiaire(parent));
-                    wrote = "done";
             }
         } while (!wrote.equals("done")) ;
         rafDataBase.close();
@@ -162,7 +164,7 @@ public class Arbre {
         return listSearch;
     }
 
-    public ObservableList <Stagiaire> arbreParcours () throws IOException {
+    public ObservableList <Stagiaire> arbreParcours (String newAdd) throws IOException {
 
         Methods methods = new Methods();
 
@@ -177,7 +179,6 @@ public class Arbre {
         char removeDollars = 0;
         long parentPlace = 0;
         int indexPath = 0;
-        char temp;
         String wrote = "";
         ObservableList <Stagiaire> listSearch = FXCollections.observableArrayList();
 
@@ -185,22 +186,19 @@ public class Arbre {
 
         do{
             rafDataBase.seek(childPlace+REF6);
-            temp = rafDataBase.readChar();
-            child = String.valueOf(temp);
-            if (temp != '$'){
+            child = String.valueOf(rafDataBase.readChar());
+            if (child != "$"){
                 childPlace = Long.parseLong(methods.removeDollarFromRef(rafDataBase, removeDollars, child));
                 rafDataBase.seek(childPlace);
             }
-        }while (temp != '$');
+        }while (child != "$");
         indexPath = 1;
         rafDataBase.seek(childPlace);
-        child = "";
         for (int i = 0; i < ELTROUGH; i++) {
             child += rafDataBase.readChar();
         }
         listSearch.add(methods.createObjectStagiaire(child));
         rafDataBase.seek(childPlace+REF8);
-        parent ="";
         for (int i = 0; i < ELTROUGH; i++) {
             parent += rafDataBase.readChar();
         }
