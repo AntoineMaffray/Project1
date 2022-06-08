@@ -1,15 +1,95 @@
 package fr.eql.ai111.groupe5.projet1;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Methods {
 
+    private static final Logger logger  = LogManager.getLogger();
+    public List<String> createListStagiaires() throws IOException {
+
+        FileReader reader = null;
+        try {
+            reader = new FileReader("C:/FolderProjet/Stagiaires.txt");
+        } catch (FileNotFoundException e) {
+            logger.warn("Le fichier à lire n'existe pas.");
+        }
+        BufferedReader bfReader = new BufferedReader(reader);
+        List<String> listStringStagiaires = new ArrayList<>();
+        String stagiaireX = "";
+        String espace = " ";
+        int index = 0;
+
+        String surname = "";
+        String name = "";
+        String dept = "";
+        String promo = "";
+        String year = "";
+        String temp = "";
+
+        while (bfReader.ready()){
+            index++;
+            temp = "";
+            temp = bfReader.readLine();
+            switch(index){
+                case 1 :
+                    surname = temp.toUpperCase();
+                    int nbrEspace = 50 - surname.length();
+                    for (int i = 0; i < nbrEspace; i++){
+                        surname+= espace;
+                    }
+                    break;
+                case 2 :
+                    name = temp;
+                    nbrEspace = 50 - name.length();
+                    for (int i = 0; i < nbrEspace; i++){
+                        name+= espace;
+                    }
+                    break;
+                case 3 :
+                    dept = temp;
+                    nbrEspace = 2 - dept.length();
+                    for (int i = 0; i < nbrEspace; i++){
+                        dept+= espace;
+                    }
+                    break;
+                case 4 :
+                    promo = temp;
+                    nbrEspace = 19 - promo.length();
+                    for (int i = 0; i < nbrEspace; i++){
+                        promo+= espace;
+                    }
+                    break;
+                case 5:
+                    year = temp;
+                    break;
+                case 6:
+                    stagiaireX = surname + "*" + name + "*" + dept + "*" + promo + "*" + year ;
+                    listStringStagiaires.add(stagiaireX);
+                    index = 0;
+                    surname = "";
+                    name = "";
+                    dept = "";
+                    promo = "";
+                    year = "";
+                    break;
+            }
+        }
+        return listStringStagiaires;
+    }
     public Integer compareCharToChar(String newAdd, String parent,
                                      char newChar, char parentChar, int charIndex){
             charIndex = 0;
             int comparison = 0;
-        do {
+            do {
                 newChar = newAdd.charAt(charIndex);
                 parentChar = parent.charAt(charIndex);
                 if (newChar == 'é' && parentChar == 'é' || newChar == 'è' && parentChar == 'è'
@@ -21,18 +101,18 @@ public class Methods {
                 charIndex ++;
             } while (newChar == parentChar);
 
-            if (newChar >parentChar){
+            if (newChar>parentChar){
                 comparison = 1;
-            } else if (newChar <parentChar){
+            } else if (newChar<parentChar){
                 comparison = -1;
             }
             return comparison;
     }
-
-    public Integer searchCharToChar(String newAdd, String parent,
-                                     char newChar, char parentChar, int charIndex){
-        charIndex = 0;
+    public Integer searchCharToChar(String newAdd, String parent){
+        int charIndex = 0;
         int comparison = 0;
+        char newChar;
+        char parentChar;
         do {
             newChar = newAdd.charAt(charIndex);
             parentChar = parent.charAt(charIndex);
@@ -43,7 +123,7 @@ public class Methods {
                 parentChar = parent.charAt(charIndex);
             }
             charIndex ++;
-        } while (newChar == parentChar & charIndex < newAdd.length()-1);
+        } while (newChar == parentChar & charIndex < newAdd.length());
 
         if (newChar>parentChar){
             comparison = 1;
@@ -54,18 +134,16 @@ public class Methods {
         }
         return comparison;
     }
-
     public String removeDollarFromRef(RandomAccessFile rafDataBase,
-                                      char removeDollars, String child) throws IOException {
+                                       String child) throws IOException {
         for (int i = 0; i < 7; i++) {
-            removeDollars = rafDataBase.readChar();
+            char removeDollars = rafDataBase.readChar();
             if (removeDollars != '$') {
                 child += removeDollars;
             }
         }
         return child;
     }
-
     public void writeLeftChildInRaf(RandomAccessFile rafDataBase, long parentPlace,
                                     long REF6, long REF8, long ELT, String newAdd) throws IOException {
         rafDataBase.seek(parentPlace + REF6);
@@ -76,7 +154,6 @@ public class Methods {
         rafDataBase.seek(rafDataBase.length() - ELT + REF8);
         rafDataBase.writeChars(String.valueOf(parentPlace));
     }
-
     public void writeRightChildInRaf(RandomAccessFile rafDataBase, long parentPlace,
                                      long REF7, long REF8, long ELT, String newAdd) throws IOException {
         rafDataBase.seek(parentPlace + REF7);
@@ -87,7 +164,6 @@ public class Methods {
         rafDataBase.seek(rafDataBase.length() - ELT + REF8);
         rafDataBase.writeChars(String.valueOf(parentPlace));
     }
-
     public Stagiaire createObjectStagiaire (String parent){
         String name = "";
         String surname = "";
@@ -118,112 +194,106 @@ public class Methods {
         Stagiaire stagiaireX = new Stagiaire(surname, name, dept, promo, year);
         return stagiaireX;
     }
+    public List<String> createListOneStagiaire(String surname, String name, String dept, String promo, String year){
 
-    public Character incrementAlphabet (Integer indexChar){
+        List <String> listOneStagiaire = new ArrayList<>();
+        String temp = "";
+        String espace = " ";
 
-        char lettre = ' ';
-
-        switch (indexChar){
-            case 0:
-                lettre = ' ';
-                break;
-            case 1:
-                lettre = 'A';
-                break;
-            case 2:
-                lettre = 'B';
-                break;
-            case 3:
-                lettre = 'C';
-                break;
-            case 4:
-                lettre = 'D';
-                break;
-            case 5:
-                lettre = 'E';
-                break;
-            case 6:
-                lettre = 'F';
-                break;
-            case 7:
-                lettre = 'G';
-                break;
-            case 8:
-                lettre = 'H';
-                break;
-            case 9:
-                lettre = 'I';
-                break;
-            case 10:
-                lettre = 'J';
-                break;
-            case 11:
-                lettre = 'K';
-                break;
-            case 12:
-                lettre = 'L';
-                break;
-            case 13:
-                lettre = 'M';
-                break;
-            case 14:
-                lettre = 'N';
-                break;
-            case 15:
-                lettre = 'O';
-                break;
-            case 16:
-                lettre = 'P';
-                break;
-            case 17:
-                lettre = 'Q';
-                break;
-            case 18:
-                lettre = 'R';
-                break;
-            case 19:
-                lettre = 'S';
-                break;
-            case 20:
-                lettre = 'T';
-                break;
-            case 21:
-                lettre = 'U';
-                break;
-            case 22:
-                lettre = 'V';
-                break;
-            case 23:
-                lettre = 'W';
-                break;
-            case 24:
-                lettre = 'X';
-                break;
-            case 25:
-                lettre = 'Y';
-                break;
-            case 26:
-                lettre = 'Z';
-                break;
+        int nbrEspace = 50 - surname.length();
+        for (int i = 0; i < nbrEspace; i++){
+            surname+= espace;
         }
-        return lettre;
+        nbrEspace = 50 - name.length();
+        for (int i = 0; i < nbrEspace; i++){
+            name+= espace;
+        }
+        nbrEspace = 2 - dept.length();
+        for (int i = 0; i < nbrEspace; i++){
+            dept+= espace;
+        }
+        nbrEspace = 19 - promo.length();
+        for (int i = 0; i < nbrEspace; i++){
+            promo+= espace;
+        }
+
+        String stagiaireXString = surname + "*" + name + "*" + dept + "*" + promo + "*" + year;
+        listOneStagiaire.add(stagiaireXString);
+
+        return listOneStagiaire;
     }
+    public String createStringOneStagiaire(String surname, String name, String dept, String promo, String year){
 
-    public String testAlphabet (Character lettre){
-        int indexChar = 0;
-        String test = "";
+        List <String> listOneStagiaire = new ArrayList<>();
+        String temp = "";
+        String espace = " ";
 
-        for (indexChar = 0; indexChar < 27; indexChar++){
-            test += incrementAlphabet(indexChar);
-            for (indexChar = 0; indexChar < 27; indexChar++){
+        int nbrEspace = 50 - surname.length();
+        for (int i = 0; i < nbrEspace; i++){
+            surname+= espace;
+        }
+        nbrEspace = 50 - name.length();
+        for (int i = 0; i < nbrEspace; i++){
+            name+= espace;
+        }
+        nbrEspace = 2 - dept.length();
+        for (int i = 0; i < nbrEspace; i++){
+            dept+= espace;
+        }
+        nbrEspace = 19 - promo.length();
+        for (int i = 0; i < nbrEspace; i++){
+            promo+= espace;
+        }
 
+        String stagiaireXString = surname + "*" + name + "*" + dept + "*" + promo + "*" + year;
+        return stagiaireXString;
+    }
+    public boolean isAlreadyInList (List<Stagiaire> stList, Stagiaire stagiaireX){
+        boolean isAlreadyInList = false;
+
+        for (Stagiaire st : stList) {
+            if (st.getName().equals(stagiaireX.getName()) &&
+                    st.getSurname().equals(stagiaireX.getSurname()) &&
+                    st.getDept().equals(stagiaireX.getDept()) &&
+                    st.getPromo().equals(stagiaireX.getPromo()) &&
+                    st.getYear().equals(stagiaireX.getYear())){
+                isAlreadyInList = true;
             }
         }
 
-
-
-        return test;
+        return isAlreadyInList;
     }
+    public boolean searchAlreadyInList (List<Stagiaire> stList, String search, int criterion){
+        boolean searchAlreadyInList = false;
+        String temp = "";
+
+        for (Stagiaire st : stList) {
+            switch (criterion){
+                case 1:
+                    temp = st.getSurname();
+                    break;
+                case 2:
+                    temp = st.getName();
+                    break;
+                case 3:
+                    temp = st.getDept();
+                    break;
+                case 4:
+                    temp = st.getPromo();
+                    break;
+                case 5:
+                    temp = st.getYear();
+                    break;
+            }
+            if (searchCharToChar(search, temp) == 0){
+                searchAlreadyInList = true;
+            }
+        }
+        return searchAlreadyInList;
+    }
+
+
+
 
     public Integer simpleComparison(String newAdd, String parent){
         int charIndex = 0;
