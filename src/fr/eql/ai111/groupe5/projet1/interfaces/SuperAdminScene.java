@@ -38,8 +38,6 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class SuperAdminScene {
-//    LesStagiaires lesStagiaires = new LesStagiaires
-//            ("C:\\Users\\sabri\\Workspace\\PROJET1GROUPE5\\src\\fr\\eql\\ai111\\groupe5\\projet1\\stagiaires.txt");
 
     Arbre arbre = new Arbre();
     Methods methods = new Methods();
@@ -184,13 +182,13 @@ public class SuperAdminScene {
         TextField surname = new TextField();
         surname.setPromptText("Nom");
         TextField name = new TextField();
-        name.setPromptText("Pr?nom");
+        name.setPromptText("Prénom");
         TextField dept = new TextField();
-        dept.setPromptText("D?partement");
+        dept.setPromptText("Département");
         TextField promo = new TextField();
         promo.setPromptText("Promotion");
         TextField year = new TextField();
-        year.setPromptText("Ann?e");
+        year.setPromptText("Année");
 
         //Creation boutons + Actions
         Button btnAjouter = new Button("Ajouter");

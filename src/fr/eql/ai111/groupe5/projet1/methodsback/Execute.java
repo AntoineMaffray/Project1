@@ -14,17 +14,17 @@ public class Execute {
         Arbre arbre = new Arbre();
         Methods methods = new Methods();
 
-//        Création du répertoire BillyBook + Dossier AdminInfo
-        File billyBook = new File("C:/BillyBook/AdminInfo");
-        if (!billyBook.exists()){
-            billyBook.mkdirs();
+//        Création du répertoire theEqlBook + Dossier AdminInfo
+        File eqlBook = new File("C:/theEqlbook/AdminInfo");
+        if (!eqlBook.exists()){
+            eqlBook.mkdirs();
         }
 
 //        Création du fichier d'identifiant SuperAdmin
-        File billyBookAdmin = new File("C:/BillyBook/AdminInfo/SuperAdmin.txt");
-        if(!billyBookAdmin.exists()){
-            billyBookAdmin.createNewFile();
-            FileWriter fw = new FileWriter("C:/BillyBook/AdminInfo/SuperAdmin.txt", false);
+        File eqlBookAdmin = new File("C:/theEQLBook/AdminInfo/SuperAdmin.txt");
+        if(!eqlBookAdmin.exists()){
+            eqlBookAdmin.createNewFile();
+            FileWriter fw = new FileWriter("C:/theEQLBook/AdminInfo/SuperAdmin.txt", false);
             BufferedWriter bw  = new BufferedWriter(fw);
             bw.write("1234");
             bw.newLine();
@@ -33,7 +33,7 @@ public class Execute {
             fw.close();
         }
 //        Vérification de l'existence du RAF et création si non existant
-        File file = new File("C:/BillyBook/Raf.bin");
+        File file = new File("C:/theEQLBook/Raf.bin");
         if(!file.exists()){
             try {
                 arbre.arbreCreation(methods.createListStagiaires());

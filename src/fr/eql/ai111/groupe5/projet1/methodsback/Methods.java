@@ -56,7 +56,7 @@ public class Methods {
                     break;
                 case 3 :
                     dept = temp;
-                    nbrEspace = 2 - dept.length();
+                    nbrEspace = 3 - dept.length();
                     for (int i = 0; i < nbrEspace; i++){
                         dept+= espace;
                     }
@@ -129,7 +129,7 @@ public class Methods {
             comparison = 1;
         } else if (newChar<parentChar){
             comparison = -1;
-        } else if (charIndex == newAdd.length()-1){
+        } else if (charIndex == newAdd.length()){
             comparison = 0;
         }
         return comparison;
@@ -238,7 +238,7 @@ public class Methods {
         for (int i = 0; i < nbrEspace; i++){
             name+= espace;
         }
-        nbrEspace = 2 - dept.length();
+        nbrEspace = 3 - dept.length();
         for (int i = 0; i < nbrEspace; i++){
             dept+= espace;
         }
@@ -294,9 +294,6 @@ public class Methods {
         }
         return searchAlreadyInList;
     }
-
-
-
 
     public Integer simpleComparison(String newAdd, String parent){
         int charIndex = 0;
