@@ -1,6 +1,5 @@
-package fr.eql.ai111.groupe5.projet1;
+package fr.eql.ai111.groupe5.projet1.methodsback;
 
-import jdk.nashorn.api.scripting.URLReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,15 +22,15 @@ public class UserDAO {
             String password,
             String role) {
         File folder = new File(IDENTIFIANTS);
-        // Si le dossier n'existe pas, je le crée.
+        // Si le dossier n'existe pas, je le crï¿½e.
         if (!folder.exists()) {
             folder.mkdir();
         }
         boolean isCreated = false;
-        // Je déclare le fichier utilisateur
+        // Je dï¿½clare le fichier utilisateur
         File userFile = new File(folder + "/" + login + ".txt");
         try {
-            // Je tente de créer le fichier sur le disque, s'il n'existe pas déjà.
+            // Je tente de crï¿½er le fichier sur le disque, s'il n'existe pas dï¿½jï¿½.
             isCreated = userFile.createNewFile();
             if (isCreated) {
                 FileWriter fw = new FileWriter(userFile, false);
@@ -49,7 +48,7 @@ public class UserDAO {
                 fw.close();
             }
         } catch (IOException e) {
-            logger.warn("Le fichier utilisateur n'a pas été créé.");
+            logger.warn("Le fichier utilisateur n'a pas ï¿½tï¿½ crï¿½ï¿½.");
         }
         return isCreated;
     }
@@ -72,7 +71,7 @@ public class UserDAO {
             br.close();
             fr.close();
         } catch (IOException e) {
-            logger.warn("Un problème s'est produit lors de la lecture du fichier utilisateur.");
+            logger.warn("Un problï¿½me s'est produit lors de la lecture du fichier utilisateur.");
         }
         // Si le password est correct, on retourne l'instance du reader.
         if (user.getPassword().equals(password)) {

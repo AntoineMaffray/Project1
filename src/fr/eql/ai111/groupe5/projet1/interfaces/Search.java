@@ -1,5 +1,11 @@
-package fr.eql.ai111.groupe5.projet1;
+package fr.eql.ai111.groupe5.projet1.interfaces;
 
+import fr.eql.ai111.groupe5.projet1.methodsback.Arbre;
+import fr.eql.ai111.groupe5.projet1.methodsback.Methods;
+import fr.eql.ai111.groupe5.projet1.methodsback.Stagiaire;
+import fr.eql.ai111.groupe5.projet1.methodsback.TriSimple;
+import fr.eql.ai111.groupe5.projet1.methodsback.LesStagiaires;
+import fr.eql.ai111.groupe5.projet1.methodsback.RAFException;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -7,7 +13,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -35,9 +40,17 @@ import java.util.List;
 import java.util.Optional;
 
 public class Search {
-    LesStagiaires lesStagiaires = new LesStagiaires
-            ("C:\\Users\\sabri\\Workspace\\PROJET1GROUPE5\\src\\fr\\eql\\ai111\\groupe5\\projet1\\stagiaires.txt");
-    ObservableList<Stagiaire> data = createListStagiaire();
+    Arbre arbre = new Arbre();
+    Methods methods = new Methods();
+    ObservableList<Stagiaire> data;
+
+    {
+        try {
+            data = arbre.arbreParcours();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     int count = 1;
     String criterion = "";
@@ -51,7 +64,7 @@ public class Search {
             AnchorPane.setRightAnchor(label, 0.0);
             label.setAlignment(Pos.TOP_CENTER);
 
-            // Création de MenuBar
+            // Cr?ation de MenuBar
             MenuBar menuBar = new MenuBar();
 
             // Creation des menus
@@ -64,7 +77,7 @@ public class Search {
             MenuItem ouvrirItem = new MenuItem("Ouvrir");
             SeparatorMenuItem separator= new SeparatorMenuItem();
             MenuItem quitterItem = new MenuItem("Quitter");
-            // Spécifier un raccourci clavier au menuItem Quitter.
+            // Sp?cifier un raccourci clavier au menuItem Quitter.
             quitterItem.setAccelerator(KeyCombination.keyCombination("Ctrl+Q"));
             // Gestion du click sur le menuItem Quitter.
             quitterItem.setOnAction(new EventHandler<ActionEvent>() {
@@ -75,7 +88,7 @@ public class Search {
             });
 
             // Creation des MenuItems du menu Identifiants
-            MenuItem creerItem = new MenuItem("Créer");
+            MenuItem creerItem = new MenuItem("Cr?er");
             MenuItem modifierItem = new MenuItem("Modifier");
             MenuItem supprimerItem = new MenuItem("Supprimer");
 
@@ -96,7 +109,7 @@ public class Search {
             identifiantMenu.getItems().addAll(creerItem, modifierItem, supprimerItem);
             aideMenu.getItems().addAll(documentationItem, separator1, rechercherItem);
 
-            // Ajouter les menus à la barre de menus
+            // Ajouter les menus ? la barre de menus
             menuBar.getMenus().addAll(fichierMenu, identifiantMenu, aideMenu);
 
             BorderPane bp = new BorderPane();
@@ -106,7 +119,7 @@ public class Search {
         TextField champ = new TextField();
         ChoiceBox criteria = new ChoiceBox();
         criteria.getItems().addAll
-                ("Nom", "Prénom", "Département", "Promotion", "Année");
+                ("Nom", "Pr?nom", "D?partement", "Promotion", "Ann?e");
         Button btnAjoutCritere = new Button("+");
 
 
@@ -118,16 +131,16 @@ public class Search {
         hbox.setSpacing(10);
         hbox.getChildren().addAll(criteria, champ, btnAjoutCritere, btnRechercher);
 
-            //Création de la table
+            //Cr?ation de la table
             TableView<Stagiaire> table = new TableView<Stagiaire>();
             table.setEditable(true);
             table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-            //Création des cinq colonnes
+            //Cr?ation des cinq colonnes
             TableColumn<Stagiaire, String> surnameCol =
                     new TableColumn<Stagiaire, String>("Nom");
             surnameCol.setMinWidth(250);
-            //Spécifier comment remplir la donnée pour chaque cellule de cette colonne
+            //Sp?cifier comment remplir la donn?e pour chaque cellule de cette colonne
             //Ceci se fait en specifiant un "cell value factory" pour cette colonne.
             surnameCol.setCellValueFactory(
                     new PropertyValueFactory<Stagiaire, String>("surname"));
@@ -139,7 +152,7 @@ public class Search {
                     new PropertyValueFactory<Stagiaire, String>("name"));
 
             TableColumn<Stagiaire, Integer> deptCol =
-                    new TableColumn<Stagiaire, Integer>("Departement");
+                    new TableColumn<Stagiaire, Integer>("Département");
             deptCol.setMinWidth(200);
             //specifier un "cell factory" pour cette colonne.
             deptCol.setCellValueFactory(
@@ -158,7 +171,7 @@ public class Search {
                     new PropertyValueFactory<Stagiaire,Integer>("year"));
 
 
-            //On ajoute les trois colonnes à la table
+            //On ajoute les trois colonnes ? la table
             table.getColumns().addAll(surnameCol, nameCol, deptCol, promoCol, yearCol);
 
             //On remplit la table avec la liste observable
@@ -183,8 +196,24 @@ public class Search {
             criteria.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    criterion = (String) criteria.getSelectionModel().getSelectedItem();
-
+//                    String criterion = criteria.getSelectionModel().getSelectedItem();
+                    switch (criterion){
+                        case "Nom":
+                            System.out.println(criterion);
+                            break;
+                        case "Prenom":
+                            System.out.println(criterion);
+                            break;
+                        case "Departement":
+                            System.out.println(criterion);
+                            break;
+                        case "Formation":
+                            System.out.println(criterion);
+                            break;
+                        case "Annee":
+                            System.out.println(criterion);
+                            break;
+                    }
                 }
             });
         btnRechercher.setOnAction(new EventHandler<ActionEvent>() {
@@ -216,14 +245,14 @@ public class Search {
         }
 
 
-        private ObservableList<Stagiaire> createListStagiaire(){
-            ObservableList<Stagiaire> list = FXCollections.observableArrayList();
-            List<Stagiaire> listM = lesStagiaires.fabriqueList();
-            for (Stagiaire stagiaire : listM) {
-                list.add(stagiaire);
-            }
-            return list;
-        }
+//        private ObservableList<Stagiaire> createListStagiaire(){
+//            ObservableList<Stagiaire> list = FXCollections.observableArrayList();
+//            List<Stagiaire> listM = lesStagiaires.fabriqueList();
+//            for (Stagiaire stagiaire : listM) {
+//                list.add(stagiaire);
+//            }
+//            return list;
+//        }
 
         private void createContact(String surname, String name, String dept, String promo, String year,
                 ObservableList<Stagiaire> data){
@@ -232,35 +261,35 @@ public class Search {
         }
 
 
-        // Méthode pour créer une fenêtre d'information
+        // M?thode pour cr?er une fen?tre d'information
         private void confirmationInscription() {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Confirmation Inscription");
 
-            // Texte sans en-tête
+            // Texte sans en-t?te
             alert.setHeaderText(null);
-            alert.setContentText("Votre stagiaire a bien été enregistré!");
+            alert.setContentText("Votre stagiaire a bien ?t? enregistr?!");
             alert.showAndWait();
         }
 
-        // Méthode pour afficher une confirmation de suppresion via une fenêtre pop-up
+        // M?thode pour afficher une confirmation de suppresion via une fen?tre pop-up
         private Label label;
 
         private boolean confirmationSuppression() {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Supprimer l'utilisateur");
-            alert.setHeaderText("Etes-vous sûr de vouloir supprimer l'utilisateur?");
+            alert.setHeaderText("Etes-vous s?r de vouloir supprimer l'utilisateur?");
 
             // option != null.
             Optional<ButtonType> option = alert.showAndWait();
 
             if (option.get() == null) {
-                this.label.setText("Aucun utilisateur n'a été sélectionné");
+                this.label.setText("Aucun utilisateur n'a ?t? s?lectionn?");
             } else if (option.get() == ButtonType.OK) {
-                this.label.setText("Utilisateur supprimé!");
+                this.label.setText("Utilisateur supprim?!");
                 return true;
             } else if (option.get() == ButtonType.CANCEL) {
-                this.label.setText("Annulé");
+                this.label.setText("Annul?");
                 alert.close();
             } else {
                 this.label.setText("-");
@@ -272,7 +301,7 @@ public class Search {
                 TextField champ = new TextField();
                 ChoiceBox criteria = new ChoiceBox();
                 criteria.getItems().addAll
-                ("Prénom", "Département", "Promotion", "Année");
+                ("Pr?nom", "D?partement", "Promotion", "Ann?e");
 
                  HBox hbox = new HBox();
                  hbox.setSpacing(10);

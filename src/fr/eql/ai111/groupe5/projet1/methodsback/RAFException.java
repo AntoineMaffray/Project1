@@ -1,4 +1,4 @@
-package fr.eql.ai111.groupe5.projet1;
+package fr.eql.ai111.groupe5.projet1.methodsback;
 
 public class RAFException extends Exception {
 

@@ -1,5 +1,7 @@
-package fr.eql.ai111.groupe5.projet1;
+package fr.eql.ai111.groupe5.projet1.interfaces;
 
+import fr.eql.ai111.groupe5.projet1.methodsback.LesStagiaires;
+import fr.eql.ai111.groupe5.projet1.methodsback.Stagiaire;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -56,7 +58,7 @@ public class AnnuaireView extends Application{
             AnchorPane.setRightAnchor(label, 0.0);
             label.setAlignment(Pos.TOP_CENTER);
 
-            // Création de MenuBar
+            // Crï¿½ation de MenuBar
             MenuBar menuBar = new MenuBar();
 
             // Creation des menus
@@ -69,7 +71,7 @@ public class AnnuaireView extends Application{
             MenuItem ouvrirItem = new MenuItem("Ouvrir");
             SeparatorMenuItem separator= new SeparatorMenuItem();
             MenuItem quitterItem = new MenuItem("Quitter");
-            // Spécifier un raccourci clavier au menuItem Quitter.
+            // Spï¿½cifier un raccourci clavier au menuItem Quitter.
             quitterItem.setAccelerator(KeyCombination.keyCombination("Ctrl+Q"));
             // Gestion du click sur le menuItem Quitter.
             quitterItem.setOnAction(new EventHandler<ActionEvent>() {
@@ -80,7 +82,7 @@ public class AnnuaireView extends Application{
             });
 
             // Creation des MenuItems du menu Identifiants
-            MenuItem creerItem = new MenuItem("Créer");
+            MenuItem creerItem = new MenuItem("Crï¿½er");
             MenuItem modifierItem = new MenuItem("Modifier");
             MenuItem supprimerItem = new MenuItem("Supprimer");
 
@@ -101,27 +103,27 @@ public class AnnuaireView extends Application{
             identifiantMenu.getItems().addAll(creerItem, modifierItem, supprimerItem);
             aideMenu.getItems().addAll(documentationItem, separator1, rechercherItem);
 
-            // Ajouter les menus à la barre de menus
+            // Ajouter les menus ï¿½ la barre de menus
             menuBar.getMenus().addAll(fichierMenu, identifiantMenu, aideMenu);
 
             BorderPane bp = new BorderPane();
             bp.setTop(menuBar);
 
-            //Création de la table
+            //Crï¿½ation de la table
             TableView<Stagiaire> table = new TableView<Stagiaire>();
             table.setEditable(true);
             table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-            //Création des cinq colonnes
+            //Crï¿½ation des cinq colonnes
             TableColumn<Stagiaire, String> surnameCol =
                     new TableColumn<Stagiaire, String>("Nom");
             surnameCol.setMinWidth(250);
-            //Spécifier comment remplir la donnée pour chaque cellule de cette colonne
+            //Spï¿½cifier comment remplir la donnï¿½e pour chaque cellule de cette colonne
             //Ceci se fait en specifiant un "cell value factory" pour cette colonne.
             surnameCol.setCellValueFactory(
                     new PropertyValueFactory<Stagiaire, String>("surname"));
 
-            TableColumn<Stagiaire, String> nameCol = new TableColumn<Stagiaire, String>("Prénom");
+            TableColumn<Stagiaire, String> nameCol = new TableColumn<Stagiaire, String>("Prï¿½nom");
             nameCol.setMinWidth(250);
             //specifier un "cell factory" pour cette colonne.
             nameCol.setCellValueFactory(
@@ -140,14 +142,14 @@ public class AnnuaireView extends Application{
             promoCol.setCellValueFactory(
                     new PropertyValueFactory<Stagiaire, String>("promo"));
 
-            TableColumn<Stagiaire, Integer> yearCol = new TableColumn<Stagiaire, Integer>("Année");
+            TableColumn<Stagiaire, Integer> yearCol = new TableColumn<Stagiaire, Integer>("Annï¿½e");
             yearCol.setMinWidth(200);
             //specifier un "cell factory" pour cette colonne.
             yearCol.setCellValueFactory(
                     new PropertyValueFactory<Stagiaire,Integer>("year"));
 
 
-            //On ajoute les trois colonnes à la table
+            //On ajoute les trois colonnes ï¿½ la table
             table.getColumns().addAll(surnameCol, nameCol, deptCol, promoCol, yearCol);
 
             //On remplit la table avec la liste observable
@@ -157,13 +159,13 @@ public class AnnuaireView extends Application{
             TextField surname = new TextField();
             surname.setPromptText("Nom");
             TextField name = new TextField();
-            name.setPromptText("Prénom");
+            name.setPromptText("Prï¿½nom");
             TextField dept = new TextField();
-            dept.setPromptText("Département");
+            dept.setPromptText("Dï¿½partement");
             TextField promo = new TextField();
             promo.setPromptText("Promotion");
             TextField year = new TextField();
-            year.setPromptText("Année");
+            year.setPromptText("Annï¿½e");
 
             //Creation boutons + Actions
             Button btnAjouter = new Button("Ajouter");
@@ -229,35 +231,35 @@ public class AnnuaireView extends Application{
         }
 
 
-    // Méthode pour créer une fenêtre d'information
+    // Mï¿½thode pour crï¿½er une fenï¿½tre d'information
     private void confirmationInscription() {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Confirmation Inscription");
 
-        // Texte sans en-tête
+        // Texte sans en-tï¿½te
         alert.setHeaderText(null);
-        alert.setContentText("Votre stagiaire a bien été enregistré!");
+        alert.setContentText("Votre stagiaire a bien ï¿½tï¿½ enregistrï¿½!");
         alert.showAndWait();
     }
 
-    // Méthode pour afficher une confirmation de suppresion via une fenêtre pop-up
+    // Mï¿½thode pour afficher une confirmation de suppresion via une fenï¿½tre pop-up
     private Label label;
 
     private boolean confirmationSuppression() {
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Supprimer l'utilisateur");
-        alert.setHeaderText("Etes-vous sûr de vouloir supprimer l'utilisateur?");
+        alert.setHeaderText("Etes-vous sï¿½r de vouloir supprimer l'utilisateur?");
 
         // option != null.
         Optional<ButtonType> option = alert.showAndWait();
 
         if (option.get() == null) {
-            this.label.setText("Aucun utilisateur n'a été sélectionné");
+            this.label.setText("Aucun utilisateur n'a ï¿½tï¿½ sï¿½lectionnï¿½");
         } else if (option.get() == ButtonType.OK) {
-            this.label.setText("Utilisateur supprimé!");
+            this.label.setText("Utilisateur supprimï¿½!");
             return true;
         } else if (option.get() == ButtonType.CANCEL) {
-            this.label.setText("Annulé");
+            this.label.setText("Annulï¿½");
             alert.close();
         } else {
             this.label.setText("-");

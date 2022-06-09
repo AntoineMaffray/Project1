@@ -1,5 +1,7 @@
-package fr.eql.ai111.groupe5.projet1;
+package fr.eql.ai111.groupe5.projet1.interfaces;
 
+import fr.eql.ai111.groupe5.projet1.methodsback.User;
+import fr.eql.ai111.groupe5.projet1.methodsback.UserDAO;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -13,26 +15,25 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class Connexion extends Application {
 
     User user;
     UserDAO dao = new UserDAO();
 
-    // Main qui lance l'application, il ne contient que la méthode "start".
+    // Main qui lance l'application, il ne contient que la mÃ©thode "start".
     public static void main(String[] args) {
         launch(args);
     }
 
-    // Méthode Start
+    // MÃ©thode Start
     @Override
     public void start(Stage primaryStage) {
-
         accueil(primaryStage);
-
     }
 
     private void accueil(Stage primaryStage) {
@@ -46,7 +47,11 @@ public class Connexion extends Application {
         btnUser.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                new UserScene(primaryStage);
+                try {
+                    new UserScene(primaryStage);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
         Button btnAdmin = new Button("Admin");
@@ -56,14 +61,33 @@ public class Connexion extends Application {
                 connexion(primaryStage);
             }
         });
+
+        Button btnSuperAdmin = new Button("SuperAdmin");
+        btnSuperAdmin.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                try {
+                    new SuperAdminScene(primaryStage);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
         HBox hbBtnUser = new HBox(10);
         hbBtnUser.setAlignment(Pos.BOTTOM_RIGHT);
         hbBtnUser.getChildren().add(btnUser);
+
         HBox hbBtnAdmin = new HBox(12);
         hbBtnAdmin.setAlignment(Pos.BOTTOM_CENTER);
         hbBtnAdmin.getChildren().add(btnAdmin);
+
+        HBox hbBtnSuperAdmin = new HBox(12);
+        hbBtnSuperAdmin.setAlignment(Pos.BOTTOM_LEFT);
+        hbBtnSuperAdmin.getChildren().add(btnSuperAdmin);
+
         grille.add(hbBtnUser, 0, 1);
         grille.add(hbBtnAdmin, 1, 1);
+        grille.add(hbBtnSuperAdmin, 2, 1);
         //Ajout d'une zone de texte
         Text actionTexte = new Text();
         actionTexte.setId("actionTexte");
@@ -78,7 +102,7 @@ public class Connexion extends Application {
     }
 
     private void connexion(Stage primaryStage) {
-        //créer une grille (GridPane Layout)
+        //crï¿½er une grille (GridPane Layout)
         GridPane grille = new GridPane();
         grille.setAlignment(Pos.CENTER);
         grille.setHgap(10);
@@ -89,7 +113,7 @@ public class Connexion extends Application {
         Text connect = new Text("Connexion");
         //titre.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
 
-        //Utilisé dans le fichier css pour identifier le noeud
+        //Utilisï¿½ dans le fichier css pour identifier le noeud
         connect.setId("titreText");
 
         grille.add(connect, 0, 0, 2, 1);
@@ -106,7 +130,7 @@ public class Connexion extends Application {
         PasswordField pswdPasswordField = new PasswordField();
         grille.add(pswdPasswordField, 1, 2);
 
-        //Ajout du bouton à la grille
+        //Ajout du bouton ï¿½ la grille
         Button btnValidation = new Button("Validez");
         btnValidation.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -117,7 +141,7 @@ public class Connexion extends Application {
                 new AdminScene(primaryStage);
             }
         });
-        Button btnRedirectionInscription = new Button("Première connexion ");
+        Button btnRedirectionInscription = new Button("Premiï¿½re connexion ");
         btnRedirectionInscription.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -150,7 +174,7 @@ public class Connexion extends Application {
     }
 
     private Scene inscription(Stage primaryStage) {
-        //créer une grille (GridPane Layout)
+        //crï¿½er une grille (GridPane Layout)
         GridPane grille = new GridPane();
         grille.setAlignment(Pos.CENTER);
         grille.setHgap(10);
@@ -161,7 +185,7 @@ public class Connexion extends Application {
         Text titre = new Text("Bienvenue dans l'annuaire");
         //titre.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
 
-        //Utilisé dans le fichier css pour identifier le noeud
+        //Utilisï¿½ dans le fichier css pour identifier le noeud
         titre.setId("titreText");
 
         grille.add(titre, 0, 0, 2, 1);
@@ -178,7 +202,7 @@ public class Connexion extends Application {
         TextField nomTextField = new TextField("");
         grille.add(nomTextField, 1, 2);
 
-        Label prenom = new Label("Prénom :");
+        Label prenom = new Label("Prï¿½nom :");
         grille.add(prenom, 0, 3);
 
         TextField prenomTextField = new TextField("");
@@ -200,7 +224,7 @@ public class Connexion extends Application {
         grille.add(roleTextField, 1, 5);
 
 
-        //Ajout du bouton à la grille
+        //Ajout du bouton ï¿½ la grille
         Button btn = new Button("Validez");
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -235,9 +259,9 @@ public class Connexion extends Application {
     private void inscriptionUser(User user) {
 
                     /*
-                    Si la méthode 'createAccount' retourne false, alors le fichier utilisateur
-                    n'as pas été créé car un autre portant le même nom (correspondant au login
-                    entré) existe déjà.
+                    Si la mï¿½thode 'createAccount' retourne false, alors le fichier utilisateur
+                    n'as pas ï¿½tï¿½ crï¿½ï¿½ car un autre portant le mï¿½me nom (correspondant au login
+                    entrï¿½) existe dï¿½jï¿½.
                      */
         boolean isCreated = dao.createAccount(user.getName(),
                 user.getSurname(),
@@ -265,7 +289,7 @@ public class Connexion extends Application {
 
         // Header Text: null
         alert.setHeaderText(null);
-        alert.setContentText("Attention ces identifiants existent déjà!");
+        alert.setContentText("Attention ces identifiants existent dï¿½jï¿½!");
 
         alert.showAndWait();
 

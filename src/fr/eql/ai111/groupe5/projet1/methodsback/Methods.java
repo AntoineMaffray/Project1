@@ -1,4 +1,4 @@
-package fr.eql.ai111.groupe5.projet1;
+package fr.eql.ai111.groupe5.projet1.methodsback;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,7 +20,7 @@ public class Methods {
         try {
             reader = new FileReader("C:/FolderProjet/Stagiaires.txt");
         } catch (FileNotFoundException e) {
-            logger.warn("Le fichier Ã  lire n'existe pas.");
+            logger.warn("Le fichier à lire n'existe pas.");
         }
         BufferedReader bfReader = new BufferedReader(reader);
         List<String> listStringStagiaires = new ArrayList<>();
@@ -48,7 +48,7 @@ public class Methods {
                     }
                     break;
                 case 2 :
-                    name = temp;
+                    name = temp.substring(0,1).toUpperCase() + temp.substring(1).toLowerCase();
                     nbrEspace = 50 - name.length();
                     for (int i = 0; i < nbrEspace; i++){
                         name+= espace;
@@ -62,7 +62,7 @@ public class Methods {
                     }
                     break;
                 case 4 :
-                    promo = temp;
+                    promo = temp.toUpperCase();
                     nbrEspace = 19 - promo.length();
                     for (int i = 0; i < nbrEspace; i++){
                         promo+= espace;
@@ -92,8 +92,8 @@ public class Methods {
             do {
                 newChar = newAdd.charAt(charIndex);
                 parentChar = parent.charAt(charIndex);
-                if (newChar == 'Ã©' && parentChar == 'Ã©' || newChar == 'Ã¨' && parentChar == 'Ã¨'
-                        || newChar == 'Ã¯' && parentChar == 'Ã¯') {
+                if (newChar == 'é' && parentChar == 'é' || newChar == 'è' && parentChar == 'è'
+                        || newChar == 'ï' && parentChar == 'ï') {
                     charIndex++;
                     newChar = newAdd.charAt(charIndex);
                     parentChar = parent.charAt(charIndex);
@@ -116,8 +116,8 @@ public class Methods {
         do {
             newChar = newAdd.charAt(charIndex);
             parentChar = parent.charAt(charIndex);
-            if (newChar == 'Ã©' && parentChar == 'Ã©' || newChar == 'Ã¨' && parentChar == 'Ã¨'
-                    || newChar == 'Ã¯' && parentChar == 'Ã¯') {
+            if (newChar == 'é' && parentChar == 'é' || newChar == 'è' && parentChar == 'è'
+                    || newChar == 'ï' && parentChar == 'ï') {
                 charIndex++;
                 newChar = newAdd.charAt(charIndex);
                 parentChar = parent.charAt(charIndex);
@@ -229,10 +229,12 @@ public class Methods {
         String espace = " ";
 
         int nbrEspace = 50 - surname.length();
+        surname = surname.toUpperCase();
         for (int i = 0; i < nbrEspace; i++){
             surname+= espace;
         }
         nbrEspace = 50 - name.length();
+        name = name.substring(0,1).toUpperCase() + name.substring(1).toLowerCase();
         for (int i = 0; i < nbrEspace; i++){
             name+= espace;
         }
@@ -241,6 +243,7 @@ public class Methods {
             dept+= espace;
         }
         nbrEspace = 19 - promo.length();
+        promo = promo.toUpperCase();
         for (int i = 0; i < nbrEspace; i++){
             promo+= espace;
         }
@@ -303,8 +306,8 @@ public class Methods {
         do {
             newChar = newAdd.charAt(charIndex);
             parentChar = parent.charAt(charIndex);
-            if (newChar == 'Ã©' && parentChar == 'Ã©' || newChar == 'Ã¨' && parentChar == 'Ã¨'
-                    || newChar == 'Ã¯' && parentChar == 'Ã¯') {
+            if (newChar == 'é' && parentChar == 'é' || newChar == 'è' && parentChar == 'è'
+                    || newChar == 'ï' && parentChar == 'ï') {
                 charIndex++;
                 newChar = newAdd.charAt(charIndex);
                 parentChar = parent.charAt(charIndex);
@@ -389,36 +392,36 @@ public class Methods {
                 case '8' : hasher += hasher /149;break;
                 case '9' : hasher += hasher *547;break;
                 case '&' : hasher += hasher *557;break;
-                case 'Ã©' : hasher += hasher *563;break;
+                case 'é' : hasher += hasher *563;break;
                 case '\"' : hasher += hasher /151;break;
                 case '\'' : hasher += hasher /157;break;
                 case '(' : hasher += hasher /163;break;
                 case '-' : hasher += hasher *569;break;
-                case 'Ã¨' : hasher += hasher /167;break;
-                case 'Ã´' : hasher += hasher *571;break;
-                case 'Ã»' : hasher += hasher /173;break;
-                case 'Ã®' : hasher += hasher *577;break;
-                case 'Ãª' : hasher += hasher /179;break;
-                case 'Ã¶' : hasher += hasher *587;break;
-                case 'Ã«' : hasher += hasher /181;break;
-                case 'Ã¯' : hasher += hasher /191;break;
-                case 'Ã¤' : hasher += hasher *491;break;
-                case 'Ã¼' : hasher += hasher *499;break;
+                case 'è' : hasher += hasher /167;break;
+                case 'ô' : hasher += hasher *571;break;
+                case 'û' : hasher += hasher /173;break;
+                case 'î' : hasher += hasher *577;break;
+                case 'ê' : hasher += hasher /179;break;
+                case 'ö' : hasher += hasher *587;break;
+                case 'ë' : hasher += hasher /181;break;
+                case 'ï' : hasher += hasher /191;break;
+                case 'ä' : hasher += hasher *491;break;
+                case 'ü' : hasher += hasher *499;break;
                 case '_' : hasher += hasher *503;break;
-                case 'Ã¢' : hasher += hasher /193;break;
-                case 'Ã§' : hasher += hasher *509;break;
-                case 'Ã ' : hasher += hasher *521;break;
+                case 'â' : hasher += hasher /193;break;
+                case 'ç' : hasher += hasher *509;break;
+                case 'à' : hasher += hasher *521;break;
                 case ')' : hasher += hasher /197;break;
                 case '=' : hasher += hasher *523;break;
                 case '$' : hasher += hasher *541;break;
                 case '*' : hasher += hasher /199;break;
-                case 'Ã¹' : hasher += hasher *547;break;
+                case 'ù' : hasher += hasher *547;break;
                 case '#' : hasher += hasher /211;break;
                 case '!' : hasher += hasher *557;break;
                 case ':' : hasher += hasher /223;break;
                 case ';' : hasher += hasher *563;break;
                 case ',' : hasher += hasher /227;break;
-                case 'Â²' : hasher += hasher *569;break;
+                case '²' : hasher += hasher *569;break;
                 case '~' : hasher += hasher /229;break;
                 case '{' : hasher += hasher /233;break;
                 case '[' : hasher += hasher /239;break;
@@ -428,15 +431,15 @@ public class Methods {
                 case '@' : hasher += hasher /241;break;
                 case ']' : hasher += hasher /251;break;
                 case '}' : hasher += hasher *593;break;
-                case 'Â¤' : hasher += hasher *599;break;
+                case '¤' : hasher += hasher *599;break;
                 case '?' : hasher += hasher /257;break;
                 case '.' : hasher += hasher *601;break;
                 case '/' : hasher += hasher /263;break;
-                case 'Â§' : hasher += hasher *607;break;
-                case 'Âµ' : hasher += hasher *613;break;
-                case 'Â£' : hasher += hasher /269;break;
+                case '§' : hasher += hasher *607;break;
+                case 'µ' : hasher += hasher *613;break;
+                case '£' : hasher += hasher /269;break;
                 case '+' : hasher += hasher *617;break;
-                case 'Â°' : hasher += hasher /271;break;
+                case '°' : hasher += hasher /271;break;
                 default : hasher += hasher +10;break;
             }
             hashed = "u_u" + String.valueOf(hasher) + "n_n" ;

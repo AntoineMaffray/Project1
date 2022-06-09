@@ -1,4 +1,4 @@
-package fr.eql.ai111.groupe5.projet1;
+package fr.eql.ai111.groupe5.projet1.methodsback;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.apache.logging.log4j.LogManager;
@@ -229,10 +229,10 @@ long REF1 = 0; // en bytes - emplacement de la référence du nom
         return listSearch;
     }
 
-    public List <Stagiaire> arbreParcours () throws IOException{
+    public ObservableList <Stagiaire> arbreParcours () throws IOException{
 
         Methods methods = new Methods();
-        List <Stagiaire> listSearch = new ArrayList<>();
+        ObservableList <Stagiaire> listSearch = FXCollections.observableArrayList();
 
         // Ouverture des différentes instances de lecture et écriture
         RandomAccessFile rafDataBase = new RandomAccessFile("C:/BillyBook/Raf.bin", "rw");
@@ -240,6 +240,7 @@ long REF1 = 0; // en bytes - emplacement de la référence du nom
         long knot = 0;
 
         arbreRecursif(rafDataBase, methods, listSearch);
+
         return listSearch;
 
 //        /**
@@ -252,8 +253,8 @@ long REF1 = 0; // en bytes - emplacement de la référence du nom
 //            if (getSousArbreDroit() != null)
 //                getSousArbreDroit().ParcoursPrefixe();
     }
-    private List <Stagiaire> arbreRecursif (RandomAccessFile rafDataBase, Methods methods,
-                                            List listSearch) throws IOException {
+    private ObservableList <Stagiaire> arbreRecursif (RandomAccessFile rafDataBase, Methods methods,
+                                            ObservableList listSearch) throws IOException {
 
         long knot = rafDataBase.getFilePointer();
         String temp = "";
@@ -272,7 +273,10 @@ long REF1 = 0; // en bytes - emplacement de la référence du nom
         for (int i = 0; i < ELTROUGH; i++){
             temp+=rafDataBase.readChar();
         }
-        listSearch.add(methods.createObjectStagiaire(temp));
+        rafDataBase.seek(knot+REF9);
+        if (rafDataBase.readChar() == 'V'){
+            listSearch.add(methods.createObjectStagiaire(temp));
+        }
 
         rafDataBase.seek(knot+REF7);
         if (rafDataBase.readChar() != '$'){

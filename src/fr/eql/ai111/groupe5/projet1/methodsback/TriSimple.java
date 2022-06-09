@@ -1,5 +1,9 @@
-package fr.eql.ai111.groupe5.projet1;
+package fr.eql.ai111.groupe5.projet1.methodsback;
 
+import fr.eql.ai111.groupe5.projet1.methodsback.Arbre;
+import fr.eql.ai111.groupe5.projet1.methodsback.Methods;
+import fr.eql.ai111.groupe5.projet1.methodsback.RAFException;
+import fr.eql.ai111.groupe5.projet1.methodsback.Stagiaire;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
