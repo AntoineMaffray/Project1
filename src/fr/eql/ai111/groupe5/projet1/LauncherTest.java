@@ -2,16 +2,52 @@ package fr.eql.ai111.groupe5.projet1;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import javax.swing.JOptionPane;
 import java.io.IOException;
 
 public class LauncherTest {
 
     private static final Logger logger  = LogManager.getLogger();
-
     public static void main(String[] args) throws IOException {
 
-            Execute execute = new Execute();
-            execute.executeAtStart();
+        Execute execute = new Execute();
+        MethodsConnexion methodsConnexion = new MethodsConnexion();
+
+        execute.executeAtStart();
+
+//        String loginToEdit = JOptionPane.showInputDialog("Quel compte voulez-vous modifier?");
+//        FileReader fr = new FileReader("C://BillyBook/AdminInfo/"+loginToEdit+".txt");
+//        BufferedReader bw = new BufferedReader(fr);
+//
+//        String message = "Login : " + loginToEdit + ", ";
+//        bw.readLine();
+//        message+= "Nom : " + bw.readLine() + ", ";
+//        message+= "Prénom : " + bw.readLine();
+//        bw.close();
+//        fr.close();
+//
+//        String loginToAdd = JOptionPane.showInputDialog(message + "\r\n Entrez le nouveau Login.");
+//        String surnameToAdd = JOptionPane.showInputDialog(message + "\r\n Entrez le nouveau Nom.");
+//        String nameToAdd = JOptionPane.showInputDialog(message + "\r\n Entrez le nouveau Prénom.");
+//        String passwordToAdd = JOptionPane.showInputDialog("Entrez votre nouveau mot de passe.");
+//        String passwordToAdd2 = JOptionPane.showInputDialog("Vérifiez votre nouveau mot de passe.");
+//
+//        if (passwordToAdd.equals(passwordToAdd2)){
+//            connection.editAdminProfile(loginToEdit, surnameToAdd, nameToAdd, loginToAdd, passwordToAdd);
+//        } else {
+//            do{
+//                JOptionPane.showMessageDialog(null, "Les deux mots de passe entrés ne sont pas identiques.\r\n" +
+//                        "Veuillez recommencer votre saisie.");
+//                passwordToAdd = JOptionPane.showInputDialog("Entrez votre nouveau mot de passe.");
+//                passwordToAdd2 = JOptionPane.showInputDialog("Vérifiez votre nouveau mot de passe.");
+//            } while(!passwordToAdd.equals(passwordToAdd2));
+//            connection.editAdminProfile(loginToEdit, surnameToAdd, nameToAdd, loginToAdd, passwordToAdd);
+//        }
+
+        String loginToDelete = JOptionPane.showInputDialog("Quel compte administrateur voulez-vous supprimer? Entrez le Login du compte.");
+        methodsConnexion.removeAdminProfile(loginToDelete);
+
 
 //        arbre.arbreSearch(JOptionPane.showInputDialog("Recherche par nom : "));
 

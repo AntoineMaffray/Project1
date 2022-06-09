@@ -1,5 +1,4 @@
 package fr.eql.ai111.groupe5.projet1;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.apache.logging.log4j.LogManager;
@@ -10,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Arbre {
-
 
 //    CONSTANTES
 long REF1 = 0; // en bytes - emplacement de la référence du nom
