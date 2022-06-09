@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -29,6 +30,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,6 +40,7 @@ public class Search {
     ObservableList<Stagiaire> data = createListStagiaire();
 
     int count = 1;
+    String criterion = "";
 
     public Search(Stage primaryStage) {
 
@@ -109,12 +112,7 @@ public class Search {
 
         //Creation boutons + Actions
         Button btnRechercher = new Button("Rechercher");
-        btnRechercher.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
 
-            }
-        });
 
         HBox hbox = new HBox();
         hbox.setSpacing(10);
@@ -180,6 +178,30 @@ public class Search {
                     vbox.getChildren().add(3, ajoutCritere());
                 }
 
+            }
+        });
+            criteria.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    criterion = (String) criteria.getSelectionModel().getSelectedItem();
+
+                }
+            });
+        btnRechercher.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+              String input = champ.getText();
+              TriSimple triSimple = new TriSimple();
+                try {
+                    ObservableList<Stagiaire> stagiaires = triSimple.searchByCriterion(1, input,
+                            0, "",
+                            0, "",
+                            0, "",
+                            0, "");
+                    table.setItems(stagiaires);
+                } catch (RAFException | IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 

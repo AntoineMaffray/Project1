@@ -33,7 +33,7 @@ import javafx.stage.Stage;
 import java.util.List;
 import java.util.Optional;
 
-public class AnnuaireViewUser extends Application{
+public class AnnuaireView extends Application{
     LesStagiaires lesStagiaires = new LesStagiaires
             ("C:\\Users\\sabri\\Workspace\\PROJET1GROUPE5\\src\\fr\\eql\\ai111\\groupe5\\projet1\\stagiaires.txt");
     ObservableList<Stagiaire> data = createListStagiaire();
