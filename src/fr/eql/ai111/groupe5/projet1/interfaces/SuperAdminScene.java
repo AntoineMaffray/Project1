@@ -313,8 +313,8 @@ public class SuperAdminScene {
 //        return list;
 //    }
 
-    private void createContact(String surname, String name, String login){
-        User userX = new User(surname, name, login);
+    private void createContact(String surname, String name, String login, String password){
+        User userX = new User(surname, name, login, password);
     }
 
 
