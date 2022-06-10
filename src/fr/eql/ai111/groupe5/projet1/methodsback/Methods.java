@@ -29,7 +29,7 @@ public class Methods {
         try {
             reader = new FileReader("C:/FolderProjet/Stagiaires.txt");
         } catch (FileNotFoundException e) {
-            logger.warn("Le fichier à lire n'existe pas.");
+            logger.warn("Le fichier ? lire n'existe pas.");
         }
         BufferedReader bfReader = new BufferedReader(reader);
         List<String> listStringStagiaires = new ArrayList<>();
@@ -101,8 +101,8 @@ public class Methods {
             do {
                 newChar = newAdd.charAt(charIndex);
                 parentChar = parent.charAt(charIndex);
-                if (newChar == 'é' && parentChar == 'é' || newChar == 'è' && parentChar == 'è'
-                        || newChar == 'ï' && parentChar == 'ï') {
+                if (newChar == '?' && parentChar == '?' || newChar == '?' && parentChar == '?'
+                        || newChar == '?' && parentChar == '?') {
                     charIndex++;
                     newChar = newAdd.charAt(charIndex);
                     parentChar = parent.charAt(charIndex);
@@ -125,8 +125,8 @@ public class Methods {
         do {
             newChar = newAdd.charAt(charIndex);
             parentChar = parent.charAt(charIndex);
-            if (newChar == 'é' && parentChar == 'é' || newChar == 'è' && parentChar == 'è'
-                    || newChar == 'ï' && parentChar == 'ï') {
+            if (newChar == '?' && parentChar == '?' || newChar == '?' && parentChar == '?'
+                    || newChar == '?' && parentChar == '?') {
                 charIndex++;
                 newChar = newAdd.charAt(charIndex);
                 parentChar = parent.charAt(charIndex);
@@ -312,8 +312,8 @@ public class Methods {
         do {
             newChar = newAdd.charAt(charIndex);
             parentChar = parent.charAt(charIndex);
-            if (newChar == 'é' && parentChar == 'é' || newChar == 'è' && parentChar == 'è'
-                    || newChar == 'ï' && parentChar == 'ï') {
+            if (newChar == '?' && parentChar == '?' || newChar == '?' && parentChar == '?'
+                    || newChar == '?' && parentChar == '?') {
                 charIndex++;
                 newChar = newAdd.charAt(charIndex);
                 parentChar = parent.charAt(charIndex);
@@ -405,23 +405,23 @@ public class Methods {
                 case '-' : hasher += hasher *569;break;
                 case 'è' : hasher += hasher /167;break;
                 case 'ô' : hasher += hasher *571;break;
-                case 'û' : hasher += hasher /173;break;
-                case 'î' : hasher += hasher *577;break;
-                case 'ê' : hasher += hasher /179;break;
+                case 'î' : hasher += hasher /173;break;
+                case 'ê' : hasher += hasher *577;break;
+                case 'â' : hasher += hasher /179;break;
                 case 'ö' : hasher += hasher *587;break;
-                case 'ë' : hasher += hasher /181;break;
-                case 'ï' : hasher += hasher /191;break;
+                case 'ï' : hasher += hasher /181;break;
+                case 'ë' : hasher += hasher /191;break;
                 case 'ä' : hasher += hasher *491;break;
-                case 'ü' : hasher += hasher *499;break;
+                case 'à' : hasher += hasher *499;break;
                 case '_' : hasher += hasher *503;break;
-                case 'â' : hasher += hasher /193;break;
-                case 'ç' : hasher += hasher *509;break;
-                case 'à' : hasher += hasher *521;break;
+                case 'ù' : hasher += hasher /193;break;
+                case '§' : hasher += hasher *509;break;
+                case '?' : hasher += hasher *521;break;
                 case ')' : hasher += hasher /197;break;
                 case '=' : hasher += hasher *523;break;
                 case '$' : hasher += hasher *541;break;
                 case '*' : hasher += hasher /199;break;
-                case 'ù' : hasher += hasher *547;break;
+                case '%' : hasher += hasher *547;break;
                 case '#' : hasher += hasher /211;break;
                 case '!' : hasher += hasher *557;break;
                 case ':' : hasher += hasher /223;break;
@@ -438,14 +438,14 @@ public class Methods {
                 case ']' : hasher += hasher /251;break;
                 case '}' : hasher += hasher *593;break;
                 case '¤' : hasher += hasher *599;break;
-                case '?' : hasher += hasher /257;break;
+                case 'µ' : hasher += hasher /257;break;
                 case '.' : hasher += hasher *601;break;
                 case '/' : hasher += hasher /263;break;
-                case '§' : hasher += hasher *607;break;
-                case 'µ' : hasher += hasher *613;break;
-                case '£' : hasher += hasher /269;break;
+                case '£' : hasher += hasher *607;break;
+                case '¨' : hasher += hasher *613;break;
+                case '°' : hasher += hasher /269;break;
                 case '+' : hasher += hasher *617;break;
-                case '°' : hasher += hasher /271;break;
+                case '\\' : hasher += hasher /271;break;
                 default : hasher += hasher +10;break;
             }
             hashed = "u_u" + String.valueOf(hasher) + "n_n" ;
@@ -469,7 +469,7 @@ public class Methods {
             PDImageXObject image2 = PDImageXObject.createFromFile("C:/FolderProjet/eqlfil.png", new PDDocument());
             contentStream.drawImage(image, 30, 580);
             PDFont pdfFont = new PDType1Font(Standard14Fonts.FontName.HELVETICA);
-            // taille des caractÃ¨res
+            // taille des caractères
             float fontSize = 12;
             // interligne
             float leading = 1.5f * fontSize;
@@ -487,10 +487,10 @@ public class Methods {
                 text = "";
                 stringBuffer.append(s.getSurname().trim()+s.getName().trim()+ s.getDept().trim()+ s.getPromo().trim()+ s.getYear().trim());
                 text = "Nom: " + s.getSurname().trim()+ "  " +
-                        "PrÃ©nom: " + s.getName().trim()+ "  " +
-                        "DÃ©partement: " + s.getDept().trim()+ "  " +
+                        "Prénom: " + s.getName().trim()+ "  " +
+                        "Département: " + s.getDept().trim()+ "  " +
                         "Promotion: " + s.getPromo().trim()+ "  " +
-                        "AnnÃ©e: " + s.getYear().trim();
+                        "Année: " + s.getYear().trim();
                 compteur = compteur+1;
                 if (compteur > 40) {
                     page = new PDPage();
