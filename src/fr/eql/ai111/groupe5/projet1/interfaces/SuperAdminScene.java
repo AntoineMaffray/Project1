@@ -3,6 +3,8 @@ package fr.eql.ai111.groupe5.projet1.interfaces;
 import fr.eql.ai111.groupe5.projet1.methodsback.Arbre;
 import fr.eql.ai111.groupe5.projet1.methodsback.Methods;
 import fr.eql.ai111.groupe5.projet1.methodsback.Stagiaire;
+import fr.eql.ai111.groupe5.projet1.methodsback.User;
+import fr.eql.ai111.groupe5.projet1.methodsback.User;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -30,9 +32,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Optional;
@@ -53,25 +55,22 @@ public class SuperAdminScene {
         AnchorPane.setRightAnchor(label, 0.0);
         label.setAlignment(Pos.CENTER);
 
-        // Création de MenuBar
+        // Cr?ation de MenuBar
         MenuBar menuBar = new MenuBar();
 
         // Creation des menus
         Menu fichierMenu = new Menu("Fichier");
+        Menu compteMenu = new Menu("Mon Compte");
+        Menu compteAdminMenu = new Menu("Compte admin");
         Menu aideMenu = new Menu("Aide");
 
         // Creation des MenuItems du menu Fichier
-        MenuItem rechercherItem = new MenuItem("Rechercher");
-        rechercherItem.setAccelerator(KeyCombination.keyCombination("Ctrl+F"));
-        rechercherItem.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                new Search(primaryStage);
-            }
-        });
+        MenuItem exportItem = new MenuItem("Export");
+        MenuItem exportPDFItem = new MenuItem("Exporter au format PDF");
+        exportPDFItem.setAccelerator(KeyCombination.keyCombination("Ctrl+E"));
         SeparatorMenuItem separator= new SeparatorMenuItem();
         MenuItem quitterItem = new MenuItem("Quitter");
-        // Spécifier un raccourci clavier au menuItem Quitter.
+        // Sp?cifier un raccourci clavier au menuItem Quitter.
         quitterItem.setAccelerator(KeyCombination.keyCombination("Ctrl+Q"));
         // Gestion du click sur le menuItem Quitter.
         quitterItem.setOnAction(new EventHandler<ActionEvent>() {
@@ -81,35 +80,75 @@ public class SuperAdminScene {
             }
         });
 
+        // CrÃ©ation du MenuItem du menu Mon compte
+        MenuItem modifierItem = new MenuItem("Modifier mes identifiants");
+
+        // CrÃ©ation du MenuItem du menu Compte Admin
+        MenuItem gestionAdminMenu = new MenuItem("Gestion de l'administrateur");
+
         // Creation des MenuItems du menu Aide
         MenuItem documentationItem = new MenuItem("Documentation");
 
         // Ajouter les menuItems aux Menus
-        fichierMenu.getItems().addAll(rechercherItem, separator, quitterItem);
+        fichierMenu.getItems().addAll(exportPDFItem, separator, quitterItem);
+        compteMenu.getItems().add(modifierItem);
+        compteAdminMenu.getItems().add(gestionAdminMenu);
         aideMenu.getItems().addAll(documentationItem);
 
-        // Ajouter les menus ? la barre de menus
-        menuBar.getMenus().addAll(fichierMenu, aideMenu);
+        // Ajouter les menus Ã  la barre de menus
+        menuBar.getMenus().addAll(fichierMenu, compteMenu, compteAdminMenu, aideMenu);
 
         BorderPane bp = new BorderPane();
         bp.setTop(menuBar);
 
+        exportPDFItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                final Stage dialog = new Stage();
+                dialog.initModality(Modality.APPLICATION_MODAL);
+                dialog.initOwner(primaryStage);
+                VBox dialogVbox = new VBox();
+                HBox hBox = new HBox();
+                dialogVbox.getChildren().add(new Text("Veuillez entrer un nom de fichier"));
+                TextField tf = new TextField();
+                hBox.getChildren().add(tf);
+                Button btn = new Button("Valider");
+                hBox.getChildren().add(btn);
+                dialogVbox.getChildren().add(hBox);
+                btn.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        String namePDF = null;
+                        namePDF = tf.getText();
+                        try {
+                            methods.ExportPDF(data, namePDF);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
+                Scene dialogScene = new Scene(dialogVbox, 300, 200);
+                dialog.setScene(dialogScene);
+                dialog.show();
+            }
+        });
 
-        //Création de la table
+
+        //Cr?ation de la table
         TableView<Stagiaire> table = new TableView<Stagiaire>();
         table.setEditable(true);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        //Création des cinq colonnes
+        //Cr?ation des cinq colonnes
         TableColumn<Stagiaire, String> surnameCol =
                 new TableColumn<Stagiaire, String>("Nom");
         surnameCol.setMinWidth(250);
-        //Spécifier comment remplir la donnée pour chaque cellule de cette colonne
+        //Sp?cifier comment remplir la donn?e pour chaque cellule de cette colonne
         //Ceci se fait en specifiant un "cell value factory" pour cette colonne.
         surnameCol.setCellValueFactory(
                 new PropertyValueFactory<Stagiaire, String>("surname"));
 
-        TableColumn<Stagiaire, String> nameCol = new TableColumn<Stagiaire, String>("Prénom");
+        TableColumn<Stagiaire, String> nameCol = new TableColumn<Stagiaire, String>("Pr?nom");
         nameCol.setMinWidth(250);
         //specifier un "cell factory" pour cette colonne.
         nameCol.setCellValueFactory(
@@ -178,17 +217,25 @@ public class SuperAdminScene {
             }
         });
 
+        modifierItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+            }
+        });
+
+
         //Creation champs de rajout
         TextField surname = new TextField();
         surname.setPromptText("Nom");
         TextField name = new TextField();
-        name.setPromptText("Prénom");
+        name.setPromptText("PrÃ©nom");
         TextField dept = new TextField();
-        dept.setPromptText("Département");
+        dept.setPromptText("DÃ©partement");
         TextField promo = new TextField();
         promo.setPromptText("Promotion");
         TextField year = new TextField();
-        year.setPromptText("Année");
+        year.setPromptText("AnnÃ©e");
 
         //Creation boutons + Actions
         Button btnAjouter = new Button("Ajouter");
@@ -219,16 +266,34 @@ public class SuperAdminScene {
             }
         });
 
+        Button btnSupprimer = new Button("Supprimer");
+        btnSupprimer.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+            }
+        });
+
+        Button btnRetourAccueil = new Button("Retour Accueil");
+        btnRetourAccueil.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                new AccueilScene(primaryStage);
+            }
+        });
+
         HBox hbox = new HBox();
         hbox.setSpacing(10);
-        hbox.getChildren().addAll(surname, name, dept, promo, year, btnAjouter);
+        hbox.getChildren().addAll(surname, name, dept, promo, year, btnAjouter, btnSupprimer);
+
+        HBox hbox1 = new HBox();
+        hbox1.getChildren().addAll(btnRetourAccueil);
 
         //On place le label et la table dans une VBox
         VBox vbox = new VBox();
         vbox.setSpacing(5);
         vbox.setPadding(new Insets(0, 0, 20, 0));
-        vbox.getChildren().addAll(menuBar, label, table, hbox);
-
+        vbox.getChildren().addAll(menuBar, label, table, hbox, hbox1);
 
         Scene supAdmin = new Scene(vbox);
         supAdmin.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
@@ -248,10 +313,8 @@ public class SuperAdminScene {
 //        return list;
 //    }
 
-    private void createContact(String surname, String name, String dept, String promo, String year,
-                               ObservableList<Stagiaire> data){
-        Stagiaire stagiaireX = new Stagiaire(surname, name, dept, promo, year);
-        data.add(stagiaireX);
+    private void createContact(String surname, String name, String login){
+        User userX = new User(surname, name, login);
     }
 
 
@@ -262,7 +325,7 @@ public class SuperAdminScene {
 
         // Texte sans en-t?te
         alert.setHeaderText(null);
-        alert.setContentText("Votre stagiaire a bien été enregistré!");
+        alert.setContentText("Votre stagiaire a bien ?t? enregistr?!");
         alert.showAndWait();
     }
 
@@ -343,7 +406,7 @@ public class SuperAdminScene {
                     }
                     stage.close();
                 } else {
-                    System.out.println("Le stagiaire n'a pas été modifié.");
+                    System.out.println("Le stagiaire n'a pas ?t? modifi?.");
                 }
             }
         });

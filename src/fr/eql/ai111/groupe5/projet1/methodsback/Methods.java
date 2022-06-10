@@ -1,5 +1,6 @@
 package fr.eql.ai111.groupe5.projet1.methodsback;
 
+import javafx.collections.ObservableList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -10,6 +11,15 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.File;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
 public class Methods {
 
@@ -20,7 +30,7 @@ public class Methods {
         try {
             reader = new FileReader("C:/FolderProjet/Stagiaires.txt");
         } catch (FileNotFoundException e) {
-            logger.warn("Le fichier à lire n'existe pas.");
+            logger.warn("Le fichier ? lire n'existe pas.");
         }
         BufferedReader bfReader = new BufferedReader(reader);
         List<String> listStringStagiaires = new ArrayList<>();
@@ -92,8 +102,8 @@ public class Methods {
             do {
                 newChar = newAdd.charAt(charIndex);
                 parentChar = parent.charAt(charIndex);
-                if (newChar == 'é' && parentChar == 'é' || newChar == 'è' && parentChar == 'è'
-                        || newChar == 'ï' && parentChar == 'ï') {
+                if (newChar == '?' && parentChar == '?' || newChar == '?' && parentChar == '?'
+                        || newChar == '?' && parentChar == '?') {
                     charIndex++;
                     newChar = newAdd.charAt(charIndex);
                     parentChar = parent.charAt(charIndex);
@@ -116,8 +126,8 @@ public class Methods {
         do {
             newChar = newAdd.charAt(charIndex);
             parentChar = parent.charAt(charIndex);
-            if (newChar == 'é' && parentChar == 'é' || newChar == 'è' && parentChar == 'è'
-                    || newChar == 'ï' && parentChar == 'ï') {
+            if (newChar == '?' && parentChar == '?' || newChar == '?' && parentChar == '?'
+                    || newChar == '?' && parentChar == '?') {
                 charIndex++;
                 newChar = newAdd.charAt(charIndex);
                 parentChar = parent.charAt(charIndex);
@@ -303,8 +313,8 @@ public class Methods {
         do {
             newChar = newAdd.charAt(charIndex);
             parentChar = parent.charAt(charIndex);
-            if (newChar == 'é' && parentChar == 'é' || newChar == 'è' && parentChar == 'è'
-                    || newChar == 'ï' && parentChar == 'ï') {
+            if (newChar == '?' && parentChar == '?' || newChar == '?' && parentChar == '?'
+                    || newChar == '?' && parentChar == '?') {
                 charIndex++;
                 newChar = newAdd.charAt(charIndex);
                 parentChar = parent.charAt(charIndex);
@@ -322,8 +332,8 @@ public class Methods {
 
     public String hashage (String mdp) {
         String hashed = "";
-
         long hasher = 99991;
+        mdp += mdp + "KeY";
         for (int i = 0; i < mdp.length(); i++) {
             switch (mdp.charAt(i)) {
                 case 'a' : hasher += hasher *307;break;
@@ -396,23 +406,23 @@ public class Methods {
                 case '-' : hasher += hasher *569;break;
                 case 'è' : hasher += hasher /167;break;
                 case 'ô' : hasher += hasher *571;break;
-                case 'û' : hasher += hasher /173;break;
-                case 'î' : hasher += hasher *577;break;
-                case 'ê' : hasher += hasher /179;break;
+                case 'î' : hasher += hasher /173;break;
+                case 'ê' : hasher += hasher *577;break;
+                case 'â' : hasher += hasher /179;break;
                 case 'ö' : hasher += hasher *587;break;
-                case 'ë' : hasher += hasher /181;break;
-                case 'ï' : hasher += hasher /191;break;
+                case 'ï' : hasher += hasher /181;break;
+                case 'ë' : hasher += hasher /191;break;
                 case 'ä' : hasher += hasher *491;break;
-                case 'ü' : hasher += hasher *499;break;
+                case 'à' : hasher += hasher *499;break;
                 case '_' : hasher += hasher *503;break;
-                case 'â' : hasher += hasher /193;break;
-                case 'ç' : hasher += hasher *509;break;
-                case 'à' : hasher += hasher *521;break;
+                case 'ù' : hasher += hasher /193;break;
+                case '§' : hasher += hasher *509;break;
+                case '?' : hasher += hasher *521;break;
                 case ')' : hasher += hasher /197;break;
                 case '=' : hasher += hasher *523;break;
                 case '$' : hasher += hasher *541;break;
                 case '*' : hasher += hasher /199;break;
-                case 'ù' : hasher += hasher *547;break;
+                case '%' : hasher += hasher *547;break;
                 case '#' : hasher += hasher /211;break;
                 case '!' : hasher += hasher *557;break;
                 case ':' : hasher += hasher /223;break;
@@ -429,14 +439,14 @@ public class Methods {
                 case ']' : hasher += hasher /251;break;
                 case '}' : hasher += hasher *593;break;
                 case '¤' : hasher += hasher *599;break;
-                case '?' : hasher += hasher /257;break;
+                case 'µ' : hasher += hasher /257;break;
                 case '.' : hasher += hasher *601;break;
                 case '/' : hasher += hasher /263;break;
-                case '§' : hasher += hasher *607;break;
-                case 'µ' : hasher += hasher *613;break;
-                case '£' : hasher += hasher /269;break;
+                case '£' : hasher += hasher *607;break;
+                case '¨' : hasher += hasher *613;break;
+                case '°' : hasher += hasher /269;break;
                 case '+' : hasher += hasher *617;break;
-                case '°' : hasher += hasher /271;break;
+                case '\\' : hasher += hasher /271;break;
                 default : hasher += hasher +10;break;
             }
             hashed = "u_u" + String.valueOf(hasher) + "n_n" ;
@@ -444,4 +454,73 @@ public class Methods {
         return hashed;
     }
 
+    public void ExportPDF (ObservableList<Stagiaire> stagiaires, String fileName) throws IOException {
+
+        Arbre arbre = new Arbre();
+        int compteur = 10;
+        PDDocument doc = null;
+        try
+        {
+            doc = new PDDocument();
+            PDPage page = new PDPage();
+            doc.addPage(page);
+            PDPageContentStream contentStream = new PDPageContentStream(doc, page);
+            PDImageXObject image = PDImageXObject.createFromFile("C:\\Users\\Formation\\Documents\\Projects\\PROJET1GROUPE5\\src\\fr\\eql\\ai111\\groupe5\\projet1\\interfaces\\images\\eql.png", new PDDocument());
+            PDImageXObject image2 = PDImageXObject.createFromFile("C:\\Users\\Formation\\Documents\\Projects\\PROJET1GROUPE5\\src\\fr\\eql\\ai111\\groupe5\\projet1\\interfaces\\images\\eqlfil.png", new PDDocument());
+            contentStream.drawImage(image, 30, 580);
+            PDFont pdfFont = new PDType1Font(Standard14Fonts.FontName.HELVETICA);
+            // taille des caractères
+            float fontSize = 12;
+            // interligne
+            float leading = 1.5f * fontSize;
+            PDRectangle mediabox = page.getMediaBox();
+            // marge gauche
+            float margin = 20;
+            String text = "";
+            StringBuffer stringBuffer = new StringBuffer();
+            contentStream.beginText();
+            contentStream.setFont(pdfFont, fontSize);
+            contentStream.newLineAtOffset(30, 550);
+            System.out.println(stagiaires.size());
+            for (Stagiaire s : stagiaires) {
+                int nspace1 = 20 - (s.getSurname().trim().length());
+                String space1 = "";
+                text = "";
+                stringBuffer.append(s.getSurname().trim()+s.getName().trim()+ s.getDept().trim()+ s.getPromo().trim()+ s.getYear().trim());
+                text = "Nom: " + s.getSurname().trim()+ "  " +
+                        "Prénom: " + s.getName().trim()+ "  " +
+                        "Département: " + s.getDept().trim()+ "  " +
+                        "Promotion: " + s.getPromo().trim()+ "  " +
+                        "Année: " + s.getYear().trim();
+                compteur = compteur+1;
+                if (compteur > 40) {
+                    page = new PDPage();
+                    doc.addPage(page);
+                    contentStream.endText();
+                    contentStream.close();
+                    contentStream = new PDPageContentStream(doc, page);
+                    contentStream.drawImage(image2, 150, 150);
+                    contentStream.beginText();
+                    contentStream.setFont(pdfFont, fontSize);
+                    contentStream.newLineAtOffset(20, 750);
+                    compteur = 0;
+                }
+                contentStream.showText(text);
+                contentStream.newLineAtOffset(0, -leading);
+            }
+            contentStream.endText();
+            contentStream.close();
+            File file = new File("C:/theEQLBook/"+fileName+".pdf");
+            if (!file.exists()) {
+                doc.save(file);
+            }
+        }
+        finally
+        {
+            if (doc != null)
+            {
+                doc.close();
+            }
+        }
+    }
 }

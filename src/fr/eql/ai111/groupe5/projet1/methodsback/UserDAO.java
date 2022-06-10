@@ -66,12 +66,13 @@ public class UserDAO {
             String nameInFile = br.readLine();
             String loginInFile = br.readLine();
             String passwordInFile = br.readLine();
+            passwordInFile = methods.hashage(passwordInFile);
             String roleInFile = br.readLine();
             user = new User(surnameInFile, nameInFile, loginInFile, passwordInFile, roleInFile);
             br.close();
             fr.close();
         } catch (IOException e) {
-            logger.warn("Un problème s'est produit lors de la lecture du fichier utilisateur.");
+            logger.warn("Un problme s'est produit lors de la lecture du fichier utilisateur.");
         }
         // Si le password est correct, on retourne l'instance du reader.
         if (user.getPassword().equals(password)) {

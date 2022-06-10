@@ -17,7 +17,7 @@ import java.util.StringTokenizer;
  *
  * @author admtmp
  */
-//Cette classe récupère un fichier texte dans un vecteur
+//Cette classe rï¿½cupï¿½re un fichier texte dans un vecteur
 public class LesStagiaires {
     private BufferedReader bfr;
 
@@ -28,13 +28,13 @@ public class LesStagiaires {
 
     public LesStagiaires(String nomFichier) {
         try {
-            //Création d'un flux pour le fichier texte
-            //le nom du fichier est passé en argument
+            //Crï¿½ation d'un flux pour le fichier texte
+            //le nom du fichier est passï¿½ en argument
             FileReader in = new FileReader
                     ("C:\\Users\\sabri\\Workspace\\PROJET1GROUPE5\\src\\fr\\eql\\ai111\\groupe5\\projet1\\stagiaires.txt");
             bfr = new BufferedReader(in);
         } catch (IOException e) {
-            System.out.println("Pb entrée sortie :" + e.getMessage());
+            System.out.println("Pb entrï¿½e sortie :" + e.getMessage());
         }
     }
 
@@ -68,7 +68,7 @@ public class LesStagiaires {
             do {
                 chaine = bfr.readLine();
                 if (chaine != null) { //chaine non vide
-                    //si chaine = * alors je recrée une nouvelle chaine
+                    //si chaine = * alors je recrï¿½e une nouvelle chaine
                     //sinon
                     if(chaine.equals("*")){
                         stg = fabriqueStagiaire(stagiaireInfo);
@@ -81,12 +81,12 @@ public class LesStagiaires {
                 }
             } while (chaine != null);
         } catch (IOException e) {
-            System.out.println("Problème de lecture : " + e.getMessage());
+            System.out.println("Problï¿½me de lecture : " + e.getMessage());
         }
         return stagiaires;
     }
 
-    //Transforme le fichier en une chaine de caractères formée de plusieurs lignes
+    //Transforme le fichier en une chaine de caractï¿½res formï¿½e de plusieurs lignes
     public String fabriqueChaine() {
         StringBuffer chainebf = new StringBuffer();
         String chaine;
@@ -98,7 +98,7 @@ public class LesStagiaires {
                 }
             } while (chaine != null);
         } catch (IOException e) {
-            System.out.println("Problème de lecture : " + e.getMessage());
+            System.out.println("Problï¿½me de lecture : " + e.getMessage());
 
         }
         return chainebf.toString();
