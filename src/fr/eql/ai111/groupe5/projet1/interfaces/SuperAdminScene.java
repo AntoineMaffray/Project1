@@ -239,8 +239,6 @@ public class SuperAdminScene {
 
     }
 
-
-
 //    private ObservableList<Stagiaire> createListStagiaire(){
 //        ObservableList<Stagiaire> list = FXCollections.observableArrayList();
 //        List<Stagiaire> listM = lesStagiaires.fabriqueList();
