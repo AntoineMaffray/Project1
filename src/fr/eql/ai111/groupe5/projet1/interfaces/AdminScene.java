@@ -1,5 +1,6 @@
-package fr.eql.ai111.groupe5.projet1;
+package fr.eql.ai111.groupe5.projet1.interfaces;
 
+import fr.eql.ai111.groupe5.projet1.methodsback.Stagiaire;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -35,7 +36,7 @@ public class AdminScene {
             AnchorPane.setRightAnchor(label, 0.0);
             label.setAlignment(Pos.TOP_CENTER);
 
-            // Création de MenuBar
+            // Crï¿½ation de MenuBar
             MenuBar menuBar = new MenuBar();
 
             // Creation des menus
@@ -53,7 +54,7 @@ public class AdminScene {
             });
             SeparatorMenuItem separator= new SeparatorMenuItem();
             MenuItem quitterItem = new MenuItem("Quitter");
-            // Spécifier un raccourci clavier au menuItem Quitter.
+            // Spï¿½cifier un raccourci clavier au menuItem Quitter.
             quitterItem.setAccelerator(KeyCombination.keyCombination("Ctrl+Q"));
             // Gestion du click sur le menuItem Quitter.
             quitterItem.setOnAction(new EventHandler<ActionEvent>() {
@@ -70,27 +71,27 @@ public class AdminScene {
             fichierMenu.getItems().addAll(rechercherItem, separator, quitterItem);
             aideMenu.getItems().addAll(documentationItem);
 
-            // Ajouter les menus à la barre de menus
+            // Ajouter les menus ï¿½ la barre de menus
             menuBar.getMenus().addAll(fichierMenu, aideMenu);
 
             BorderPane bp = new BorderPane();
             bp.setTop(menuBar);
 
-            //Création de la table
+            //Crï¿½ation de la table
             TableView<Stagiaire> table = new TableView<Stagiaire>();
             table.setEditable(true);
             table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-            //Création des cinq colonnes
+            //Crï¿½ation des cinq colonnes
             TableColumn<Stagiaire, String> surnameCol =
                     new TableColumn<Stagiaire, String>("Nom");
             surnameCol.setMinWidth(250);
-            //Spécifier comment remplir la donnée pour chaque cellule de cette colonne
+            //Spï¿½cifier comment remplir la donnï¿½e pour chaque cellule de cette colonne
             //Ceci se fait en specifiant un "cell value factory" pour cette colonne.
             surnameCol.setCellValueFactory(
                     new PropertyValueFactory<Stagiaire, String>("surname"));
 
-            TableColumn<Stagiaire, String> nameCol = new TableColumn<Stagiaire, String>("Prénom");
+            TableColumn<Stagiaire, String> nameCol = new TableColumn<Stagiaire, String>("Prï¿½nom");
             nameCol.setMinWidth(250);
             //specifier un "cell factory" pour cette colonne.
             nameCol.setCellValueFactory(
@@ -109,14 +110,14 @@ public class AdminScene {
             promoCol.setCellValueFactory(
                     new PropertyValueFactory<Stagiaire, String>("promo"));
 
-            TableColumn<Stagiaire, Integer> yearCol = new TableColumn<Stagiaire, Integer>("Année");
+            TableColumn<Stagiaire, Integer> yearCol = new TableColumn<Stagiaire, Integer>("Annï¿½e");
             yearCol.setMinWidth(200);
             //specifier un "cell factory" pour cette colonne.
             yearCol.setCellValueFactory(
                     new PropertyValueFactory<Stagiaire, Integer>("year"));
 
 
-            //On ajoute les trois colonnes à la table
+            //On ajoute les trois colonnes ï¿½ la table
             table.getColumns().addAll(surnameCol, nameCol, deptCol, promoCol, yearCol);
 
             //On remplit la table avec la liste observable
@@ -126,13 +127,13 @@ public class AdminScene {
             TextField surname = new TextField();
             surname.setPromptText("Nom");
             TextField name = new TextField();
-            name.setPromptText("Prénom");
+            name.setPromptText("Prï¿½nom");
             TextField dept = new TextField();
-            dept.setPromptText("Département");
+            dept.setPromptText("Dï¿½partement");
             TextField promo = new TextField();
             promo.setPromptText("Promotion");
             TextField year = new TextField();
-            year.setPromptText("Année");
+            year.setPromptText("Annï¿½e");
 
             //Creation boutons + Actions
             Button btnAjouter = new Button("Ajouter");
