@@ -4,6 +4,7 @@ import fr.eql.ai111.groupe5.projet1.methodsback.Arbre;
 import fr.eql.ai111.groupe5.projet1.methodsback.Methods;
 import fr.eql.ai111.groupe5.projet1.methodsback.Stagiaire;
 import fr.eql.ai111.groupe5.projet1.methodsback.User;
+import fr.eql.ai111.groupe5.projet1.methodsback.User;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -32,6 +33,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Optional;
@@ -63,6 +66,8 @@ public class SuperAdminScene {
 
         // Creation des MenuItems du menu Fichier
         MenuItem exportItem = new MenuItem("Export");
+        MenuItem exportPDFItem = new MenuItem("Exporter au format PDF");
+        exportPDFItem.setAccelerator(KeyCombination.keyCombination("Ctrl+E"));
         SeparatorMenuItem separator= new SeparatorMenuItem();
         MenuItem quitterItem = new MenuItem("Quitter");
         // Sp?cifier un raccourci clavier au menuItem Quitter.
@@ -75,26 +80,58 @@ public class SuperAdminScene {
             }
         });
 
-        // Création du MenuItem du menu Mon compte
+        // CrÃ©ation du MenuItem du menu Mon compte
         MenuItem modifierItem = new MenuItem("Modifier mes identifiants");
 
-        // Création du MenuItem du menu Compte Admin
+        // CrÃ©ation du MenuItem du menu Compte Admin
         MenuItem gestionAdminMenu = new MenuItem("Gestion de l'administrateur");
 
         // Creation des MenuItems du menu Aide
         MenuItem documentationItem = new MenuItem("Documentation");
 
         // Ajouter les menuItems aux Menus
-        fichierMenu.getItems().addAll(exportItem, separator, quitterItem);
+        fichierMenu.getItems().addAll(exportPDFItem, separator, quitterItem);
         compteMenu.getItems().add(modifierItem);
         compteAdminMenu.getItems().add(gestionAdminMenu);
         aideMenu.getItems().addAll(documentationItem);
 
-        // Ajouter les menus à la barre de menus
+        // Ajouter les menus Ã  la barre de menus
         menuBar.getMenus().addAll(fichierMenu, compteMenu, compteAdminMenu, aideMenu);
 
         BorderPane bp = new BorderPane();
         bp.setTop(menuBar);
+
+        exportPDFItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                final Stage dialog = new Stage();
+                dialog.initModality(Modality.APPLICATION_MODAL);
+                dialog.initOwner(primaryStage);
+                VBox dialogVbox = new VBox();
+                HBox hBox = new HBox();
+                dialogVbox.getChildren().add(new Text("Veuillez entrer un nom de fichier"));
+                TextField tf = new TextField();
+                hBox.getChildren().add(tf);
+                Button btn = new Button("Valider");
+                hBox.getChildren().add(btn);
+                dialogVbox.getChildren().add(hBox);
+                btn.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        String namePDF = null;
+                        namePDF = tf.getText();
+                        try {
+                            methods.ExportPDF(data, namePDF);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
+                Scene dialogScene = new Scene(dialogVbox, 300, 200);
+                dialog.setScene(dialogScene);
+                dialog.show();
+            }
+        });
 
 
         //Cr?ation de la table
@@ -180,17 +217,25 @@ public class SuperAdminScene {
             }
         });
 
+        modifierItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+            }
+        });
+
+
         //Creation champs de rajout
         TextField surname = new TextField();
         surname.setPromptText("Nom");
         TextField name = new TextField();
-        name.setPromptText("Prénom");
+        name.setPromptText("PrÃ©nom");
         TextField dept = new TextField();
-        dept.setPromptText("Département");
+        dept.setPromptText("DÃ©partement");
         TextField promo = new TextField();
         promo.setPromptText("Promotion");
         TextField year = new TextField();
-        year.setPromptText("Année");
+        year.setPromptText("AnnÃ©e");
 
         //Creation boutons + Actions
         Button btnAjouter = new Button("Ajouter");

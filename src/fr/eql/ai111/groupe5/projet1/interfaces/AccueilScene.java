@@ -340,5 +340,9 @@ public class AccueilScene {
         alert.showAndWait();
     }
 
+    public String loginMemory (User user) {
+        return user.getLogin();
+    }
+
 }
 

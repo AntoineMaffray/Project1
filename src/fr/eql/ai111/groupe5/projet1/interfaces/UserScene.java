@@ -29,6 +29,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -68,11 +70,47 @@ public class UserScene {
             }
         });
 
+        MenuItem exportPDFItem = new MenuItem("Exporter au format PDF");
+        exportPDFItem.setAccelerator(KeyCombination.keyCombination("Ctrl+E"));
+        exportPDFItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                final Stage dialog = new Stage();
+                dialog.initModality(Modality.APPLICATION_MODAL);
+                dialog.initOwner(primaryStage);
+                VBox dialogVbox = new VBox();
+                HBox hBox = new HBox();
+                dialogVbox.getChildren().add(new Text("Veuillez entrer un nom de fichier"));
+                TextField tf = new TextField();
+                hBox.getChildren().add(tf);
+                Button btn = new Button("Valider");
+                hBox.getChildren().add(btn);
+                dialogVbox.getChildren().add(hBox);
+                btn.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        String namePDF = null;
+                        namePDF = tf.getText();
+                        tf.clear();
+                        try {
+                            methods.ExportPDF(data, namePDF);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                        dialog.close();
+                    }
+                });
+                Scene dialogScene = new Scene(dialogVbox, 300, 200);
+                dialog.setScene(dialogScene);
+                dialog.show();
+            }
+        });
+
         // Creation des MenuItems du menu Aide
         MenuItem documentationItem = new MenuItem("Documentation");
 
         // Ajouter les menuItems aux Menus
-        fichierMenu.getItems().addAll(exportItem, separator, quitterItem);
+        fichierMenu.getItems().addAll(exportPDFItem, separator, quitterItem);
         aideMenu.getItems().addAll(documentationItem);
 
         // Ajouter les menus à la barre de menus
