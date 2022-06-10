@@ -22,7 +22,7 @@ public class UserDAO {
             String password,
             String role) {
         File folder = new File(IDENTIFIANTS);
-        // Si le dossier n'existe pas, je le cr�e.
+        // Si le dossier n'existe pas, je le crée.
         if (!folder.exists()) {
             folder.mkdir();
         }
@@ -30,7 +30,7 @@ public class UserDAO {
         // Je d�clare le fichier utilisateur
         File userFile = new File(folder + "/" + login + ".txt");
         try {
-            // Je tente de cr�er le fichier sur le disque, s'il n'existe pas d�j�.
+            // Je tente de créer le fichier sur le disque, s'il n'existe pas déjà.
             isCreated = userFile.createNewFile();
             if (isCreated) {
                 FileWriter fw = new FileWriter(userFile, false);
@@ -48,7 +48,7 @@ public class UserDAO {
                 fw.close();
             }
         } catch (IOException e) {
-            logger.warn("Le fichier utilisateur n'a pas �t� cr��.");
+            logger.warn("Le fichier utilisateur n'a pas été créé.");
         }
         return isCreated;
     }
@@ -71,7 +71,7 @@ public class UserDAO {
             br.close();
             fr.close();
         } catch (IOException e) {
-            logger.warn("Un probl�me s'est produit lors de la lecture du fichier utilisateur.");
+            logger.warn("Un problème s'est produit lors de la lecture du fichier utilisateur.");
         }
         // Si le password est correct, on retourne l'instance du reader.
         if (user.getPassword().equals(password)) {

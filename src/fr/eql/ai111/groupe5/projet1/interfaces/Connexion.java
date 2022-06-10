@@ -102,7 +102,7 @@ public class Connexion extends Application {
     }
 
     private void connexion(Stage primaryStage) {
-        //cr�er une grille (GridPane Layout)
+        //créer une grille (GridPane Layout)
         GridPane grille = new GridPane();
         grille.setAlignment(Pos.CENTER);
         grille.setHgap(10);

@@ -17,23 +17,31 @@ public class User {
             this.role = role;
         }
 
+        // constructeur pour l'affichage du login
+    public User(String surname, String name, String login, String role) {
+        this.surname = surname;
+        this.name = name;
+        this.login = login;
+        this.role = role;
+    }
+
     public User(String login, String password) {
         this.login = login;
         this.password = password;
     }
 
-        public String getSurname() {
-            return surname;
-        }
+    public String getSurname() {
+        return surname;
+    }
 
-        public String getName() {
-            return name;
-        }
+    public String getName() {
+        return name;
+    }
 
-        public String getLogin() { return login; }
+    public String getLogin() { return login; }
 
-        public String getPassword() { return password; }
+    public String getPassword() { return password; }
 
-        public String getRole() { return role; }
+    public String getRole() { return role; }
 }
 

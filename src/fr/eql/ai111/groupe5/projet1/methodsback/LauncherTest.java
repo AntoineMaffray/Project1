@@ -15,6 +15,7 @@ public class LauncherTest {
         MethodsConnexion methodsConnexion = new MethodsConnexion();
 
         execute.executeAtStart();
+        methodsConnexion.createUserList();
 
 //        String loginToEdit = JOptionPane.showInputDialog("Quel compte voulez-vous modifier?");
 //        FileReader fr = new FileReader("C://BillyBook/AdminInfo/"+loginToEdit+".txt");

@@ -40,7 +40,6 @@ import java.util.Optional;
 
 public class Search {
     Arbre arbre = new Arbre();
-    Methods methods = new Methods();
     TriSimple triSimple = new TriSimple();
     ObservableList<Stagiaire> data;
 
@@ -53,7 +52,6 @@ public class Search {
     }
 
     int count = 1;
-    String criterion = "";
 
     public Search(Stage primaryStage) {
 
@@ -164,6 +162,7 @@ public class Search {
         //Création des champs de recherches, de leur apparition/disparition
         HBox hbox = new HBox();
         hbox.setSpacing(10);
+
         ObservableList<String> values = FXCollections.observableArrayList("Nom", "Prénom", "Département", "Formation", "Année");
         TextField criterionField1 = new TextField();
         criterionField1.setPrefWidth(120);
@@ -229,7 +228,7 @@ public class Search {
                 switch (count){
                     case 1:
                         hbox.getChildren().clear();
-                        hbox.getChildren().addAll(combo1, criterionField1, buttonPlus, buttonLess);
+                        hbox.getChildren().addAll(combo1, criterionField1, buttonPlus);
                         combo2.setValue(null);
                         criterionField2.clear();
                         break;
@@ -323,13 +322,13 @@ public class Search {
                 table.setItems(data);
             }});
 
-            Scene scene = new Scene(vbox);
-            scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
-            primaryStage.setTitle("Annuaire");
-            primaryStage.setWidth(1250);
-            primaryStage.setHeight(800);
-            primaryStage.setScene(scene);
-            primaryStage.show();
+        Scene scene = new Scene(vbox);
+        scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+        primaryStage.setTitle("Annuaire");
+        primaryStage.setWidth(1250);
+        primaryStage.setHeight(800);
+        primaryStage.setScene(scene);
+        primaryStage.show();
         }
 
         private void createContact(String surname, String name, String dept, String promo, String year,

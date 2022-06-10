@@ -15,16 +15,16 @@ public class Execute {
         Methods methods = new Methods();
 
 //        Création du répertoire theEqlBook + Dossier AdminInfo
-        File eqlBook = new File("C:/theEqlbook/AdminInfo");
+        File eqlBook = new File("C:/theEqlbook/AdminInfo/SuperAdmin");
         if (!eqlBook.exists()){
             eqlBook.mkdirs();
         }
 
 //        Création du fichier d'identifiant SuperAdmin
-        File eqlBookAdmin = new File("C:/theEQLBook/AdminInfo/SuperAdmin.txt");
+        File eqlBookAdmin = new File("C:/theEQLBook/AdminInfo/SuperAdmin/SuperAdmin.txt");
         if(!eqlBookAdmin.exists()){
             eqlBookAdmin.createNewFile();
-            FileWriter fw = new FileWriter("C:/theEQLBook/AdminInfo/SuperAdmin.txt", false);
+            FileWriter fw = new FileWriter("C:/theEQLBook/AdminInfo/SuperAdmin/SuperAdmin.txt", false);
             BufferedWriter bw  = new BufferedWriter(fw);
             bw.write("1234");
             bw.newLine();
