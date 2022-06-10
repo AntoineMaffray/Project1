@@ -14,6 +14,7 @@ public class UserDAO {
 
     private static final Logger logger = LogManager.getLogger();
     private static final String IDENTIFIANTS = "Identifiants";
+    Methods methods = new Methods();
 
     public boolean createAccount(
             String surname,
@@ -66,6 +67,7 @@ public class UserDAO {
             String nameInFile = br.readLine();
             String loginInFile = br.readLine();
             String passwordInFile = br.readLine();
+            passwordInFile = methods.hashage(passwordInFile);
             String roleInFile = br.readLine();
             user = new User(surnameInFile, nameInFile, loginInFile, passwordInFile, roleInFile);
             br.close();
@@ -80,4 +82,5 @@ public class UserDAO {
             return null;
         }
     }
+
 }

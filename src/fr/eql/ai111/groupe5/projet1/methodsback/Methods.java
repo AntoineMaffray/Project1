@@ -1,5 +1,6 @@
 package fr.eql.ai111.groupe5.projet1.methodsback;
 
+import javafx.collections.ObservableList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -453,10 +454,9 @@ public class Methods {
         return hashed;
     }
 
-    public void TextExportPdfbox (List<Stagiaire> stagiaires, String fileName) throws IOException {
+    public void ExportPDF (ObservableList<Stagiaire> stagiaires, String fileName) throws IOException {
 
         Arbre arbre = new Arbre();
-        stagiaires = arbre.arbreParcours();
         int compteur = 10;
         PDDocument doc = null;
         try
@@ -465,8 +465,8 @@ public class Methods {
             PDPage page = new PDPage();
             doc.addPage(page);
             PDPageContentStream contentStream = new PDPageContentStream(doc, page);
-            PDImageXObject image = PDImageXObject.createFromFile("C:/FolderProjet/eql.png", new PDDocument());
-            PDImageXObject image2 = PDImageXObject.createFromFile("C:/FolderProjet/eqlfil.png", new PDDocument());
+            PDImageXObject image = PDImageXObject.createFromFile("C:\\Users\\Formation\\Documents\\Projects\\PROJET1GROUPE5\\src\\fr\\eql\\ai111\\groupe5\\projet1\\interfaces\\images\\eql.png", new PDDocument());
+            PDImageXObject image2 = PDImageXObject.createFromFile("C:\\Users\\Formation\\Documents\\Projects\\PROJET1GROUPE5\\src\\fr\\eql\\ai111\\groupe5\\projet1\\interfaces\\images\\eqlfil.png", new PDDocument());
             contentStream.drawImage(image, 30, 580);
             PDFont pdfFont = new PDType1Font(Standard14Fonts.FontName.HELVETICA);
             // taille des caractères
@@ -481,6 +481,7 @@ public class Methods {
             contentStream.beginText();
             contentStream.setFont(pdfFont, fontSize);
             contentStream.newLineAtOffset(30, 550);
+            System.out.println(stagiaires.size());
             for (Stagiaire s : stagiaires) {
                 int nspace1 = 20 - (s.getSurname().trim().length());
                 String space1 = "";

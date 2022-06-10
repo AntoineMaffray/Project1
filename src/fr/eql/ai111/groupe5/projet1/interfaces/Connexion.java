@@ -314,5 +314,9 @@ public class Connexion extends Application {
         alert.showAndWait();
     }
 
+    public String loginMemory (User user) {
+        return user.getLogin();
+    }
+
 }
 
