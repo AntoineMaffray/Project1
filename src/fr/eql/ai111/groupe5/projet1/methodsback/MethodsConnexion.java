@@ -1,9 +1,15 @@
 package fr.eql.ai111.groupe5.projet1.methodsback;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -61,6 +67,26 @@ public class MethodsConnexion {
         bw.write("admin");
         bw.close();
         fw.close();
+    }
+
+    public ObservableList<User> createUserList() throws IOException {
+        ObservableList <User> listUser = FXCollections.observableArrayList();
+
+        File fileAdmin = new File("C://theEQLBook/AdminInfo");
+        File[] content = fileAdmin.listFiles();
+        for (File f : content) {
+            if (f.isFile()){
+                File fileTemp = new File("C://theEQLBook/AdminInfo" + f.getName() + ".txt");
+                FileReader fr = new FileReader(fileTemp);
+                BufferedReader bf = new BufferedReader(fr);
+                String login = f.getName();
+                String password = bf.readLine();
+                String surname = bf.readLine();
+                String name = bf.readLine();
+            }
+
+        }
+        return listUser;
     }
 
 }
