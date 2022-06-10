@@ -25,6 +25,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+
 public class AdminScene {
 
     public AdminScene(Stage primaryStage) {
@@ -41,17 +42,11 @@ public class AdminScene {
 
             // Creation des menus
             Menu fichierMenu = new Menu("Fichier");
+            Menu compteMenu = new Menu("Mon Compte");
             Menu aideMenu = new Menu("Aide");
 
             // Creation des MenuItems du menu Fichier
-            MenuItem rechercherItem = new MenuItem("Rechercher");
-            rechercherItem.setAccelerator(KeyCombination.keyCombination("Ctrl+F"));
-            rechercherItem.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-
-                    }
-            });
+            MenuItem exportItem = new MenuItem("Export");
             SeparatorMenuItem separator= new SeparatorMenuItem();
             MenuItem quitterItem = new MenuItem("Quitter");
             // Sp�cifier un raccourci clavier au menuItem Quitter.
@@ -64,18 +59,23 @@ public class AdminScene {
                     }
             });
 
+            // Création du MenuItem du menu Mon compte
+            MenuItem modifierItem = new MenuItem("Modifier mes identifiants");
+
             // Creation des MenuItems du menu Aide
             MenuItem documentationItem = new MenuItem("Documentation");
 
             // Ajouter les menuItems aux Menus
-            fichierMenu.getItems().addAll(rechercherItem, separator, quitterItem);
+            fichierMenu.getItems().addAll(exportItem, separator, quitterItem);
+            compteMenu.getItems().add(modifierItem);
             aideMenu.getItems().addAll(documentationItem);
 
-            // Ajouter les menus � la barre de menus
-            menuBar.getMenus().addAll(fichierMenu, aideMenu);
+            // Ajouter les menus à la barre de menus
+            menuBar.getMenus().addAll(fichierMenu, compteMenu, aideMenu);
 
             BorderPane bp = new BorderPane();
             bp.setTop(menuBar);
+
 
             //Cr�ation de la table
             TableView<Stagiaire> table = new TableView<Stagiaire>();
@@ -91,7 +91,7 @@ public class AdminScene {
             surnameCol.setCellValueFactory(
                     new PropertyValueFactory<Stagiaire, String>("surname"));
 
-            TableColumn<Stagiaire, String> nameCol = new TableColumn<Stagiaire, String>("Pr�nom");
+            TableColumn<Stagiaire, String> nameCol = new TableColumn<Stagiaire, String>("Prénom");
             nameCol.setMinWidth(250);
             //specifier un "cell factory" pour cette colonne.
             nameCol.setCellValueFactory(
@@ -110,14 +110,14 @@ public class AdminScene {
             promoCol.setCellValueFactory(
                     new PropertyValueFactory<Stagiaire, String>("promo"));
 
-            TableColumn<Stagiaire, Integer> yearCol = new TableColumn<Stagiaire, Integer>("Ann�e");
+            TableColumn<Stagiaire, Integer> yearCol = new TableColumn<Stagiaire, Integer>("Année");
             yearCol.setMinWidth(200);
             //specifier un "cell factory" pour cette colonne.
             yearCol.setCellValueFactory(
                     new PropertyValueFactory<Stagiaire, Integer>("year"));
 
 
-            //On ajoute les trois colonnes � la table
+            //On ajoute les trois colonnes à la table
             table.getColumns().addAll(surnameCol, nameCol, deptCol, promoCol, yearCol);
 
             //On remplit la table avec la liste observable
@@ -127,13 +127,13 @@ public class AdminScene {
             TextField surname = new TextField();
             surname.setPromptText("Nom");
             TextField name = new TextField();
-            name.setPromptText("Pr�nom");
+            name.setPromptText("Prénom");
             TextField dept = new TextField();
-            dept.setPromptText("D�partement");
+            dept.setPromptText("Département");
             TextField promo = new TextField();
             promo.setPromptText("Promotion");
             TextField year = new TextField();
-            year.setPromptText("Ann�e");
+            year.setPromptText("Année");
 
             //Creation boutons + Actions
             Button btnAjouter = new Button("Ajouter");
@@ -152,15 +152,26 @@ public class AdminScene {
                 }
             });
 
+            Button btnRetourAccueil = new Button("Retour Accueil");
+            btnRetourAccueil.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                            new AccueilScene(primaryStage);
+                    }
+            });
+
             HBox hbox = new HBox();
             hbox.setSpacing(10);
             hbox.getChildren().addAll(surname, name, dept, promo, year, btnAjouter, btnSupprimer);
 
+            HBox hbox1 = new HBox();
+            hbox1.getChildren().addAll(btnRetourAccueil);
+
             //On place le label et la table dans une VBox
             VBox vbox = new VBox();
             vbox.setSpacing(5);
-            vbox.setPadding(new Insets(75, 20, 20, 20));
-            vbox.getChildren().addAll(label, menuBar, table, hbox);
+            vbox.setPadding(new Insets(0, 0, 20, 0));
+            vbox.getChildren().addAll(menuBar, label, table, hbox, hbox1);
 
 
             Scene admin = new Scene(vbox);

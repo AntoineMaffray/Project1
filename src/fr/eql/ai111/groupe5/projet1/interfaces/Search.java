@@ -69,12 +69,11 @@ public class Search {
 
         // Creation des menus
         Menu fichierMenu = new Menu("Fichier");
-        Menu identifiantMenu = new Menu("Identifiants");
+        Menu identifiantMenu = new Menu("Identifiants Admin");
         Menu aideMenu = new Menu("Aide");
 
         // Creation des MenuItems du menu Fichier
-        MenuItem nouveauItem = new MenuItem("Nouveau");
-        MenuItem ouvrirItem = new MenuItem("Ouvrir");
+        MenuItem nouveauItem = new MenuItem("Export");
         SeparatorMenuItem separator= new SeparatorMenuItem();
         MenuItem quitterItem = new MenuItem("Quitter");
         // Sp�cifier un raccourci clavier au menuItem Quitter.
@@ -87,27 +86,19 @@ public class Search {
             }
         });
 
-        // Creation des MenuItems du menu Identifiants
-        MenuItem creerItem = new MenuItem("Cr?er");
-        MenuItem modifierItem = new MenuItem("Modifier");
+        // Creation des MenuItems du menu Identifiants Admin
+        MenuItem creerItem = new MenuItem("Créer");
         MenuItem supprimerItem = new MenuItem("Supprimer");
 
         // Creation des MenuItems du menu Aide
         MenuItem documentationItem = new MenuItem("Documentation");
         SeparatorMenuItem separator1= new SeparatorMenuItem();
-        MenuItem rechercherItem = new MenuItem("Rechercher");
-        rechercherItem.setAccelerator(KeyCombination.keyCombination("Ctrl+F"));
-        rechercherItem.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
 
-            }
-        });
 
         // Ajouter les menuItems aux Menus
-        fichierMenu.getItems().addAll(nouveauItem, ouvrirItem, separator, quitterItem);
-        identifiantMenu.getItems().addAll(creerItem, modifierItem, supprimerItem);
-        aideMenu.getItems().addAll(documentationItem, separator1, rechercherItem);
+        fichierMenu.getItems().addAll(quitterItem);
+        identifiantMenu.getItems().addAll(creerItem, supprimerItem);
+        aideMenu.getItems().addAll(documentationItem);
 
         // Ajouter les menus ? la barre de menus
         menuBar.getMenus().addAll(fichierMenu, identifiantMenu, aideMenu);

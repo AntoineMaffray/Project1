@@ -3,6 +3,7 @@ package fr.eql.ai111.groupe5.projet1.interfaces;
 import fr.eql.ai111.groupe5.projet1.methodsback.Arbre;
 import fr.eql.ai111.groupe5.projet1.methodsback.Methods;
 import fr.eql.ai111.groupe5.projet1.methodsback.Stagiaire;
+import fr.eql.ai111.groupe5.projet1.methodsback.User;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -30,9 +31,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Optional;
@@ -53,25 +52,20 @@ public class SuperAdminScene {
         AnchorPane.setRightAnchor(label, 0.0);
         label.setAlignment(Pos.CENTER);
 
-        // Crï¿½ation de MenuBar
+        // Cr?ation de MenuBar
         MenuBar menuBar = new MenuBar();
 
         // Creation des menus
         Menu fichierMenu = new Menu("Fichier");
+        Menu compteMenu = new Menu("Mon Compte");
+        Menu compteAdminMenu = new Menu("Compte admin");
         Menu aideMenu = new Menu("Aide");
 
         // Creation des MenuItems du menu Fichier
-        MenuItem rechercherItem = new MenuItem("Rechercher");
-        rechercherItem.setAccelerator(KeyCombination.keyCombination("Ctrl+F"));
-        rechercherItem.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                new Search(primaryStage);
-            }
-        });
+        MenuItem exportItem = new MenuItem("Export");
         SeparatorMenuItem separator= new SeparatorMenuItem();
         MenuItem quitterItem = new MenuItem("Quitter");
-        // Spï¿½cifier un raccourci clavier au menuItem Quitter.
+        // Sp?cifier un raccourci clavier au menuItem Quitter.
         quitterItem.setAccelerator(KeyCombination.keyCombination("Ctrl+Q"));
         // Gestion du click sur le menuItem Quitter.
         quitterItem.setOnAction(new EventHandler<ActionEvent>() {
@@ -81,35 +75,43 @@ public class SuperAdminScene {
             }
         });
 
+        // Création du MenuItem du menu Mon compte
+        MenuItem modifierItem = new MenuItem("Modifier mes identifiants");
+
+        // Création du MenuItem du menu Compte Admin
+        MenuItem gestionAdminMenu = new MenuItem("Gestion de l'administrateur");
+
         // Creation des MenuItems du menu Aide
         MenuItem documentationItem = new MenuItem("Documentation");
 
         // Ajouter les menuItems aux Menus
-        fichierMenu.getItems().addAll(rechercherItem, separator, quitterItem);
+        fichierMenu.getItems().addAll(exportItem, separator, quitterItem);
+        compteMenu.getItems().add(modifierItem);
+        compteAdminMenu.getItems().add(gestionAdminMenu);
         aideMenu.getItems().addAll(documentationItem);
 
-        // Ajouter les menus ? la barre de menus
-        menuBar.getMenus().addAll(fichierMenu, aideMenu);
+        // Ajouter les menus à la barre de menus
+        menuBar.getMenus().addAll(fichierMenu, compteMenu, compteAdminMenu, aideMenu);
 
         BorderPane bp = new BorderPane();
         bp.setTop(menuBar);
 
 
-        //Crï¿½ation de la table
+        //Cr?ation de la table
         TableView<Stagiaire> table = new TableView<Stagiaire>();
         table.setEditable(true);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        //Crï¿½ation des cinq colonnes
+        //Cr?ation des cinq colonnes
         TableColumn<Stagiaire, String> surnameCol =
                 new TableColumn<Stagiaire, String>("Nom");
         surnameCol.setMinWidth(250);
-        //Spï¿½cifier comment remplir la donnï¿½e pour chaque cellule de cette colonne
+        //Sp?cifier comment remplir la donn?e pour chaque cellule de cette colonne
         //Ceci se fait en specifiant un "cell value factory" pour cette colonne.
         surnameCol.setCellValueFactory(
                 new PropertyValueFactory<Stagiaire, String>("surname"));
 
-        TableColumn<Stagiaire, String> nameCol = new TableColumn<Stagiaire, String>("Prï¿½nom");
+        TableColumn<Stagiaire, String> nameCol = new TableColumn<Stagiaire, String>("Pr?nom");
         nameCol.setMinWidth(250);
         //specifier un "cell factory" pour cette colonne.
         nameCol.setCellValueFactory(
@@ -182,13 +184,13 @@ public class SuperAdminScene {
         TextField surname = new TextField();
         surname.setPromptText("Nom");
         TextField name = new TextField();
-        name.setPromptText("Prï¿½nom");
+        name.setPromptText("Prénom");
         TextField dept = new TextField();
-        dept.setPromptText("Dï¿½partement");
+        dept.setPromptText("Département");
         TextField promo = new TextField();
         promo.setPromptText("Promotion");
         TextField year = new TextField();
-        year.setPromptText("Annï¿½e");
+        year.setPromptText("Année");
 
         //Creation boutons + Actions
         Button btnAjouter = new Button("Ajouter");
@@ -219,16 +221,34 @@ public class SuperAdminScene {
             }
         });
 
+        Button btnSupprimer = new Button("Supprimer");
+        btnSupprimer.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+            }
+        });
+
+        Button btnRetourAccueil = new Button("Retour Accueil");
+        btnRetourAccueil.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                new AccueilScene(primaryStage);
+            }
+        });
+
         HBox hbox = new HBox();
         hbox.setSpacing(10);
-        hbox.getChildren().addAll(surname, name, dept, promo, year, btnAjouter);
+        hbox.getChildren().addAll(surname, name, dept, promo, year, btnAjouter, btnSupprimer);
+
+        HBox hbox1 = new HBox();
+        hbox1.getChildren().addAll(btnRetourAccueil);
 
         //On place le label et la table dans une VBox
         VBox vbox = new VBox();
         vbox.setSpacing(5);
         vbox.setPadding(new Insets(0, 0, 20, 0));
-        vbox.getChildren().addAll(menuBar, label, table, hbox);
-
+        vbox.getChildren().addAll(menuBar, label, table, hbox, hbox1);
 
         Scene supAdmin = new Scene(vbox);
         supAdmin.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
@@ -250,10 +270,8 @@ public class SuperAdminScene {
 //        return list;
 //    }
 
-    private void createContact(String surname, String name, String dept, String promo, String year,
-                               ObservableList<Stagiaire> data){
-        Stagiaire stagiaireX = new Stagiaire(surname, name, dept, promo, year);
-        data.add(stagiaireX);
+    private void createContact(String surname, String name, String login){
+        User userX = new User(surname, name, login);
     }
 
 
@@ -264,7 +282,7 @@ public class SuperAdminScene {
 
         // Texte sans en-t?te
         alert.setHeaderText(null);
-        alert.setContentText("Votre stagiaire a bien ï¿½tï¿½ enregistrï¿½!");
+        alert.setContentText("Votre stagiaire a bien ?t? enregistr?!");
         alert.showAndWait();
     }
 
@@ -345,7 +363,7 @@ public class SuperAdminScene {
                     }
                     stage.close();
                 } else {
-                    System.out.println("Le stagiaire n'a pas ï¿½tï¿½ modifiï¿½.");
+                    System.out.println("Le stagiaire n'a pas ?t? modifi?.");
                 }
             }
         });

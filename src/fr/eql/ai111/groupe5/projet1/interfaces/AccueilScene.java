@@ -1,47 +1,58 @@
 package fr.eql.ai111.groupe5.projet1.interfaces;
 
+
 import fr.eql.ai111.groupe5.projet1.methodsback.User;
 import fr.eql.ai111.groupe5.projet1.methodsback.UserDAO;
-import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class Connexion extends Application {
+
+public class AccueilScene {
 
     User user;
     UserDAO dao = new UserDAO();
 
-    // Main qui lance l'application, il ne contient que la mÃ©thode "start".
-    public static void main(String[] args) {
-        launch(args);
-    }
+    public AccueilScene(Stage primaryStage) {
 
-    // MÃ©thode Start
-    @Override
-    public void start(Stage primaryStage) {
-        accueil(primaryStage);
-    }
+        Label label= new Label("Bienvenue dans l'annuaire EQL BOOK! ");
+        Label label1 = new Label("Vous êtes un :");
+        label.setFont(new Font("Impact", 20));
+        label.setOpacity(0.9);
+        label.setStyle("-fx-text-fill: black");
+        label1.setFont(new Font("Impact", 20));
+        label1.setOpacity(0.9);
+        label1.setStyle("-fx-text-fill: black");
+        label.setMaxWidth(Double.MAX_VALUE);
+        AnchorPane.setLeftAnchor(label, 0.0);
+        AnchorPane.setRightAnchor(label, 0.0);
+        label.setAlignment(Pos.CENTER);
+        label1.setMaxWidth(Double.MAX_VALUE);
+        AnchorPane.setLeftAnchor(label1, 0.0);
+        AnchorPane.setRightAnchor(label1, 0.0);
+        label1.setAlignment(Pos.CENTER);
 
-    private void accueil(Stage primaryStage) {
         GridPane grille = new GridPane();
         grille.setAlignment(Pos.CENTER);
         grille.setHgap(10);
         grille.setVgap(10);
-        grille.setPadding(new Insets(20, 20, 20, 20));
+        grille.setPadding(new Insets(5, 10, 5, 10));
 
         Button btnUser = new Button("User");
         btnUser.setOnAction(new EventHandler<ActionEvent>() {
@@ -85,15 +96,13 @@ public class Connexion extends Application {
         hbBtnSuperAdmin.setAlignment(Pos.BOTTOM_LEFT);
         hbBtnSuperAdmin.getChildren().add(btnSuperAdmin);
 
-        grille.add(hbBtnUser, 0, 1);
-        grille.add(hbBtnAdmin, 1, 1);
-        grille.add(hbBtnSuperAdmin, 2, 1);
-        //Ajout d'une zone de texte
-        Text actionTexte = new Text();
-        actionTexte.setId("actionTexte");
-        grille.add(actionTexte, 1, 6);
+        grille.add(label, 2, 1);
+        grille.add(label1, 2, 2);
+        grille.add(hbBtnUser, 1, 4);
+        grille.add(hbBtnAdmin, 2, 4);
+        grille.add(hbBtnSuperAdmin, 3, 4);
 
-        Scene accueil = new Scene(grille, 400, 350);
+        Scene accueil = new Scene(grille, 700, 400);
         accueil.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
 
         primaryStage.setScene(accueil);
@@ -102,7 +111,7 @@ public class Connexion extends Application {
     }
 
     private void connexion(Stage primaryStage) {
-        //crï¿½er une grille (GridPane Layout)
+        //créer une grille (GridPane Layout)
         GridPane grille = new GridPane();
         grille.setAlignment(Pos.CENTER);
         grille.setHgap(10);
@@ -110,13 +119,13 @@ public class Connexion extends Application {
         grille.setPadding(new Insets(20, 20, 20, 20));
 
         //Remplir la grille
-        Text connect = new Text("Connexion");
-        //titre.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+        Text titre = new Text("Connexion");
+        titre.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
 
-        //Utilisï¿½ dans le fichier css pour identifier le noeud
-        connect.setId("titreText");
+        //Utilis? dans le fichier css pour identifier le noeud
+        titre.setId("titreText");
 
-        grille.add(connect, 0, 0, 2, 1);
+        grille.add(titre, 0, 0, 2, 1);
 
         Label login = new Label("Login:");
         grille.add(login, 0, 1);
@@ -130,7 +139,7 @@ public class Connexion extends Application {
         PasswordField pswdPasswordField = new PasswordField();
         grille.add(pswdPasswordField, 1, 2);
 
-        //Ajout du bouton ï¿½ la grille
+        //Ajout du bouton ? la grille
         Button btnValidation = new Button("Validez");
         btnValidation.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -141,29 +150,38 @@ public class Connexion extends Application {
                 new AdminScene(primaryStage);
             }
         });
-        Button btnRedirectionInscription = new Button("Premiï¿½re connexion ");
+        Button btnRedirectionInscription = new Button("Première connexion ");
         btnRedirectionInscription.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
                 inscription(primaryStage);
             }
         });
+
+        Button btnRetourAccueil = new Button("Retour accueil");
+        btnRetourAccueil.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                new AccueilScene(primaryStage);
+            }
+        });
+
         HBox hbBtnValidation = new HBox(10);
         hbBtnValidation.setAlignment(Pos.BOTTOM_RIGHT);
         hbBtnValidation.getChildren().add(btnValidation);
-        HBox hbBtnRedirectionInscription = new HBox(12);
-        hbBtnRedirectionInscription.setAlignment(Pos.BOTTOM_CENTER);
+
+        HBox hbBtnRedirectionInscription = new HBox(10);
+        hbBtnRedirectionInscription.setAlignment(Pos.BOTTOM_LEFT);
         hbBtnRedirectionInscription.getChildren().add(btnRedirectionInscription);
+
+        HBox hbBtnRedirectionAccueil = new HBox(1);
+        hbBtnRedirectionInscription.setAlignment(Pos.BOTTOM_CENTER);
+        hbBtnRedirectionInscription.getChildren().add(btnRetourAccueil);
+
         grille.add(hbBtnValidation, 1, 4);
         grille.add(hbBtnRedirectionInscription, 1, 6);
-        //Ajout d'une zone de texte
-        Text actionTexte = new Text();
-        actionTexte.setId("actionTexte");
-        grille.add(actionTexte, 1, 6);
+        grille.add(hbBtnRedirectionAccueil, 1, 8);
 
-        //Action Bouton
-
-        //grille.setGridLinesVisible(true);
 
         Scene connexion = new Scene(grille, 400, 350);
         connexion.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
@@ -174,7 +192,7 @@ public class Connexion extends Application {
     }
 
     private Scene inscription(Stage primaryStage) {
-        //crï¿½er une grille (GridPane Layout)
+        //cr?er une grille (GridPane Layout)
         GridPane grille = new GridPane();
         grille.setAlignment(Pos.CENTER);
         grille.setHgap(10);
@@ -183,9 +201,9 @@ public class Connexion extends Application {
 
         //Remplir la grille
         Text titre = new Text("Bienvenue dans l'annuaire");
-        //titre.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+        titre.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
 
-        //Utilisï¿½ dans le fichier css pour identifier le noeud
+        //Utilis? dans le fichier css pour identifier le noeud
         titre.setId("titreText");
 
         grille.add(titre, 0, 0, 2, 1);
@@ -202,7 +220,7 @@ public class Connexion extends Application {
         TextField nomTextField = new TextField("");
         grille.add(nomTextField, 1, 2);
 
-        Label prenom = new Label("Prï¿½nom :");
+        Label prenom = new Label("Pr?nom :");
         grille.add(prenom, 0, 3);
 
         TextField prenomTextField = new TextField("");
@@ -224,9 +242,9 @@ public class Connexion extends Application {
         grille.add(roleTextField, 1, 5);
 
 
-        //Ajout du bouton ï¿½ la grille
-        Button btn = new Button("Validez");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
+        //Ajout du bouton ? la grille
+        Button btnValidate = new Button("Validez");
+        btnValidate.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
                 user = new User(nomTextField.getText(),
@@ -240,12 +258,20 @@ public class Connexion extends Application {
         });
         HBox hbBtn = new HBox(10);
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
-        hbBtn.getChildren().add(btn);
+        hbBtn.getChildren().add(btnValidate);
         grille.add(hbBtn, 1, 7);
-        //Ajout d'une zone de texte
-        Text actionTexte = new Text();
-        actionTexte.setId("actionTexte");
-        grille.add(actionTexte, 1, 8);
+
+        Button btnReturn = new Button("Retour");
+        btnReturn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                connexion(primaryStage);
+            }
+        });
+        HBox hbBtn1 = new HBox(5);
+        hbBtn.setAlignment(Pos.BOTTOM_CENTER);
+        hbBtn.getChildren().add(btnReturn);
+        grille.add(hbBtn1, 3, 9);
 
         Scene inscription = new Scene(grille, 500, 450);
         inscription.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
@@ -259,9 +285,9 @@ public class Connexion extends Application {
     private void inscriptionUser(User user) {
 
                     /*
-                    Si la mï¿½thode 'createAccount' retourne false, alors le fichier utilisateur
-                    n'as pas ï¿½tï¿½ crï¿½ï¿½ car un autre portant le mï¿½me nom (correspondant au login
-                    entrï¿½) existe dï¿½jï¿½.
+                    Si la m?thode 'createAccount' retourne false, alors le fichier utilisateur
+                    n'as pas ?t? cr?? car un autre portant le m?me nom (correspondant au login
+                    entr?) existe d?j?.
                      */
         boolean isCreated = dao.createAccount(user.getName(),
                 user.getSurname(),
@@ -289,7 +315,7 @@ public class Connexion extends Application {
 
         // Header Text: null
         alert.setHeaderText(null);
-        alert.setContentText("Attention ces identifiants existent dï¿½jï¿½!");
+        alert.setContentText("Attention ces identifiants existent d?j?!");
 
         alert.showAndWait();
 
@@ -309,7 +335,7 @@ public class Connexion extends Application {
 
         // Header Text: null
         alert.setHeaderText(null);
-        alert.setContentText("Bienvenue!" + user.getSurname() + user.getName());
+        alert.setContentText("Bienvenue " +  user.getSurname() + " " + user.getName() +  " " + " ! " + " ;)");
 
         alert.showAndWait();
     }

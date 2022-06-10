@@ -22,7 +22,13 @@ public class User {
         this.password = password;
     }
 
-        public String getSurname() {
+    public User(String surname, String name, String login) {
+        this.surname = surname;
+        this.name = name;
+        this.login = login;
+    }
+
+    public String getSurname() {
             return surname;
         }
 

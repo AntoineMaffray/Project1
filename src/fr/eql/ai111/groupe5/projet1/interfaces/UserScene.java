@@ -47,7 +47,7 @@ public class UserScene {
         AnchorPane.setRightAnchor(label, 0.0);
         label.setAlignment(Pos.TOP_CENTER);
 
-        // Cr�ation de MenuBar
+        // Création de MenuBar
         MenuBar menuBar = new MenuBar();
 
         // Creation des menus
@@ -55,14 +55,7 @@ public class UserScene {
         Menu aideMenu = new Menu("Aide");
 
         // Creation des MenuItems du menu Fichier
-        MenuItem rechercherItem = new MenuItem("Rechercher");
-        rechercherItem.setAccelerator(KeyCombination.keyCombination("Ctrl+F"));
-        rechercherItem.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                search(primaryStage);
-            }
-        });
+        MenuItem exportItem = new MenuItem("Export");
         SeparatorMenuItem separator= new SeparatorMenuItem();
         MenuItem quitterItem = new MenuItem("Quitter");
         // Sp�cifier un raccourci clavier au menuItem Quitter.
@@ -79,10 +72,10 @@ public class UserScene {
         MenuItem documentationItem = new MenuItem("Documentation");
 
         // Ajouter les menuItems aux Menus
-        fichierMenu.getItems().addAll(rechercherItem, separator, quitterItem);
+        fichierMenu.getItems().addAll(exportItem, separator, quitterItem);
         aideMenu.getItems().addAll(documentationItem);
 
-        // Ajouter les menus � la barre de menus
+        // Ajouter les menus à la barre de menus
         menuBar.getMenus().addAll(fichierMenu, aideMenu);
 
         BorderPane bp = new BorderPane();
@@ -102,7 +95,7 @@ public class UserScene {
         surnameCol.setCellValueFactory(
                 new PropertyValueFactory<Stagiaire, String>("surname"));
 
-        TableColumn<Stagiaire, String> nameCol = new TableColumn<Stagiaire, String>("Pr�nom");
+        TableColumn<Stagiaire, String> nameCol = new TableColumn<Stagiaire, String>("Prénom");
         nameCol.setMinWidth(250);
         //specifier un "cell factory" pour cette colonne.
         nameCol.setCellValueFactory(
@@ -121,7 +114,7 @@ public class UserScene {
         promoCol.setCellValueFactory(
                 new PropertyValueFactory<Stagiaire, String>("promo"));
 
-        TableColumn<Stagiaire, Integer> yearCol = new TableColumn<Stagiaire, Integer>("Ann�e");
+        TableColumn<Stagiaire, Integer> yearCol = new TableColumn<Stagiaire, Integer>("Année");
         yearCol.setMinWidth(200);
         //specifier un "cell factory" pour cette colonne.
         yearCol.setCellValueFactory(
@@ -138,13 +131,13 @@ public class UserScene {
         TextField surname = new TextField();
         surname.setPromptText("Nom");
         TextField name = new TextField();
-        name.setPromptText("Pr�nom");
+        name.setPromptText("Prénom");
         TextField dept = new TextField();
-        dept.setPromptText("D�partement");
+        dept.setPromptText("Département");
         TextField promo = new TextField();
         promo.setPromptText("Promotion");
         TextField year = new TextField();
-        year.setPromptText("Ann�e");
+        year.setPromptText("Année");
 
         //Creation boutons + Actions
         Button btnAjouter = new Button("Ajouter");
@@ -176,15 +169,25 @@ public class UserScene {
         });
 
 
+        Button btnRetourAccueil = new Button("Retour Accueil");
+        btnRetourAccueil.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                new AccueilScene(primaryStage);
+            }
+        });
         HBox hbox = new HBox();
         hbox.setSpacing(10);
         hbox.getChildren().addAll(surname, name, dept, promo, year, btnAjouter);
 
+        HBox hbox1 = new HBox();
+        hbox1.getChildren().addAll(btnRetourAccueil);
+
         //On place le label et la table dans une VBox
         VBox vbox = new VBox();
         vbox.setSpacing(5);
-        vbox.setPadding(new Insets(75, 20, 20, 20));
-        vbox.getChildren().addAll(label, menuBar, table, hbox);
+        vbox.setPadding(new Insets(0, 0, 20, 0));
+        vbox.getChildren().addAll(menuBar, label, table, hbox, hbox1);
 
 
         Scene user = new Scene(vbox);
@@ -195,103 +198,13 @@ public class UserScene {
         primaryStage.show();
     }
 
-    private void search(Stage primaryStage){
-        //Label for name
-        Label label1 = new Label("Champs 1");
-        TextField criteria1 = new TextField();
-
-        Label label2 = new Label("Champs 2");
-        TextField criteria2 = new TextField();
-
-        Label label3 = new Label("Champs 3 ");
-        TextField criteria3 = new TextField();
-
-        Label label4 = new Label("Champs 4");
-        TextField criteria4 = new TextField();
-
-        Label label5 = new Label("Champs 5");
-        TextField criteria5 = new TextField();
-
-        //Label for location
-        Label allElements = new Label("Elements");
-
-        //Choice box for location
-        ChoiceBox locationchoice1Box = new ChoiceBox();
-        locationchoice1Box.getItems().addAll
-                ("Nom", "Pr�nom", "D�partement", "Promotion", "Ann�e");
-
-        ChoiceBox locationchoice2Box = new ChoiceBox();
-        locationchoice2Box.getItems().addAll
-                ("Nom", "Pr�nom", "D�partement", "Promotion", "Ann�e");
-
-        ChoiceBox locationchoice3Box = new ChoiceBox();
-        locationchoice3Box.getItems().addAll
-                ("Nom", "Pr�nom", "D�partement", "Promotion", "Ann�e");
-
-        ChoiceBox locationchoice4Box = new ChoiceBox();
-        locationchoice4Box.getItems().addAll
-                ("Nom", "Pr�nom", "D�partement", "Promotion", "Ann�e");
-
-        ChoiceBox locationchoice5Box = new ChoiceBox();
-        locationchoice5Box.getItems().addAll
-                ("Nom", "Pr�nom", "D�partement", "Promotion", "Ann�e");
-
-        //Button for register
-        Button buttonSearch = new Button("Rechercher");
-
-        //Creating a Grid Pane
-        GridPane gridPane = new GridPane();
-
-        //Setting size for the pane
-        gridPane.setMinSize(500, 500);
-
-        //Setting the padding
-        gridPane.setPadding(new Insets(10, 10, 10, 10));
-
-        //Setting the vertical and horizontal gaps between the columns
-        gridPane.setVgap(5);
-        gridPane.setHgap(5);
-
-        //Setting the Grid alignment
-        gridPane.setAlignment(Pos.CENTER);
-
-        //Arranging all the nodes in the grid
-        gridPane.add(label1, 0, 0);
-        gridPane.add(label2, 0, 1);
-        gridPane.add(label3, 0, 2);
-        gridPane.add(label4, 0, 3);
-        gridPane.add(label5, 0, 4);
-
-
-        gridPane.add(locationchoice1Box, 1, 0);
-        gridPane.add(locationchoice2Box, 1, 1);
-        gridPane.add(locationchoice3Box, 1, 2);
-        gridPane.add(locationchoice4Box, 1, 3);
-        gridPane.add(locationchoice5Box, 1, 4);
-
-        gridPane.add(buttonSearch, 2, 8);
-
-        //Styling nodes
-        allElements.setStyle("-fx-font: normal bold 15px 'serif' ");
-
-        //Setting the back ground color
-        gridPane.setStyle("-fx-background-color: BEIGE;");
-
-        //Creating a scene object
-        Scene scene = new Scene(gridPane);
-
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("UserScene");
-        primaryStage.show();
-    }
-
     private void confirmationInscription() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Confirmation Inscription");
 
         // Texte sans en-t?te
         alert.setHeaderText(null);
-        alert.setContentText("Votre stagiaire a bien ?t? enregistr?!");
+        alert.setContentText("Votre stagiaire a bien été enregistré!");
         alert.showAndWait();
     }
 
