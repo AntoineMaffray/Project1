@@ -18,11 +18,11 @@ public class User {
         }
 
         // constructeur pour l'affichage du login
-    public User(String surname, String name, String login, String role) {
+    public User(String surname, String name, String login, String password) {
         this.surname = surname;
         this.name = name;
         this.login = login;
-        this.role = role;
+        this.password = password;
     }
 
     public User(String login, String password) {
