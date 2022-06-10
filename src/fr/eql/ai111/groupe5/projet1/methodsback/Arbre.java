@@ -11,20 +11,20 @@ import java.util.List;
 public class Arbre {
 
 //    CONSTANTES
-long REF1 = 0; // en bytes - emplacement de la référence du nom
+    long REF1 = 0; // en bytes - emplacement de la référence du nom
     long REF2 = 102; // en bytes - emplacement de la référence du prénom
     long REF3 = 204; // en bytes - emplacement de la référence du département
-    long REF4 = 210; // en bytes - emplacement de la référence de la promo
-    long REF5 = 250; // en bytes - emplacement de la référence de l'année
-    long REF6 = 260; // en bytes - emplacement de la référence de l'enfant gauche
-    long REF7 = 278; // en bytes - emplacement de la référence de l'enfant droit
-    long REF8 = 296; // en bytes - emplacement de la référence du parent
-    long REF9 = 314; // en bytes - emplacement de la référence d'activation/désactivation
-    long ELT = 318; // en bytes - taille intégrale d'un objet
+    long REF4 = 212; // en bytes - emplacement de la référence de la promo
+    long REF5 = 252; // en bytes - emplacement de la référence de l'année
+    long REF6 = 262; // en bytes - emplacement de la référence de l'enfant gauche
+    long REF7 = 280; // en bytes - emplacement de la référence de l'enfant droit
+    long REF8 = 298; // en bytes - emplacement de la référence du parent
+    long REF9 = 316; // en bytes - emplacement de la référence d'activation/désactivation
+    long ELT = 320; // en bytes - taille intégrale d'un objet
     int ELTROUGH = 130; // en caractères - taille des informations (sans réf de structure)
     int ELTREF1 = 50; // en caractères - taille du nom
     int ELTREF2 = 50; // en caractères - taille du prénom
-    int ELTREF3 = 2; // en caractères - taille du département
+    int ELTREF3 = 3; // en caractères - taille du département
     int ELTREF4 = 19; // en caractères - taille de la promo
     int ELTREF5 = 4; // en caractères - taille de l'année
 
@@ -35,7 +35,7 @@ long REF1 = 0; // en bytes - emplacement de la référence du nom
         Methods methods = new Methods();
 
         // Ouverture des différentes instances de lecture et éciture
-        RandomAccessFile rafDataBase = new RandomAccessFile("C:/BillyBook/Raf.bin", "rw");
+        RandomAccessFile rafDataBase = new RandomAccessFile("C:/theEQLBook/Raf.bin", "rw");
 
         // Variables de l'Arbre
         rafDataBase.seek(0);
@@ -110,7 +110,7 @@ long REF1 = 0; // en bytes - emplacement de la référence du nom
         Methods methods = new Methods();
 
         // Ouverture des différentes instances de lecture et éciture
-        RandomAccessFile rafDataBase = new RandomAccessFile("C:/BillyBook/Raf.bin", "rw");
+        RandomAccessFile rafDataBase = new RandomAccessFile("C:/theEQLBook/Raf.bin", "rw");
 
         // Variables de l'Arbre
         rafDataBase.seek(0);
@@ -149,7 +149,8 @@ long REF1 = 0; // en bytes - emplacement de la référence du nom
                     }
 
                     // Comparaison supérieure -> Entrée dans la branche de droite
-                } else if (newChar > parentChar || methods.searchCharToChar(newAdd, parent) == 1) {
+                } else if (newChar > parentChar || methods.searchCharToChar(newAdd, parent) == 1 ||
+                        methods.searchCharToChar(newAdd, parent) == 0) {
                     rafDataBase.seek(parentPlace + REF7);
                     child = String.valueOf(rafDataBase.readChar());
 
@@ -172,7 +173,7 @@ long REF1 = 0; // en bytes - emplacement de la référence du nom
         Methods methods = new Methods();
 
         // Ouverture des différentes instances de lecture et éciture
-        RandomAccessFile rafDataBase = new RandomAccessFile("C:/BillyBook/Raf.bin", "rw");
+        RandomAccessFile rafDataBase = new RandomAccessFile("C:/theEQLBook/Raf.bin", "rw");
 
         // Variables de l'Arbre
         rafDataBase.seek(0);
@@ -229,17 +230,18 @@ long REF1 = 0; // en bytes - emplacement de la référence du nom
         return listSearch;
     }
 
-    public List <Stagiaire> arbreParcours () throws IOException{
+    public ObservableList <Stagiaire> arbreParcours () throws IOException{
 
         Methods methods = new Methods();
-        List <Stagiaire> listSearch = new ArrayList<>();
+        ObservableList <Stagiaire> listSearch = FXCollections.observableArrayList();
 
         // Ouverture des différentes instances de lecture et écriture
-        RandomAccessFile rafDataBase = new RandomAccessFile("C:/BillyBook/Raf.bin", "rw");
+        RandomAccessFile rafDataBase = new RandomAccessFile("C:/theEQLBook/Raf.bin", "rw");
 
         long knot = 0;
 
         arbreRecursif(rafDataBase, methods, listSearch);
+
         return listSearch;
 
 //        /**
@@ -252,8 +254,8 @@ long REF1 = 0; // en bytes - emplacement de la référence du nom
 //            if (getSousArbreDroit() != null)
 //                getSousArbreDroit().ParcoursPrefixe();
     }
-    private List <Stagiaire> arbreRecursif (RandomAccessFile rafDataBase, Methods methods,
-                                            List listSearch) throws IOException {
+    private ObservableList <Stagiaire> arbreRecursif (RandomAccessFile rafDataBase, Methods methods,
+                                            ObservableList listSearch) throws IOException {
 
         long knot = rafDataBase.getFilePointer();
         String temp = "";
@@ -272,7 +274,10 @@ long REF1 = 0; // en bytes - emplacement de la référence du nom
         for (int i = 0; i < ELTROUGH; i++){
             temp+=rafDataBase.readChar();
         }
-        listSearch.add(methods.createObjectStagiaire(temp));
+        rafDataBase.seek(knot+REF9);
+        if (rafDataBase.readChar() == 'V'){
+            listSearch.add(methods.createObjectStagiaire(temp));
+        }
 
         rafDataBase.seek(knot+REF7);
         if (rafDataBase.readChar() != '$'){
@@ -289,7 +294,7 @@ long REF1 = 0; // en bytes - emplacement de la référence du nom
         Methods methods = new Methods();
 
         // Ouverture des différentes instances de lecture et écriture
-        RandomAccessFile rafDataBase = new RandomAccessFile("C:/BillyBook/Raf.bin", "rw");
+        RandomAccessFile rafDataBase = new RandomAccessFile("C:/theEQLBook/Raf.bin", "rw");
 
         // Variables de l'Arbre
         rafDataBase.seek(0);
@@ -347,7 +352,7 @@ long REF1 = 0; // en bytes - emplacement de la référence du nom
         Methods methods = new Methods();
 
         // Ouverture des différentes instances de lecture et écriture
-        RandomAccessFile rafDataBase = new RandomAccessFile("C:/BillyBook/Raf.bin", "rw");
+        RandomAccessFile rafDataBase = new RandomAccessFile("C:/theEQLBook/Raf.bin", "rw");
 
         // Variables de l'Arbre
         rafDataBase.seek(0);
@@ -409,7 +414,7 @@ long REF1 = 0; // en bytes - emplacement de la référence du nom
         List <Stagiaire> listSearch = new ArrayList<>();
 
         // Ouverture des différentes instances de lecture et éciture
-        RandomAccessFile rafDataBase = new RandomAccessFile("C:/BillyBook/Raf.bin", "rw");
+        RandomAccessFile rafDataBase = new RandomAccessFile("C:/theEQLBook/Raf.bin", "rw");
 
         long knot = 0;
 

@@ -1,12 +1,16 @@
 package fr.eql.ai111.groupe5.projet1.interfaces;
 
+import fr.eql.ai111.groupe5.projet1.methodsback.Arbre;
+import fr.eql.ai111.groupe5.projet1.methodsback.Methods;
 import fr.eql.ai111.groupe5.projet1.methodsback.Stagiaire;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -27,9 +31,15 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class UserScene {
 
-    public UserScene(Stage primaryStage) {
+    Arbre arbre = new Arbre();
+    Methods methods = new Methods();
+    ObservableList<Stagiaire> data = arbre.arbreParcours();
+
+    public UserScene(Stage primaryStage) throws IOException {
         Label label= new Label("ANNUAIRE STAGIAIRES");
         label.setFont(new Font("Arial", 35));
         label.setMaxWidth(Double.MAX_VALUE);
@@ -122,7 +132,7 @@ public class UserScene {
         table.getColumns().addAll(surnameCol, nameCol, deptCol, promoCol, yearCol);
 
         //On remplit la table avec la liste observable
-
+        table.setItems(data);
 
         //Creation champs de rajout
         TextField surname = new TextField();
@@ -141,7 +151,27 @@ public class UserScene {
         btnAjouter.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
+                try {
+                    arbre.arbreInsertionNew(methods.createStringOneStagiaire(surname.getText(),
+                            name.getText(),
+                            dept.getText(),
+                            promo.getText(),
+                            year.getText()));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                try {
+                    data = arbre.arbreParcours();
+                    table.setItems(data);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                surname.clear();
+                name.clear();
+                dept.clear();
+                promo.clear();
+                year.clear();
+                confirmationInscription();
             }
         });
 
@@ -254,4 +284,15 @@ public class UserScene {
         primaryStage.setTitle("UserScene");
         primaryStage.show();
     }
+
+    private void confirmationInscription() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Confirmation Inscription");
+
+        // Texte sans en-t?te
+        alert.setHeaderText(null);
+        alert.setContentText("Votre stagiaire a bien ?t? enregistr?!");
+        alert.showAndWait();
+    }
+
 }

@@ -18,22 +18,22 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class Connexion extends Application {
 
     User user;
     UserDAO dao = new UserDAO();
 
-    // Main qui lance l'application, il ne contient que la m�thode "start".
+    // Main qui lance l'application, il ne contient que la méthode "start".
     public static void main(String[] args) {
         launch(args);
     }
 
-    // M�thode Start
+    // Méthode Start
     @Override
     public void start(Stage primaryStage) {
-
         accueil(primaryStage);
-
     }
 
     private void accueil(Stage primaryStage) {
@@ -47,7 +47,11 @@ public class Connexion extends Application {
         btnUser.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                new UserScene(primaryStage);
+                try {
+                    new UserScene(primaryStage);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
         Button btnAdmin = new Button("Admin");
@@ -57,14 +61,33 @@ public class Connexion extends Application {
                 connexion(primaryStage);
             }
         });
+
+        Button btnSuperAdmin = new Button("SuperAdmin");
+        btnSuperAdmin.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                try {
+                    new SuperAdminScene(primaryStage);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
         HBox hbBtnUser = new HBox(10);
         hbBtnUser.setAlignment(Pos.BOTTOM_RIGHT);
         hbBtnUser.getChildren().add(btnUser);
+
         HBox hbBtnAdmin = new HBox(12);
         hbBtnAdmin.setAlignment(Pos.BOTTOM_CENTER);
         hbBtnAdmin.getChildren().add(btnAdmin);
+
+        HBox hbBtnSuperAdmin = new HBox(12);
+        hbBtnSuperAdmin.setAlignment(Pos.BOTTOM_LEFT);
+        hbBtnSuperAdmin.getChildren().add(btnSuperAdmin);
+
         grille.add(hbBtnUser, 0, 1);
         grille.add(hbBtnAdmin, 1, 1);
+        grille.add(hbBtnSuperAdmin, 2, 1);
         //Ajout d'une zone de texte
         Text actionTexte = new Text();
         actionTexte.setId("actionTexte");

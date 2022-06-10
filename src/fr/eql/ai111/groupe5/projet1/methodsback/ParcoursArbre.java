@@ -13,7 +13,7 @@
 //    long ref7 = 278; // en bytes
 //    long ref8 = 296; // en bytes -
 //    long elt = 300; // en bytes
-//    int eltrough = 130; // en caractÃ¨res
+//    int eltrough = 130; // en caractères
 //
 //
 //    public static void main(String[] args) throws IOException {
@@ -24,13 +24,13 @@
 //        long ref7 = 278; // en bytes
 //        long ref8 = 296; // en bytes
 //        long elt = 318; // en bytes
-//        int eltrough = 130; // en caractÃ¨res
-//        int nameSurname = 130; // en caractÃ¨res
+//        int eltrough = 130; // en caractères
+//        int nameSurname = 130; // en caractères
 //
 //        RandomAccessFile rafDataBase = new RandomAccessFile("C:/FolderProjet/Raf.bin", "rw");
 //
 //
-//        // variable de la comparaison lors de la remontÃ©e
+//        // variable de la comparaison lors de la remontée
 //        String origin = "";
 //        // variable de comparaison de base
 //        long baseNode = 0;
@@ -52,32 +52,32 @@
 //        rafDataBase.seek(baseNode + ref6);
 //        child = String.valueOf(rafDataBase.readChar());
 //
-//        // Si un enfant existe Ã  l'emplacement infÃ©rieur, on y va
+//        // Si un enfant existe à l'emplacement inférieur, on y va
 //        if (!child.equals("$")) {
 //            rafDataBase.seek(baseNode+ref6);
 //            refBaseNode = "";
 //            baseNode = Long.parseLong(methods.removeDollarFromRef(rafDataBase, removeDollars, refBaseNode));
-//            // S'il n'y a pas d'enfant Ã  cet emplacement
+//            // S'il n'y a pas d'enfant à cet emplacement
 //        } else if (child.equals("$")) {
-//            // On ajoute l'Ã©lÃ©ment Ã  la liste Ã  la liste
+//            // On ajoute l'élément à la liste à la liste
 //            rafDataBase.seek(baseNode);
 //            ajoutListe = "";
 //            for (int i = 0; i < eltrough; i++) {
 //                ajoutListe += rafDataBase.readChar();
 //            }
 //            listShow.add(methods.createObjectStagiaire(ajoutListe));
-//            // Puis on vÃ©rifie s'il a un enfant droit
+//            // Puis on vérifie s'il a un enfant droit
 //            rafDataBase.seek(baseNode + ref7);
 //            child = String.valueOf(rafDataBase.readChar());
 //
 //
 //            if (!child.equals("$")) {
-//                // Si c'est le cas, on renvoie le nouveau nÅ“ud dans la boucle
+//                // Si c'est le cas, on renvoie le nouveau n?ud dans la boucle
 //                rafDataBase.seek(baseNode + ref7);
 //                refBaseNode = "";
 //                baseNode = Long.parseLong(methods.removeDollarFromRef(rafDataBase, removeDollars, refBaseNode));
 //            } else if (child.equals("$")) {
-//                // S'il n'a pas d'enfant supÃ©rieur, on active la remontÃ©e EN STOCKANT LE NOM DUQUEL ON VIENT DANS UNE VARIABLE
+//                // S'il n'a pas d'enfant supérieur, on active la remontée EN STOCKANT LE NOM DUQUEL ON VIENT DANS UNE VARIABLE
 //                way = "up";
 //                rafDataBase.seek(baseNode);
 //                nomEnfant = "";
@@ -99,7 +99,7 @@
 //            }
 //
 //                if (way.equals("up")) {
-//                    // Puis on fait la comparaison pour savoir si on vient de l'enfant infÃ©rieur ou supÃ©rieur
+//                    // Puis on fait la comparaison pour savoir si on vient de l'enfant inférieur ou supérieur
 //                    if (methods.simpleComparison(nomEnfant, nomParent) > 0) {
 //                        rafDataBase.seek(baseNode);
 //                        nomEnfant = "";
@@ -117,24 +117,24 @@
 //                        }
 ////                        System.out.println(nomParent);
 //                } else if (methods.simpleComparison(nomEnfant, nomParent) < 0) {
-//                        // On ajoute Ã  la liste
+//                        // On ajoute à la liste
 //                        rafDataBase.seek(baseNode);
 //                        ajoutListe = "";
 //                        for (int i = 0; i < eltrough; i++) {
 //                            ajoutListe += rafDataBase.readChar();
 //                        }
 //                        listShow.add(methods.createObjectStagiaire(ajoutListe));
-//                    // On vÃ©rifie s'il a un enfant droit
+//                    // On vérifie s'il a un enfant droit
 //                    rafDataBase.seek((baseNode + ref7));
 //                    child = String.valueOf(rafDataBase.readChar());
 //
 //                    if (!child.equals("$")) {
-//                        // Si c'est le cas, on renvoie le nouveau nÅ“ud dans la boucle
+//                        // Si c'est le cas, on renvoie le nouveau n?ud dans la boucle
 //                        way = "down";
 //                        rafDataBase.seek(baseNode+ref7);
 //                        refBaseNode = "";
 //                        baseNode = Long.parseLong(methods.removeDollarFromRef(rafDataBase, removeDollars, refBaseNode));
-//                        // Sinon on remonte Ã©galement
+//                        // Sinon on remonte également
 //                    } else if (child.equals("$")) {
 //                        rafDataBase.seek(baseNode);
 //                        nomEnfant = "";

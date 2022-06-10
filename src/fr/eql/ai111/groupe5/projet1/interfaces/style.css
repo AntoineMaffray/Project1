@@ -19,5 +19,49 @@
 }
 
 .button:hover {
-    -fx-background-color: linear-gradient(#2A5058, #61a2b1);
+    -fx-background-color: linear-gradient(#F5F5DC, #DB7093);
     }
+
+    .menu-bar {
+        -fx-background-color: white ;
+        -fx-opacity: 0.7;
+        -fx-border-width: 0.7;
+
+    }
+
+    .menu-bar .label {
+        -fx-font-size: 14.0 pt;
+        -fx-font-family: "Arial";
+        -fx-text-fill: grey;
+        -fx-font-weight: bold;
+        -fx-padding: 10px;
+        -fx-opacity: 0.7;
+
+    }
+    .menu-bar .menu-button:hover, .menu-bar .menu-button:focused, .menu-bar .menu-button:showing {
+        -fx-background: pink ;
+        -fx-opacity: 0.5;
+        -fx-text-fill: white;
+        -fx-opacity: 0.7;
+    }
+
+    .menu-item {
+        -fx-text-fill: black;
+        -fx-background: darkgray ;
+        -fx-opacity: 0.7;
+    }
+    .menu-item .label{
+        -fx-font-size: 14.0 pt;
+        -fx-text-fill: black;
+        -fx-opacity: 0.7;
+    }
+    .menu-item .label:hover{
+        -fx-font-size: 14.0 pt;
+        -fx-background: black ;
+        -fx-text-fill: white;
+        -fx-opacity: 0.7;
+    }
+    .context-menu {
+        -fx-background-color:white ;
+        -fx-border-width: 0.2px;
+        -fx-opacity: 1;

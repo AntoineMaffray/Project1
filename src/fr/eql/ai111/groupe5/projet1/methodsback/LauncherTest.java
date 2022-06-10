@@ -45,8 +45,8 @@ public class LauncherTest {
 //            connection.editAdminProfile(loginToEdit, surnameToAdd, nameToAdd, loginToAdd, passwordToAdd);
 //        }
 
-        String loginToDelete = JOptionPane.showInputDialog("Quel compte administrateur voulez-vous supprimer? Entrez le Login du compte.");
-        methodsConnexion.removeAdminProfile(loginToDelete);
+//        String loginToDelete = JOptionPane.showInputDialog("Quel compte administrateur voulez-vous supprimer? Entrez le Login du compte.");
+//        methodsConnexion.removeAdminProfile(loginToDelete);
 
 
 //        arbre.arbreSearch(JOptionPane.showInputDialog("Recherche par nom : "));

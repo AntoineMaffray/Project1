@@ -19,17 +19,17 @@ public class TriSimple {
     long REF1 = 0; // en bytes - emplacement de la référence du nom
     long REF2 = 102; // en bytes - emplacement de la référence du prénom
     long REF3 = 204; // en bytes - emplacement de la référence du département
-    long REF4 = 210; // en bytes - emplacement de la référence de la promo
-    long REF5 = 250; // en bytes - emplacement de la référence de l'année
-    long REF6 = 260; // en bytes - emplacement de la référence de l'enfant gauche
-    long REF7 = 278; // en bytes - emplacement de la référence de l'enfant droit
-    long REF8 = 296; // en bytes - emplacement de la référence du parent
-    long REF9 = 314; // en bytes - emplacement de la référence d'activation/désactivation
-    long ELT = 318; // en bytes - taille intégrale d'un objet
+    long REF4 = 212; // en bytes - emplacement de la référence de la promo
+    long REF5 = 252; // en bytes - emplacement de la référence de l'année
+    long REF6 = 262; // en bytes - emplacement de la référence de l'enfant gauche
+    long REF7 = 280; // en bytes - emplacement de la référence de l'enfant droit
+    long REF8 = 298; // en bytes - emplacement de la référence du parent
+    long REF9 = 316; // en bytes - emplacement de la référence d'activation/désactivation
+    long ELT = 320; // en bytes - taille intégrale d'un objet
     int ELTROUGH = 130; // en caractères - taille des informations (sans réf de structure)
     int ELTREF1 = 50; // en caractères - taille du nom
     int ELTREF2 = 50; // en caractères - taille du prénom
-    int ELTREF3 = 2; // en caractères - taille du département
+    int ELTREF3 = 3; // en caractères - taille du département
     int ELTREF4 = 19; // en caractères - taille de la promo
     int ELTREF5 = 4; // en caractères - taille de l'année
 
@@ -43,9 +43,9 @@ public class TriSimple {
         Arbre arbre = new Arbre();
         RandomAccessFile rafDataBase = null;
         try {
-            rafDataBase = new RandomAccessFile("C:/BillyBook/Raf.bin", "rw");
+            rafDataBase = new RandomAccessFile("C:/theEQLBook/Raf.bin", "rw");
         } catch (FileNotFoundException e) {
-            throw new RAFException("Le fichier - C:/BillyBook/Raf.bin/ - n'existe pas.", e);
+            throw new RAFException("Le fichier - C:/theEQLBook/Raf.bin/ - n'existe pas.", e);
         }
         ArrayList <Stagiaire> stList1 = new ArrayList<>(); ArrayList <Stagiaire> stList2 = new ArrayList<>();
         ArrayList <Stagiaire> stList3 = new ArrayList<>(); ArrayList <Stagiaire> stList4 = new ArrayList<>();
@@ -57,7 +57,7 @@ public class TriSimple {
         try {
             stList1 = (ArrayList<Stagiaire>) arbre.arbreParcoursSearch(criterion1, search1);
         } catch (IOException e) {
-            throw new RAFException("Le fichier - C:/FolderProjet/Raf.bin/ - n'existe pas ou ne contient rien.", e);
+            throw new RAFException("Le fichier - C:/theEQLBook/Raf.bin/ - n'existe pas ou ne contient rien.", e);
         }
 
         long nbrObjets = 0;
@@ -69,7 +69,7 @@ public class TriSimple {
         String objetTemp;
         int index;
 
-        if (criterion2 > 0 && search2 != ""){
+        if (criterion2 > 0 && !search2.isEmpty()){
             switch (criterion2){
                 case 1:
                     ref2 = REF1;
@@ -126,7 +126,7 @@ public class TriSimple {
             }
         }
 
-        if (criterion3 > 0 && search3 != ""){
+        if (criterion3 > 0 && !search3.isEmpty()){
             switch (criterion3){
                 case 1:
                     ref3 = REF1;
@@ -183,7 +183,7 @@ public class TriSimple {
             }
         }
 
-        if (criterion4 > 0 && search4 != ""){
+        if (criterion4 > 0 && !search4.isEmpty()){
             switch (criterion4){
                 case 1:
                     ref4 = REF1;
@@ -240,7 +240,7 @@ public class TriSimple {
             }
         }
 
-        if (criterion5 > 0 && search5 != ""){
+        if (criterion5 > 0 && !search5.isEmpty()){
             switch (criterion5){
                 case 1:
                     ref5 = REF1;
