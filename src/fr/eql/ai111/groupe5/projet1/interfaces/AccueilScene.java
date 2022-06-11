@@ -21,6 +21,10 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 
@@ -148,6 +152,19 @@ public class AccueilScene {
                         pswdPasswordField.getText());
                 connexionUser();
                 new AdminScene(primaryStage);
+                File keepLogin = new File ("Identifiants/Persistance");
+                    keepLogin.mkdir();
+                File keepLogin2 = new File("Identifiants/Persistance/Login.txt");
+                try {
+                    FileWriter fw = new FileWriter(keepLogin2, false);
+                    BufferedWriter bw = new BufferedWriter(fw);
+                    bw.write(user.getLogin());
+                    bw.close();
+                    fw.close();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+
             }
         });
         Button btnRedirectionInscription = new Button("Premi�re connexion ");

@@ -14,6 +14,7 @@ public class UserDAO {
 
     private static final Logger logger = LogManager.getLogger();
     private static final String IDENTIFIANTS = "Identifiants";
+    Methods methods = new Methods();
 
     public boolean createAccount(
             String surname,

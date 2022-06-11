@@ -36,6 +36,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -77,6 +79,13 @@ public class SuperAdminScene {
             @Override
             public void handle(ActionEvent event) {
                 Platform.exit();
+                File delete = new File ("Identifiants/Persistance/Login.txt");
+                boolean isDeleted = delete.delete();
+                if (isDeleted) {
+                    System.out.println("Le fichier a bien été supprimé");
+                } else {
+                    System.out.println("Le fichier a bien été créé");
+                }
             }
         });
 
@@ -313,8 +322,8 @@ public class SuperAdminScene {
 //        return list;
 //    }
 
-    private void createContact(String surname, String name, String login){
-        User userX = new User(surname, name, login);
+    private void createContact(String surname, String name, String login, String password){
+        User userX = new User(surname, name, login, password);
     }
 
 

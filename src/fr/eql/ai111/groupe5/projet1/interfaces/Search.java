@@ -44,6 +44,7 @@ public class Search {
     Arbre arbre = new Arbre();
     TriSimple triSimple = new TriSimple();
     ObservableList<Stagiaire> data;
+    Methods methods = new Methods();
 
     {
         try {
