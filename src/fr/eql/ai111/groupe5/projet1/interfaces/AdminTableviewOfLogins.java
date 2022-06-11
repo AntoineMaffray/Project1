@@ -43,6 +43,7 @@ public class AdminTableviewOfLogins {
     Methods methods = new Methods();
     MethodsConnexion methodsConnexion = new MethodsConnexion();
     ObservableList <User> dataLogin = methodsConnexion.createUserList();
+    TableView<User> table = new TableView<>();
 
     public AdminTableviewOfLogins (Stage primaryStage) throws IOException {
 
@@ -98,7 +99,6 @@ public class AdminTableviewOfLogins {
         identifiantMenu.getItems().addAll(creerItem, modifierItem, supprimerItem);
         aideMenu.getItems().addAll(documentationItem, separator1, rechercherItem);
 
-        TableView<User> table = new TableView<>();
         table.setEditable(true);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
@@ -155,19 +155,27 @@ public class AdminTableviewOfLogins {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-                try {
-                    dataLogin = methodsConnexion.createUserList();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                table.setItems(dataLogin);
             }
         });
 
         item2.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                table.getSelectionModel().getSelectedItem();
+                String toDelete = table.getSelectionModel().getSelectedItem().getLogin();
+                File filetoDelete = new File("C://theEqlbook/AdminInfo/" + toDelete + ".txt");
+                System.out.println(toDelete+".txt");
+                filetoDelete.delete();
+                if (filetoDelete.delete()){
+                    System.out.println("file deleted");
+                }else{
+                    System.out.println("wtf?");
+                }
+                try {
+                    dataLogin = methodsConnexion.createUserList();
+                    table.setItems(dataLogin);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
@@ -192,7 +200,7 @@ public class AdminTableviewOfLogins {
         Label nameLabel = new Label("Prénom");
         TextField newName = new TextField(oldName);
         Label loginLabel = new Label("Identifiant");
-        TextField newLogin = new TextField(oldLogin);
+        TextField newLogin = new TextField(oldLogin.substring(0, oldLogin.length()-4));
         Label newPwLabel = new Label("Nouveau mot de passe");
         TextField newPw = new TextField();
         Label verifPwLabel = new Label("Vérification du mot de passe");
@@ -244,7 +252,7 @@ public class AdminTableviewOfLogins {
                         try {
                             FileWriter frX = new FileWriter(loginFileX);
                             BufferedWriter bwX = new BufferedWriter(frX);
-                            bwX.write(newPw.getText());
+                            bwX.write(methods.hashage(newPw.getText()));
                             bwX.newLine();
                             bwX.write(newSurname.getText());
                             bwX.newLine();
@@ -267,6 +275,15 @@ public class AdminTableviewOfLogins {
                         && oldPassword == newPw.getText()) {
                     System.out.println("Informations identiques, compte non modifié.");
                 }
+                try {
+                    dataLogin = methodsConnexion.createUserList();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                File filetoDelete = new File("C://theEQLBook/AdminInfo/" + oldLogin + ".txt");
+                filetoDelete.delete();
+                table.setItems(dataLogin);
+                stage.close();
             }
         });
     }

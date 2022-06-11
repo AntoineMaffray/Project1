@@ -76,13 +76,16 @@ public class MethodsConnexion {
         File[] content = fileAdmin.listFiles();
         for (File f : content) {
             if (f.isFile()){
-                File fileTemp = new File("C://theEQLBook/AdminInfo" + f.getName() + ".txt");
+                File fileTemp = new File("C://theEQLBook/AdminInfo/" + f.getName());
                 FileReader fr = new FileReader(fileTemp);
                 BufferedReader bf = new BufferedReader(fr);
-                String login = f.getName();
+                String login = f.getName().substring(0, f.getName().length()-4);
                 String password = bf.readLine();
                 String surname = bf.readLine();
                 String name = bf.readLine();
+                User userX = new User(surname, name, login, password);
+                listUser.add(userX);
+                fr.close();
             }
 
         }
