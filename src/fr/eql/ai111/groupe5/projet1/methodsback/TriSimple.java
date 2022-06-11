@@ -54,6 +54,11 @@ public class TriSimple {
         long ref2 = 0; int ref2T = 0; long ref3 = 0; int ref3T = 0;
         long ref4 = 0; int ref4T = 0; long ref5 = 0; int ref5T = 0;
 
+        if (criterion1 == 1){
+            search1 = search1.toUpperCase();
+        } else if (criterion1 == 2) {
+            search1 = search1.substring(0,1).toUpperCase() + search1.substring(1).toLowerCase();
+        }
         try {
             stList1 = (ArrayList<Stagiaire>) arbre.arbreParcoursSearch(criterion1, search1);
         } catch (IOException e) {
@@ -74,10 +79,12 @@ public class TriSimple {
                 case 1:
                     ref2 = REF1;
                     ref2T = ELTREF1;
+                    search2 = search2.toUpperCase();
                     break;
                 case 2:
                     ref2 = REF2;
                     ref2T = ELTREF2;
+                    search2 = search2.substring(0,1).toUpperCase()+search2.substring(1).toLowerCase();
                     break;
                 case 3:
                     ref2 = REF3;
@@ -131,10 +138,12 @@ public class TriSimple {
                 case 1:
                     ref3 = REF1;
                     ref3T = ELTREF1;
+                    search3 = search3.toUpperCase();
                     break;
                 case 2:
                     ref3 = REF2;
                     ref3T = ELTREF2;
+                    search3 = search3.substring(0,1).toUpperCase()+search3.substring(1).toLowerCase();
                     break;
                 case 3:
                     ref3 = REF3;
@@ -188,10 +197,12 @@ public class TriSimple {
                 case 1:
                     ref4 = REF1;
                     ref4T = ELTREF1;
+                    search4 = search4.toUpperCase();
                     break;
                 case 2:
                     ref4 = REF2;
                     ref4T = ELTREF2;
+                    search4 = search4.substring(0,1).toUpperCase()+search4.substring(1).toLowerCase();
                     break;
                 case 3:
                     ref4 = REF3;
@@ -245,10 +256,12 @@ public class TriSimple {
                 case 1:
                     ref5 = REF1;
                     ref5T = ELTREF1;
+                    search5 = search5.toUpperCase();
                     break;
                 case 2:
                     ref5 = REF2;
                     ref5T = ELTREF2;
+                    search5 = search5.substring(0,1).toUpperCase()+search5.substring(1).toLowerCase();
                     break;
                 case 3:
                     ref5 = REF3;

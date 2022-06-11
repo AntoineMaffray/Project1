@@ -505,5 +505,64 @@ public class Arbre {
         }
         return listSearch;
     }
+    public ObservableList <Stagiaire> arbreParcoursInv () throws IOException{
+
+        Methods methods = new Methods();
+        ObservableList <Stagiaire> listSearch = FXCollections.observableArrayList();
+
+        // Ouverture des différentes instances de lecture et écriture
+        RandomAccessFile rafDataBase = new RandomAccessFile("C:/theEQLBook/Raf.bin", "rw");
+
+        long knot = 0;
+
+        arbreRecursif(rafDataBase, methods, listSearch);
+
+        return listSearch;
+
+//        /**
+//         * Affiche l'arbre selon un parcours prefixe
+//         */
+//        public void ParcoursPrefixe() {
+//            System.out.println(getValeur());
+//            if (getSousArbreGauche() != null)
+//                getSousArbreGauche().ParcoursPrefixe();
+//            if (getSousArbreDroit() != null)
+//                getSousArbreDroit().ParcoursPrefixe();
+    }
+    private ObservableList <Stagiaire> arbreRecursifInv (RandomAccessFile rafDataBase, Methods methods,
+                                                      ObservableList listSearch) throws IOException {
+
+        long knot = rafDataBase.getFilePointer();
+        String temp = "";
+
+        // Variables de l'Arbre
+        rafDataBase.seek(knot+REF6);
+        if (rafDataBase.readChar() != '$'){
+            rafDataBase.seek(knot+REF6);
+            String child = String.valueOf(rafDataBase.readChar());
+            rafDataBase.seek(Long.parseLong(methods.removeDollarFromRef(rafDataBase, child)));
+            arbreRecursif(rafDataBase, methods, listSearch);
+        }
+
+        temp = "";
+        rafDataBase.seek(knot);
+        for (int i = 0; i < ELTROUGH; i++){
+            temp+=rafDataBase.readChar();
+        }
+        rafDataBase.seek(knot+REF9);
+        if (rafDataBase.readChar() == 'I'){
+            listSearch.add(methods.createObjectStagiaire(temp));
+        }
+
+        rafDataBase.seek(knot+REF7);
+        if (rafDataBase.readChar() != '$'){
+            rafDataBase.seek(knot+REF7);
+            String child = String.valueOf(rafDataBase.readChar());
+            rafDataBase.seek(Long.parseLong(methods.removeDollarFromRef(rafDataBase, child)));
+            arbreRecursif(rafDataBase, methods, listSearch);
+        }
+
+        return listSearch;
+    }
 
 }

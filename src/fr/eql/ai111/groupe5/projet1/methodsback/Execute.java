@@ -26,7 +26,7 @@ public class Execute {
             eqlBookAdmin.createNewFile();
             FileWriter fw = new FileWriter("C:/theEQLBook/AdminInfo/SuperAdmin/SuperAdmin.txt", false);
             BufferedWriter bw  = new BufferedWriter(fw);
-            bw.write("1234");
+            bw.write(methods.hashage("12345EQL"));
             bw.newLine();
             bw.write("superAdmin");
             bw.close();

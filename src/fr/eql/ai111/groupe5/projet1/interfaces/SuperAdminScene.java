@@ -36,6 +36,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -44,6 +46,7 @@ public class SuperAdminScene {
     Arbre arbre = new Arbre();
     Methods methods = new Methods();
     ObservableList<Stagiaire> data = arbre.arbreParcours();
+    TableView<Stagiaire> table = new TableView<Stagiaire>();
 
     public SuperAdminScene(Stage primaryStage) throws IOException {
         Label label= new Label("the   EQL   BOOK");
@@ -77,6 +80,13 @@ public class SuperAdminScene {
             @Override
             public void handle(ActionEvent event) {
                 Platform.exit();
+                File delete = new File ("Identifiants/Persistance/Login.txt");
+                boolean isDeleted = delete.delete();
+                if (isDeleted) {
+                    System.out.println("Le fichier a bien été supprimé");
+                } else {
+                    System.out.println("Le fichier a bien été créé");
+                }
             }
         });
 
@@ -85,6 +95,17 @@ public class SuperAdminScene {
 
         // Création du MenuItem du menu Compte Admin
         MenuItem gestionAdminMenu = new MenuItem("Gestion de l'administrateur");
+
+        gestionAdminMenu.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    new AdminTableviewOfLogins(primaryStage);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
 
         // Creation des MenuItems du menu Aide
         MenuItem documentationItem = new MenuItem("Documentation");
@@ -185,6 +206,8 @@ public class SuperAdminScene {
         MenuItem item1 = new MenuItem("Modifier");
         MenuItem item2 = new MenuItem("Supprimer");
         contextMenu.getItems().addAll(item1, item2);
+
+        // Instanciation du menu clic-droit
         table.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
 
             @Override
@@ -192,7 +215,7 @@ public class SuperAdminScene {
                 contextMenu.show(table, event.getScreenX(), event.getScreenY());
             }
         });
-
+        // Item 1, "Modifier", du menu clic-droit
         item1.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
@@ -208,12 +231,27 @@ public class SuperAdminScene {
                 String newAdd = methods.createStringOneStagiaire(oldSurname, oldName, oldDept, oldPromo, oldYear);
 
                 modifFormStagiaire(new Stage(), oldSurname, oldName, oldDept, oldPromo, oldYear, newAdd);
+            }
+        });
+        // Item 2, "supprimer", du menu clic-droit
+        item2.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    arbre.arbreDReactivation(methods.createStringOneStagiaire(table.getSelectionModel().getSelectedItem().getSurname(),
+                            table.getSelectionModel().getSelectedItem().getName(),
+                            table.getSelectionModel().getSelectedItem().getDept(),
+                            table.getSelectionModel().getSelectedItem().getPromo(),
+                            table.getSelectionModel().getSelectedItem().getYear()), "I");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 try {
                     data = arbre.arbreParcours();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-
+                table.setItems(data);
             }
         });
 
@@ -303,15 +341,6 @@ public class SuperAdminScene {
         primaryStage.show();
 
     }
-
-//    private ObservableList<Stagiaire> createListStagiaire(){
-//        ObservableList<Stagiaire> list = FXCollections.observableArrayList();
-//        List<Stagiaire> listM = lesStagiaires.fabriqueList();
-//        for (Stagiaire stagiaire : listM) {
-//            list.add(stagiaire);
-//        }
-//        return list;
-//    }
 
     private void createContact(String surname, String name, String login, String password){
         User userX = new User(surname, name, login, password);
@@ -404,6 +433,12 @@ public class SuperAdminScene {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
+                    try {
+                        data = arbre.arbreParcours();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    table.setItems(data);
                     stage.close();
                 } else {
                     System.out.println("Le stagiaire n'a pas ?t? modifi?.");
