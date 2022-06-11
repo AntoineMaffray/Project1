@@ -32,11 +32,11 @@ public class AccueilScene {
     public AccueilScene(Stage primaryStage) {
 
         Label label= new Label("Bienvenue dans l'annuaire EQL BOOK! ");
-        Label label1 = new Label("Vous �tes un :");
-        label.setFont(new Font("Impact", 20));
+        Label label1 = new Label("Vous êtes un :");
+        label.setFont(new Font("Montserrat", 20));
         label.setOpacity(0.9);
         label.setStyle("-fx-text-fill: black");
-        label1.setFont(new Font("Impact", 20));
+        label1.setFont(new Font("Montserrat", 20));
         label1.setOpacity(0.9);
         label1.setStyle("-fx-text-fill: black");
         label.setMaxWidth(Double.MAX_VALUE);
@@ -147,7 +147,11 @@ public class AccueilScene {
                 user = new User(loginTextField.getText(),
                         pswdPasswordField.getText());
                 connexionUser();
-                new AdminScene(primaryStage);
+                try {
+                    new AdminScene(primaryStage);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
         Button btnRedirectionInscription = new Button("Premi�re connexion ");

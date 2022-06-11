@@ -12,6 +12,7 @@ import java.io.IOException;
 
 public class UserDAO {
 
+    Methods methods = new Methods();
     private static final Logger logger = LogManager.getLogger();
     private static final String IDENTIFIANTS = "Identifiants";
 

@@ -1,7 +1,10 @@
 package fr.eql.ai111.groupe5.projet1.interfaces;
 
+import fr.eql.ai111.groupe5.projet1.methodsback.Arbre;
+import fr.eql.ai111.groupe5.projet1.methodsback.Methods;
 import fr.eql.ai111.groupe5.projet1.methodsback.Stagiaire;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -23,12 +26,19 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 
 public class AdminScene {
+        Arbre arbre = new Arbre();
+        Methods methods = new Methods();
+        ObservableList<Stagiaire> data = arbre.arbreParcours();
 
-    public AdminScene(Stage primaryStage) {
+    public AdminScene(Stage primaryStage) throws IOException {
 
             Label label = new Label("ANNUAIRE STAGIAIRES");
             label.setFont(new Font("Arial", 35));
@@ -46,7 +56,41 @@ public class AdminScene {
             Menu aideMenu = new Menu("Aide");
 
             // Creation des MenuItems du menu Fichier
-            MenuItem exportItem = new MenuItem("Export");
+            MenuItem exportPDFItem = new MenuItem("Exporter au format PDF");
+            exportPDFItem.setAccelerator(KeyCombination.keyCombination("Ctrl+E"));
+            exportPDFItem.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                            final Stage dialog = new Stage();
+                            dialog.initModality(Modality.APPLICATION_MODAL);
+                            dialog.initOwner(primaryStage);
+                            VBox dialogVbox = new VBox();
+                            HBox hBox = new HBox();
+                            dialogVbox.getChildren().add(new Text("Veuillez entrer un nom de fichier"));
+                            TextField tf = new TextField();
+                            hBox.getChildren().add(tf);
+                            Button btn = new Button("Valider");
+                            hBox.getChildren().add(btn);
+                            dialogVbox.getChildren().add(hBox);
+                            btn.setOnAction(new EventHandler<ActionEvent>() {
+                                    @Override
+                                    public void handle(ActionEvent event) {
+                                            String namePDF = null;
+                                            namePDF = tf.getText();
+                                            tf.clear();
+                                            try {
+                                                    methods.ExportPDF(data, namePDF);
+                                            } catch (IOException e) {
+                                                    throw new RuntimeException(e);
+                                            }
+                                            dialog.close();
+                                    }
+                            });
+                            Scene dialogScene = new Scene(dialogVbox, 300, 200);
+                            dialog.setScene(dialogScene);
+                            dialog.show();
+                    }
+            });
             SeparatorMenuItem separator= new SeparatorMenuItem();
             MenuItem quitterItem = new MenuItem("Quitter");
             // Sp�cifier un raccourci clavier au menuItem Quitter.
@@ -66,7 +110,7 @@ public class AdminScene {
             MenuItem documentationItem = new MenuItem("Documentation");
 
             // Ajouter les menuItems aux Menus
-            fichierMenu.getItems().addAll(exportItem, separator, quitterItem);
+            fichierMenu.getItems().addAll(exportPDFItem, separator, quitterItem);
             compteMenu.getItems().add(modifierItem);
             aideMenu.getItems().addAll(documentationItem);
 

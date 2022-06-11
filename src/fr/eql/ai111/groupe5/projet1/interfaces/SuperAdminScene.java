@@ -47,7 +47,7 @@ public class SuperAdminScene {
 
     public SuperAdminScene(Stage primaryStage) throws IOException {
         Label label= new Label("the   EQL   BOOK");
-        label.setFont(new Font("Impact", 50));
+        label.setFont(new Font("Montserrat", 50));
         label.setOpacity(0.9);
         label.setStyle("-fx-text-fill: black");
         label.setMaxWidth(Double.MAX_VALUE);
@@ -313,8 +313,8 @@ public class SuperAdminScene {
 //        return list;
 //    }
 
-    private void createContact(String surname, String name, String login){
-        User userX = new User(surname, name, login);
+    private void createContact(String surname, String name, String login, String password){
+        User userX = new User(surname, name, login, password);
     }
 
 

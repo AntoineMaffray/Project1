@@ -57,19 +57,6 @@ public class UserScene {
         Menu aideMenu = new Menu("Aide");
 
         // Creation des MenuItems du menu Fichier
-        MenuItem exportItem = new MenuItem("Export");
-        SeparatorMenuItem separator= new SeparatorMenuItem();
-        MenuItem quitterItem = new MenuItem("Quitter");
-        // Sp�cifier un raccourci clavier au menuItem Quitter.
-        quitterItem.setAccelerator(KeyCombination.keyCombination("Ctrl+Q"));
-        // Gestion du click sur le menuItem Quitter.
-        quitterItem.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Platform.exit();
-            }
-        });
-
         MenuItem exportPDFItem = new MenuItem("Exporter au format PDF");
         exportPDFItem.setAccelerator(KeyCombination.keyCombination("Ctrl+E"));
         exportPDFItem.setOnAction(new EventHandler<ActionEvent>() {
@@ -105,6 +92,18 @@ public class UserScene {
                 dialog.show();
             }
         });
+        SeparatorMenuItem separator= new SeparatorMenuItem();
+        MenuItem quitterItem = new MenuItem("Quitter");
+        // Sp�cifier un raccourci clavier au menuItem Quitter.
+        quitterItem.setAccelerator(KeyCombination.keyCombination("Ctrl+Q"));
+        // Gestion du click sur le menuItem Quitter.
+        quitterItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Platform.exit();
+            }
+        });
+
 
         // Creation des MenuItems du menu Aide
         MenuItem documentationItem = new MenuItem("Documentation");
