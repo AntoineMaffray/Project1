@@ -41,7 +41,7 @@ public class AdminScene {
     public AdminScene(Stage primaryStage) throws IOException {
 
             Label label = new Label("ANNUAIRE STAGIAIRES");
-            label.setFont(new Font("Arial", 35));
+            label.setFont(new Font("Montserrat", 35));
             label.setMaxWidth(Double.MAX_VALUE);
             AnchorPane.setLeftAnchor(label, 0.0);
             AnchorPane.setRightAnchor(label, 0.0);

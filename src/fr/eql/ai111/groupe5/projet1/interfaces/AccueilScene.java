@@ -151,7 +151,11 @@ public class AccueilScene {
                 user = new User(loginTextField.getText(),
                         pswdPasswordField.getText());
                 connexionUser();
-                new AdminScene(primaryStage);
+                try {
+                    new AdminScene(primaryStage);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
                 File keepLogin = new File ("Identifiants/Persistance");
                     keepLogin.mkdir();
                 File keepLogin2 = new File("Identifiants/Persistance/Login.txt");
