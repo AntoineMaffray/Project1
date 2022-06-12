@@ -8,7 +8,7 @@ public class User {
         private String password;
         private String role;
 
-
+        // Constructeur utilisé pour les méthodes de bases //
         public User(String surname, String name, String login, String password, String role) {
             this.surname = surname;
             this.name = name;
@@ -17,7 +17,7 @@ public class User {
             this.role = role;
         }
 
-        // constructeur pour l'affichage du login
+        // Constructeur pour l'affichage du login //
     public User(String surname, String name, String login, String password) {
         this.surname = surname;
         this.name = name;
@@ -25,6 +25,7 @@ public class User {
         this.password = password;
     }
 
+    // Constructeur pour la connexion //
     public User(String login, String password) {
         this.login = login;
         this.password = password;
