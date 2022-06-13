@@ -1,9 +1,9 @@
 package fr.eql.ai111.groupe5.projet1.interfaces;
 
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import fr.eql.ai111.groupe5.projet1.methodsback.Methods;
 import fr.eql.ai111.groupe5.projet1.methodsback.User;
 import fr.eql.ai111.groupe5.projet1.methodsback.UserDAO;
-import fr.eql.ai111.groupe5.projet1.methodsback.UserPersistance;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -22,23 +22,24 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class ConnexionScene {
     User user;
     UserDAO dao = new UserDAO();
     Methods methods = new Methods();
-    UserPersistance userPersistance = new UserPersistance();
 
     public ConnexionScene(Stage primaryStage) throws IOException {
 
         //////////////////// LABEL - TITRE DE LA SCENE CONNEXION //////////////////////////////
         /*
-        Cr�ation du titre du fichier en texte avec son style.
-        Cr�ation du formulaire de connexion avec le login et password.
+        Création du titre du fichier en texte avec son style.
+        Création du formulaire de connexion avec le login et password.
          */
         Text titre = new Text("Connexion");
         titre.setFont(Font.font("Roboto", FontWeight.BOLD, 20));
@@ -65,7 +66,7 @@ public class ConnexionScene {
         btnValidation.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                userPersistance.setLogin(loginTextField.getText());
+                User user = new User(loginTextField.getText());
                 if (loginTextField.getText().equals("SUPERADMIN")) {
                     File readLogin = new File("C://theEqlbook/AdminInfo/SuperAdmin/SUPERADMIN.txt");
                     FileReader fr = null;
@@ -86,9 +87,12 @@ public class ConnexionScene {
                     if (verif.equals(methods.hashage(pswdPasswordField.getText()))) {
                         try {
                             new SuperAdminScene(primaryStage);
+                            messageBienvenue(user);
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
                         }
+                    } else {
+                        idendifiantsIncorrects();
                     }
 
                 } else { File readLogin = new File("C://theEqlbook/AdminInfo/" + loginTextField.getText() + ".txt");
@@ -110,52 +114,32 @@ public class ConnexionScene {
                     if (verif.equals(methods.hashage(pswdPasswordField.getText()))) {
                         try {
                             new AdminScene(primaryStage);
+                            keepLoginWriting(user.getLogin());
+                            messageBienvenue(user);
                         } catch (IOException ex) {
-                            idendifiantsIncorrects();
+                            throw new RuntimeException(ex);
                         }
+                    } else {
+                        idendifiantsIncorrects();
                     }
+                }}
+        });
 
-                }
-                messageBienvenue(userPersistance);
-
-
-
-
-//                try {
-//                    new AdminScene(primaryStage);
-//                } catch (IOException ex) {
-//                    throw new RuntimeException(ex);
-//                }
-//                File keepLogin = new File("Identifiants/Persistance");
-//                keepLogin.mkdir();
-//                File keepLogin2 = new File("Identifiants/Persistance/Login.txt");
-//                try {
-//                    FileWriter fw = new FileWriter(keepLogin2, false);
-//                    BufferedWriter bw = new BufferedWriter(fw);
-//                    bw.write(user.getLogin());
-//                    bw.close();
-//                    fw.close();
-//                } catch (IOException ex) {
-//                    throw new RuntimeException(ex);
-//                }
-//
+        Button btnRedirectionInscription = new Button("Première connexion ");
+        btnRedirectionInscription.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                new InscriptionScene(primaryStage);
             }
         });
-                Button btnRedirectionInscription = new Button("Premi�re connexion ");
-                btnRedirectionInscription.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent e) {
-                        new InscriptionScene(primaryStage);
-                    }
-                });
 
-                Button btnRetourAccueil = new Button("Retour accueil");
-                btnRetourAccueil.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        new AccueilScene(primaryStage);
-                    }
-                });
+        Button btnRetourAccueil = new Button("Retour accueil");
+        btnRetourAccueil.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                new AccueilScene(primaryStage);
+            }
+        });
                 //////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -163,67 +147,84 @@ public class ConnexionScene {
         /*
         On affiche tous les �l�ments dans une GridPane, que l'on int�gre dans une sc�ne et ensuite un stage.
          */
-                HBox hbBtnValidation = new HBox(10);
-                hbBtnValidation.setAlignment(Pos.BOTTOM_RIGHT);
-                hbBtnValidation.getChildren().add(btnValidation);
+        HBox hbBtnValidation = new HBox(10);
+        hbBtnValidation.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtnValidation.getChildren().add(btnValidation);
 
-                HBox hbBtnRedirectionInscription = new HBox(10);
-                hbBtnRedirectionInscription.setAlignment(Pos.BOTTOM_RIGHT);
-                hbBtnRedirectionInscription.getChildren().add(btnRedirectionInscription);
+        HBox hbBtnRedirectionInscription = new HBox(10);
+        hbBtnRedirectionInscription.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtnRedirectionInscription.getChildren().add(btnRedirectionInscription);
 
-                HBox hbBtnRedirectionAccueil = new HBox(10);
-                hbBtnRedirectionAccueil.setAlignment(Pos.BOTTOM_RIGHT);
-                hbBtnRedirectionAccueil.getChildren().add(btnRetourAccueil);
+        HBox hbBtnRedirectionAccueil = new HBox(10);
+        hbBtnRedirectionAccueil.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtnRedirectionAccueil.getChildren().add(btnRetourAccueil);
 
-                GridPane grille = new GridPane();
-                grille.setAlignment(Pos.CENTER);
-                grille.setHgap(10);
-                grille.setVgap(10);
-                grille.setPadding(new Insets(10, 10, 10, 10));
-                grille.add(titre, 1, 0, 2, 1);
-                grille.add(login, 0, 1);
-                grille.add(loginTextField, 1, 1);
-                grille.add(pswd, 0, 2);
-                grille.add(pswdPasswordField, 1, 2);
-                grille.add(hbBtnValidation, 0, 4);
-                grille.add(hbBtnRedirectionInscription, 1, 4);
-                grille.add(hbBtnRedirectionAccueil, 1, 8);
+        GridPane grille = new GridPane();
+        grille.setAlignment(Pos.CENTER);
+        grille.setHgap(10);
+        grille.setVgap(10);
+        grille.setPadding(new Insets(10, 10, 10, 10));
+        grille.add(titre, 1, 0, 2, 1);
+        grille.add(login, 0, 1);
+        grille.add(loginTextField, 1, 1);
+        grille.add(pswd, 0, 2);
+        grille.add(pswdPasswordField, 1, 2);
+        grille.add(hbBtnValidation, 0, 4);
+                   grille.add(hbBtnRedirectionInscription, 1, 4);
+        grille.add(hbBtnRedirectionAccueil, 1, 8);
 
-                Scene connexion = new Scene(grille, 400, 350);
-                connexion.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
-                primaryStage.setScene(connexion);
-                primaryStage.setTitle("Connexion");
-                primaryStage.show();
-            }
-            ////////////////////////////////////////////////////////////////////////////////////////
+        Scene connexion = new Scene(grille, 400, 350);
+        connexion.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+        primaryStage.setScene(connexion);
+        primaryStage.setTitle("Connexion");
+        primaryStage.show();
+        }
+    ////////////////////////////////////////////////////////////////////////////////////////
 
 
 
-            private void idendifiantsIncorrects() {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Message d'erreur");
+    private void idendifiantsIncorrects() {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Message d'erreur");
 
-                // Header Text: null
-                alert.setHeaderText(null);
-                alert.setContentText("Votre identifiant et mot de passe sont incorrects");
+        // Header Text: null
+        alert.setHeaderText(null);
+        alert.setContentText("Votre identifiant et mot de passe sont incorrects");
 
-                alert.showAndWait();
-            }
+        alert.showAndWait();
+    }
 
-            private void messageBienvenue(UserPersistance userPersistance) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Message de Bienvenue");
+    private void messageBienvenue(User user) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Message de Bienvenue");
 
-                // Header Text: null
-                alert.setHeaderText(null);
-                alert.setContentText("Bienvenue " + userPersistance.getLogin() + " " + " ! ");
+        // Header Text: null
+        alert.setHeaderText(null);
+        alert.setContentText("Bienvenue " + user.getLogin() + " " + " ! ");
 
-                alert.showAndWait();
-            }
+        alert.showAndWait();
+    }
+    private void keepLoginWriting(String login) throws IOException {
 
-            public String loginMemory(User user) {
-                return user.getLogin();
-            }
-
+        File keepLoginFolder = new File("c://theEqlBook/AdminInfo/Persistance/");
+        if (!keepLoginFolder.exists()){
+            keepLoginFolder.mkdirs();
+        }
+        File keepLoginFile = new File("c://theEqlBook/AdminInfo/Persistance/Login.txt");
+        if (keepLoginFile.exists()){
+            keepLoginFile.delete();
+            keepLoginFile.createNewFile();
+        }
+        FileWriter fw = new FileWriter(keepLoginFile);
+        BufferedWriter bw = new BufferedWriter(fw);
+        bw.write(login);
+        fw.close();
+        bw.close();
+    }
+    public void readKeepLogin(String login) throws FileNotFoundException {
+        File keepLogin = new File("c://theEqlBook/AdminInfo/Persistance/"+login+".txt");
+        boolean created = keepLogin.mkdir();
+        FileReader fr = new FileReader(keepLogin);
+    }
 }
 

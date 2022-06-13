@@ -171,13 +171,13 @@ public class SuperAdminScene {
             @Override
             public void handle(ActionEvent event) {
                 Platform.exit();
-//                File delete = new File ("Identifiants/Persistance/Login.txt");
-//                boolean isDeleted = delete.delete();
-//                if (isDeleted) {
-//                    System.out.println("Le fichier a bien été supprimé");
-//                } else {
-//                    System.out.println("Le fichier a bien été créé");
-//                }
+                File delete = new File ("Identifiants/Persistance/Login.txt");
+                boolean isDeleted = delete.delete();
+                if (isDeleted) {
+                    System.out.println("Le fichier a bien été supprimé");
+                } else {
+                    System.out.println("Le fichier a bien été créé");
+                }
                 }
             });
 

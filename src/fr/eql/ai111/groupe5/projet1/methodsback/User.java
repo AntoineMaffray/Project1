@@ -26,9 +26,8 @@ public class User {
     }
 
     // Constructeur pour la connexion //
-    public User(String login, String password) {
+    public User(String login) {
         this.login = login;
-        this.password = password;
     }
 
     public String getSurname() {

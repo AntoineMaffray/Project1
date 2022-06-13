@@ -3,6 +3,7 @@ package fr.eql.ai111.groupe5.projet1.interfaces;
 
 import fr.eql.ai111.groupe5.projet1.methodsback.User;
 import fr.eql.ai111.groupe5.projet1.methodsback.UserDAO;
+import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
