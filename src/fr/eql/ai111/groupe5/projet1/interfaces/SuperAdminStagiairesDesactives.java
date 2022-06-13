@@ -251,7 +251,7 @@ public class SuperAdminStagiairesDesactives {
         yearCol.setCellValueFactory(new PropertyValueFactory<Stagiaire,Integer>("year"));
 
         //On ajoute les cinq colonnes ? la table//
-        table.getColumns().addAll(surnameCol, nameCol, deptCol, promoCol, yearCol);
+        tableDeactivated.getColumns().addAll(surnameCol, nameCol, deptCol, promoCol, yearCol);
         //On ajoute les cinq colonnes � la table//
         tableDeactivated.getColumns().addAll(surnameCol, nameCol, deptCol, promoCol, yearCol);
 
