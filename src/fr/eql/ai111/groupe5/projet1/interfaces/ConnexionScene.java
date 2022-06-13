@@ -114,8 +114,8 @@ public class ConnexionScene {
                     }
                     if (verif.equals(methods.hashage(pswdPasswordField.getText()))) {
                         try {
+                            keepLoginWriting(loginTextField.getText());
                             new AdminScene(primaryStage);
-                            keepLoginWriting(user.getLogin());
                             messageBienvenue(user);
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
@@ -207,11 +207,11 @@ public class ConnexionScene {
     }
     private void keepLoginWriting(String login) throws IOException {
 
-        File keepLoginFolder = new File("c://theEqlBook/AdminInfo/Persistance/");
+        File keepLoginFolder = new File("c://theEqlbSook/AdminInfo/Persistance/");
         if (!keepLoginFolder.exists()){
             keepLoginFolder.mkdirs();
         }
-        File keepLoginFile = new File("c://theEqlBook/AdminInfo/Persistance/Login.txt");
+        File keepLoginFile = new File("C:/theEqlbook/AdminInfo/Persistance/Login.txt");
         if (keepLoginFile.exists()){
             keepLoginFile.delete();
             keepLoginFile.createNewFile();
@@ -219,13 +219,17 @@ public class ConnexionScene {
         FileWriter fw = new FileWriter(keepLoginFile);
         BufferedWriter bw = new BufferedWriter(fw);
         bw.write(login);
-        fw.close();
         bw.close();
+        fw.close();
     }
-    public void readKeepLogin(String login) throws FileNotFoundException {
-        File keepLogin = new File("c://theEqlBook/AdminInfo/Persistance/"+login+".txt");
-        boolean created = keepLogin.mkdir();
+    public String readKeepLogin() throws IOException {
+        File keepLogin = new File("c://theEqlBook/AdminInfo/Persistance/Login.txt");
         FileReader fr = new FileReader(keepLogin);
+        BufferedReader br = new BufferedReader(fr);
+        String login = br.readLine();
+        fr.close();
+        br.close();
+        return login;
     }
 }
 
