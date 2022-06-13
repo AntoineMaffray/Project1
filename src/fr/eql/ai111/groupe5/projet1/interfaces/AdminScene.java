@@ -31,10 +31,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -85,7 +84,7 @@ public class AdminScene {
             rechercherItem.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
-                            new Search(primaryStage);
+                            new SearchMenuBarAdmin(primaryStage);
                     }
             });
             MenuItem retourAccueilItem = new MenuItem("Retour accueil");
@@ -370,18 +369,18 @@ public class AdminScene {
         private boolean confirmationSuppression() {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Supprimer l'utilisateur");
-                alert.setHeaderText("Etes-vous s?r de vouloir supprimer l'utilisateur?");
+                alert.setHeaderText("Etes-vous sûr de vouloir supprimer l'utilisateur?");
 
                 // option != null.
                 Optional<ButtonType> option = alert.showAndWait();
 
                 if (option.get() == null) {
-                        this.label.setText("Aucun utilisateur n'a ?t? s?lectionn?");
+                        this.label.setText("Aucun utilisateur n'a été sélectionné");
                 } else if (option.get() == ButtonType.OK) {
-                        this.label.setText("Utilisateur supprim?!");
+                        this.label.setText("Utilisateur supprimé!");
                         return true;
                 } else if (option.get() == ButtonType.CANCEL) {
-                        this.label.setText("Annul?");
+                        this.label.setText("Annulé");
                         alert.close();
                 } else {
                         this.label.setText("-");

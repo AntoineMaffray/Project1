@@ -28,10 +28,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class UserScene {
@@ -79,7 +79,7 @@ public class UserScene {
         rechercherItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                new Search(primaryStage);
+                new SearchMenuBarUser(primaryStage);
             }
         });
         MenuItem retourAccueilItem = new MenuItem("Retour accueil");
@@ -107,20 +107,6 @@ public class UserScene {
                 TextField tf = new TextField("");
                 tf.setPromptText("Veuillez entrer un nom de fichier");
                 Button btn = new Button("Valider");
-                btn.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        String namePDF = null;
-                        namePDF = tf.getText();
-                        tf.clear();
-                        try {
-                            methods.ExportPDF(data, namePDF);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                        dialog.close();
-                    }
-                });
 
                 Button btnFermer = new Button("Fermer");
                 btnFermer.setOnAction(new EventHandler<ActionEvent>() {
@@ -149,6 +135,21 @@ public class UserScene {
                 dialogScene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
                 dialog.setTitle("Export fichier PDF");
                 dialog.show();
+
+                btn.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        String namePDF = null;
+                        namePDF = tf.getText();
+                        tf.clear();
+                        try {
+                            methods.ExportPDF(data, namePDF);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                        dialog.close();
+                    }
+                });
             }
         });
         SeparatorMenuItem separator= new SeparatorMenuItem();
