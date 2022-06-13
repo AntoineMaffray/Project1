@@ -135,15 +135,14 @@ public class InscriptionScene {
     private void inscriptionUser(User user) {
 
         /*
-         Si la m?thode 'createAccount' retourne false, alors le fichier utilisateur
-         n'as pas ?t? cr?? car un autre portant le m?me nom (correspondant au login
-         entr?) existe d?j?.
+         Si la méthode 'createAccount' retourne false, alors le fichier utilisateur
+         n'as pas été créé car un autre portant le même nom (correspondant au login
+         entré) existe déjà.
          */
         boolean isCreated = dao.createAccount(user.getName(),
                 user.getSurname(),
                 user.getLogin(),
-                user.getPassword(),
-                user.getRole());
+                user.getPassword());
         if (!isCreated) {
             ;
         }
@@ -163,20 +162,5 @@ public class InscriptionScene {
         return user.getLogin();
     }
 
-    private void inscriptionUser(User user) {
-
-        /*
-         Si la m?thode 'createAccount' retourne false, alors le fichier utilisateur
-         n'as pas ?t? cr?? car un autre portant le m?me nom (correspondant au login
-         entr?) existe d?j?.
-         */
-        boolean isCreated = dao.createAccount(user.getName(),
-                user.getSurname(),
-                user.getLogin(),
-                user.getPassword());
-        if (!isCreated) {
-            idendifiantsDejaCrees();
-        }
-    }
 
 }

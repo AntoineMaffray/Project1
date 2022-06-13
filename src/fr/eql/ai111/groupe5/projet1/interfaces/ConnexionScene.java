@@ -4,6 +4,7 @@ import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import fr.eql.ai111.groupe5.projet1.methodsback.Methods;
 import fr.eql.ai111.groupe5.projet1.methodsback.User;
 import fr.eql.ai111.groupe5.projet1.methodsback.UserDAO;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -14,7 +15,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
@@ -134,13 +134,13 @@ public class ConnexionScene {
             }
         });
 
-        Button btnRetourAccueil = new Button("Retour accueil");
-        btnRetourAccueil.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                new AccueilScene(primaryStage);
-            }
-        });
+                Button btnRetourAccueil = new Button("Déconnexion");
+                btnRetourAccueil.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        new AccueilScene(primaryStage);
+                    }
+                });
                 //////////////////////////////////////////////////////////////////////////////////////
 
 

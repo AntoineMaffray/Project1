@@ -109,8 +109,20 @@ public class SearchMenuBarSuperAdmin {
 //                new SearchMenuBarSuperAdmin(primaryStage);
             }
         });
-        MenuItem retourAccueilItem = new MenuItem("Retour accueil");
-        retourAccueilItem.setOnAction(new EventHandler<ActionEvent>() {
+        MenuItem retourPagePrincipaleItem = new MenuItem("Retour page principale");
+        retourPagePrincipaleItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    new SuperAdminScene(primaryStage);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+        MenuItem deconnexionItem = new MenuItem("Déconnexion");
+        deconnexionItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 new AccueilScene(primaryStage);
@@ -226,7 +238,7 @@ public class SearchMenuBarSuperAdmin {
         MenuItem documentationItem = new MenuItem("Documentation");
 
         // Ajouter les menuItems aux Menus
-        fichierMenu.getItems().addAll(rechercherItem, retourAccueilItem, exportPDFItem, separator, quitterItem);
+        fichierMenu.getItems().addAll(rechercherItem, retourPagePrincipaleItem, deconnexionItem, exportPDFItem, separator, quitterItem);
         compteAdminMenu.getItems().addAll(gestionAdminMenu, deleteStagiairesViewMenu);
         aideMenu.getItems().addAll(documentationItem);
         menuBar.getMenus().addAll(fichierMenu, compteAdminMenu, aideMenu);

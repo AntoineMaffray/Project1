@@ -31,6 +31,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.BufferedReader;
@@ -92,8 +94,8 @@ public class AdminScene {
                             new SearchMenuBarAdmin(primaryStage);
                     }
             });
-            MenuItem retourAccueilItem = new MenuItem("Retour accueil");
-            retourAccueilItem.setOnAction(new EventHandler<ActionEvent>() {
+            MenuItem deconnexionItem = new MenuItem("Déconnexion");
+            deconnexionItem.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
                             new AccueilScene(primaryStage);
@@ -216,7 +218,7 @@ public class AdminScene {
             MenuItem documentationItem = new MenuItem("Documentation");
 
             //Ajout des menusItems au menu, et du menu au menuBar, affichage en BorderPane//
-            fichierMenu.getItems().addAll(rechercherItem, retourAccueilItem, exportPDFItem, separator, quitterItem);
+            fichierMenu.getItems().addAll(rechercherItem, deconnexionItem, exportPDFItem, separator, quitterItem);
             compteMenu.getItems().add(modifierItem);
             aideMenu.getItems().addAll(documentationItem);
             menuBar.getMenus().addAll(fichierMenu, compteMenu, aideMenu);
@@ -429,6 +431,10 @@ public class AdminScene {
 
         public void modifFormStagiaire (Stage stage, String oldSurname, String oldName, String oldDept,
                                          String oldPromo, String oldYear, String newAdd){
+
+                Text titre = new Text("Connexion");
+                titre.setFont(Font.font("Roboto", FontWeight.BOLD, 20));
+
                 Label surnameLabel = new Label();
                 TextField newSurname = new TextField(oldSurname);
                 Label nameLabel = new Label();
@@ -443,10 +449,10 @@ public class AdminScene {
                 Button btnCancel = new Button("Annuler");
 
                 GridPane gridModif = new GridPane();
-                gridModif.setVgap(5);
-                gridModif.setHgap(5);
+                gridModif.setAlignment(Pos.CENTER);
+                gridModif.setVgap(10);
+                gridModif.setHgap(10);
                 gridModif.setPadding(new Insets(5,5,5,5));
-
                 gridModif.add(surnameLabel, 0, 0);
                 gridModif.add(newSurname, 1, 0);
                 gridModif.add(nameLabel, 0, 1);
@@ -460,8 +466,10 @@ public class AdminScene {
                 gridModif.add(btnValidate, 1, 5);
                 gridModif.add(btnCancel, 2, 5);
 
-                Scene subScene = new Scene(gridModif);
+                Scene subScene = new Scene(gridModif, 800, 500);
+                subScene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
                 stage.setScene(subScene);
+                stage.setTitle("Modifier stagiaire");
                 stage.show();
 
 //                public void modifFormAdmin (Stage stage, String login){

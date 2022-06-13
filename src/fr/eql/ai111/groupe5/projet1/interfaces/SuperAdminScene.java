@@ -32,6 +32,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -81,7 +83,6 @@ public class SuperAdminScene {
             //MenuBar et Menus//
             MenuBar menuBar = new MenuBar();
             Menu fichierMenu = new Menu("Fichier");
-            Menu compteMenu = new Menu("Compte administrateur");
             Menu compteAdminMenu = new Menu("Gestion des comptes administrateurs");
             Menu aideMenu = new Menu("Aide");
 
@@ -93,7 +94,7 @@ public class SuperAdminScene {
                 new SearchMenuBarSuperAdmin(primaryStage);
             }
              });
-            MenuItem retourAccueilItem = new MenuItem("Retour accueil");
+            MenuItem retourAccueilItem = new MenuItem("Déconnexion");
             retourAccueilItem.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
@@ -118,7 +119,7 @@ public class SuperAdminScene {
                 TextField tf = new TextField("");
                 tf.setPromptText("Veuillez entrer un nom de fichier");
                 Button btn = new Button("Valider");
-                btn.setOnAction(new EventHandler<ActionEvent>() {
+                EventHandler epdf = new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
                         String namePDF = null;
@@ -131,7 +132,9 @@ public class SuperAdminScene {
                         }
                         dialog.close();
                     }
-                });
+                };
+                btn.setOnAction(epdf);
+                tf.setOnAction(epdf);
 
                 Button btnFermer = new Button("Fermer");
                 btnFermer.setOnAction(new EventHandler<ActionEvent>() {
@@ -181,14 +184,6 @@ public class SuperAdminScene {
                 }
             });
 
-            // MenuItem du menu Mon compte //
-            MenuItem modifierItem = new MenuItem("Modifier mes identifiants");
-            modifierItem.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-
-                }
-            });
 
             // Création du MenuItem du menu Compte Admin
             MenuItem gestionAdminMenu = new MenuItem("Gestion de l'administrateur");
@@ -219,10 +214,9 @@ public class SuperAdminScene {
 
             // Ajouter les menuItems aux Menus
             fichierMenu.getItems().addAll(rechercherItem, retourAccueilItem, exportPDFItem, separator, quitterItem);
-            compteMenu.getItems().add(modifierItem);
             compteAdminMenu.getItems().addAll(gestionAdminMenu, deleteStagiairesViewMenu);
             aideMenu.getItems().addAll(documentationItem);
-            menuBar.getMenus().addAll(fichierMenu, compteMenu, compteAdminMenu, aideMenu);
+            menuBar.getMenus().addAll(fichierMenu, compteAdminMenu, aideMenu);
             BorderPane bp = new BorderPane();
             bp.setTop(menuBar);
             ////////////////////////////////////////////////////////////////////////////////
@@ -467,10 +461,10 @@ public class SuperAdminScene {
         Button btnCancel = new Button("Annuler");
 
         GridPane gridModif = new GridPane();
-        gridModif.setVgap(5);
-        gridModif.setHgap(5);
+        gridModif.setAlignment(Pos.CENTER);
+        gridModif.setVgap(10);
+        gridModif.setHgap(10);
         gridModif.setPadding(new Insets(5,5,5,5));
-
         gridModif.add(surnameLabel, 0, 0);
         gridModif.add(newSurname, 1, 0);
         gridModif.add(nameLabel, 0, 1);
@@ -484,8 +478,10 @@ public class SuperAdminScene {
         gridModif.add(btnValidate, 1, 5);
         gridModif.add(btnCancel, 2, 5);
 
-        Scene subScene = new Scene(gridModif);
+        Scene subScene = new Scene(gridModif, 800, 500);
+        subScene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         stage.setScene(subScene);
+        stage.setTitle("Modifier stagiaire");
         stage.show();
 
         btnValidate.setOnAction(new EventHandler<ActionEvent>() {
