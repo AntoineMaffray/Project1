@@ -55,7 +55,7 @@ public class SearchMenuBarAdmin {
 
         //////////////////// LABEL - TITRE DE LA SCENE SEARCHSCENE //////////////////////////////
         /*
-        Création du titre du fichier en label avec son style.
+        Cr?ation du titre du fichier en label avec son style.
         Pour l'affichage, on utilise un AnchorPane.
          */
         Label label= new Label("RECHERCHE PAR CRITERES");
@@ -70,27 +70,27 @@ public class SearchMenuBarAdmin {
 
         ///////////////////////////// MENU DU FICHIER //////////////////////////////////////
         /*
-        Création du menuBar avec son menu et ses menusItems avec les événements liés :
-        Rechercher => redirection vers la page de recherche de critères.
+        Cr?ation du menuBar avec son menu et ses menusItems avec les ?v?nements li?s :
+        Rechercher => redirection vers la page de recherche de crit?res.
         ExportPDF => export du fichier en PDF.
         Retour => redirection vers la page d'accueil.
         Documentation => consigne pour l'utilisation de l'application
         Quitter => quitter l'application.
-        Après avoir créé le menuBar et les menuItems, on ajoute les menuItems au menu,
+        Apr?s avoir cr?? le menuBar et les menuItems, on ajoute les menuItems au menu,
         et le menu au menuBar.
         Pour l'affichage du menu, on l'inclut dans une BorderPane.
          */
         //MenuBar et Menus//
         ///////////////////////////// MENU DU FICHIER //////////////////////////////////////
         /*
-        Création du menuBar avec son menu et ses menusItems avec les événements liés :
-        Rechercher => redirection vers la page de recherche de critères.
+        Cr?ation du menuBar avec son menu et ses menusItems avec les ?v?nements li?s :
+        Rechercher => redirection vers la page de recherche de crit?res.
         ExportPDF => export du fichier en PDF.
         Retour => redirection vers la page d'accueil.
         Compte administrateur => permet de modifier ses propres identifiants.
         Documentation => consigne pour l'utilisation de l'application
         Quitter => quitter l'application.
-        Après avoir créé le menuBar et les menuItems, on ajoute les menuItems au menu,
+        Apr?s avoir cr?? le menuBar et les menuItems, on ajoute les menuItems au menu,
         et le menu au menuBar.
         Pour l'affichage du menu, on l'inclut dans une BorderPane.
          */
@@ -121,7 +121,7 @@ public class SearchMenuBarAdmin {
             }
         });
 
-        MenuItem deconnexionItem = new MenuItem("Déconnexion");
+        MenuItem deconnexionItem = new MenuItem("D?connexion");
         deconnexionItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -134,7 +134,7 @@ public class SearchMenuBarAdmin {
             @Override
             public void handle(ActionEvent event) {
                 final Stage dialog = new Stage();
-                Label label = new Label("Fichier à exporter");
+                Label label = new Label("Fichier ? exporter");
                 label.setFont(new Font("Montserrat", 20));
                 label.setOpacity(0.9);
                 label.setStyle("-fx-text-fill: black");
@@ -192,7 +192,7 @@ public class SearchMenuBarAdmin {
         });
         SeparatorMenuItem separator= new SeparatorMenuItem();
         MenuItem quitterItem = new MenuItem("Quitter");
-        // Spécifier un raccourci clavier au menuItem Quitter.
+        // Sp?cifier un raccourci clavier au menuItem Quitter.
         quitterItem.setAccelerator(KeyCombination.keyCombination("Ctrl+Q"));
         // Gestion du click sur le menuItem Quitter.
         quitterItem.setOnAction(new EventHandler<ActionEvent>() {
@@ -221,22 +221,22 @@ public class SearchMenuBarAdmin {
 
         ///////////////////////////// TABLE STAGIAIRE /////////////////////////////////
         /*
-        Pour faire apparaître la liste des stagiaires, on inclut les données dans une table.
-        Pour se faire, on créé 5 colonnes avec les informations requises
-        (nom, prénom, département,formation et année), en divisant par cellule,
-        et on récupère les données du fichier via la méthode observable liste.
+        Pour faire appara?tre la liste des stagiaires, on inclut les donn?es dans une table.
+        Pour se faire, on cr?? 5 colonnes avec les informations requises
+        (nom, pr?nom, d?partement,formation et ann?e), en divisant par cellule,
+        et on r?cup?re les donn?es du fichier via la m?thode observable liste.
          */
         TableView<Stagiaire> table = new TableView<Stagiaire>();
         table.setEditable(true);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        //Création des cinq colonnes de la table //
+        //Cr?ation des cinq colonnes de la table //
         TableColumn<Stagiaire, String> surnameCol = new TableColumn<Stagiaire, String>("Nom");
         surnameCol.setMinWidth(250);
-        //Spécifier comment remplir la donnée pour chaque cellule de cette colonne avec un "cell valu factory//
+        //Sp?cifier comment remplir la donn?e pour chaque cellule de cette colonne avec un "cell valu factory//
         surnameCol.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("surname"));
 
-        TableColumn<Stagiaire, String> nameCol = new TableColumn<Stagiaire, String>("Prénom");
+        TableColumn<Stagiaire, String> nameCol = new TableColumn<Stagiaire, String>("Pr?nom");
         nameCol.setMinWidth(250);
         nameCol.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("name"));
 
@@ -248,11 +248,11 @@ public class SearchMenuBarAdmin {
         promoCol.setMinWidth(250);
         promoCol.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("promo"));
 
-        TableColumn<Stagiaire, Integer> yearCol = new TableColumn<Stagiaire, Integer>("Année");
+        TableColumn<Stagiaire, Integer> yearCol = new TableColumn<Stagiaire, Integer>("Ann?e");
         yearCol.setMinWidth(200);
         yearCol.setCellValueFactory(new PropertyValueFactory<Stagiaire,Integer>("year"));
 
-        //On ajoute les cinq colonnes à la table//
+        //On ajoute les cinq colonnes ? la table//
         table.getColumns().addAll(surnameCol, nameCol, deptCol, promoCol, yearCol);
 
         //On remplit la table avec la liste observable//
@@ -262,16 +262,16 @@ public class SearchMenuBarAdmin {
 
         ///////////////////////////// RECHERCHE PAR CRITERES /////////////////////////////////
         /*
-        Pour la recherche par critères, des champs de textes avec des listes ont été créés,
+        Pour la recherche par crit?res, des champs de textes avec des listes ont ?t? cr??s,
         avec des boutons plus et moins, et le bouton rechercher qui permet d'effectuer le
         tri simple.
-        Ces éléments sont placés dans une Hbox
+        Ces ?l?ments sont plac?s dans une Hbox
          */
-        //Création des champs de recherches, de leur apparition/disparition//
+        //Cr?ation des champs de recherches, de leur apparition/disparition//
         HBox hbox = new HBox();
         hbox.setSpacing(10);
         ObservableList<String> values = FXCollections.observableArrayList
-                ("Nom", "Prénom", "Département", "Formation", "Année");
+                ("Nom", "Pr?nom", "D?partement", "Formation", "Ann?e");
         TextField criterionField1 = new TextField();
         criterionField1.setPrefWidth(120);
         ChoiceBox<String> combo1 = new ChoiceBox<>();
@@ -377,7 +377,7 @@ public class SearchMenuBarAdmin {
 
         ///////////////////////////// AFFICHAGE DES ELEMENTS //////////////////////////////////
         /*
-        On affiche tous les éléments dans une VBox, que l'on intègre dans une scène et ensuite un stage.
+        On affiche tous les ?l?ments dans une VBox, que l'on int?gre dans une sc?ne et ensuite un stage.
          */
         VBox search = new VBox();
         search.setSpacing(5);
@@ -393,9 +393,9 @@ public class SearchMenuBarAdmin {
 
         ///////////////////////////// METHODE DE TRI SIMPLE //////////////////////////////////
         /*
-        L'événement est placée à la fin afin qu'il puisse prendre en compte tous les éléments précédents.
+        L'?v?nement est plac?e ? la fin afin qu'il puisse prendre en compte tous les ?l?ments pr?c?dents.
          */
-        btnRechercher.setOnAction(new EventHandler<ActionEvent>() {
+        EventHandler cs = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 System.out.println(combo2.getValue()+"/" + combo3.getValue()+"/" +combo4.getValue()+"/" +combo5.getValue());
@@ -445,7 +445,13 @@ public class SearchMenuBarAdmin {
                     throw new RuntimeException(e);
                 }
                 table.setItems(data);
-            }});
+            }};
+        btnRechercher.setOnAction(cs);
+        criterionField1.setOnAction(cs);
+        criterionField2.setOnAction(cs);
+        criterionField3.setOnAction(cs);
+        criterionField4.setOnAction(cs);
+        criterionField5.setOnAction(cs);
 
     }
 
@@ -455,16 +461,16 @@ public class SearchMenuBarAdmin {
             case "Nom":
                 criterionConvert = 1;
                 break;
-            case "Prénom":
+            case "Pr?nom":
                 criterionConvert = 2;
                 break;
-            case "Département":
+            case "D?partement":
                 criterionConvert = 3;
                 break;
             case "Formation":
                 criterionConvert = 4;
                 break;
-            case "Année":
+            case "Ann?e":
                 criterionConvert = 5;
                 break;
             default:

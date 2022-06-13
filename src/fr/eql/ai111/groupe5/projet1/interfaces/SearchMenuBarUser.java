@@ -377,6 +377,7 @@ public class SearchMenuBarUser {
         EventHandler cs = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                System.out.println(combo2.getValue()+"/" + combo3.getValue()+"/" +combo4.getValue()+"/" +combo5.getValue());
                 int criterion1 = conversionCriterion(combo1.getValue().toString());
                 String search1 = criterionField1.getText();
                 int criterion2;
@@ -409,6 +410,11 @@ public class SearchMenuBarUser {
                 }
                 String search5 = criterionField5.getText();
 
+                System.out.println(criterionField2.getText()+" "
+                        +criterionField3.getText()+" "
+                        +criterionField4.getText()+" "
+                        +criterionField5.getText());
+
                 try {
                     data = triSimple.searchByCriterion(criterion1, search1, criterion2, search2, criterion3, search3, criterion4,
                             search4, criterion5, search5);
@@ -420,14 +426,13 @@ public class SearchMenuBarUser {
                 table.setItems(data);
             }};
         btnRechercher.setOnAction(cs);
+        criterionField1.setOnAction(cs);
+        criterionField2.setOnAction(cs);
+        criterionField3.setOnAction(cs);
+        criterionField4.setOnAction(cs);
+        criterionField5.setOnAction(cs);
 
-//        combo1.setOnKeyPressed(event -> {
-//            if (event.getCode() == KeyCode.ENTER) {
-//
-//            }
-//        }););
-
-        }
+    }
 
 
         private int conversionCriterion (String criterion){

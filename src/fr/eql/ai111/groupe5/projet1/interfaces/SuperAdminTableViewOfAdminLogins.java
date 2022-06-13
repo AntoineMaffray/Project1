@@ -32,6 +32,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 import java.io.BufferedWriter;
@@ -335,8 +336,9 @@ public class SuperAdminTableViewOfAdminLogins {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
+                } else {
+                    comptePasEncoreCree();
                 }
-                comptePasEncoreCree();
             }
         });
 
@@ -387,6 +389,7 @@ public class SuperAdminTableViewOfAdminLogins {
             throws IOException {
         try {
             Label titleLabel = new Label("Modification du compte");
+            titleLabel.setFont(Font.font("Roboto", FontWeight.BOLD, 20));
             Label surnameLabel = new Label("Nom");
             TextField newSurname = new TextField(oldSurname);
             Label nameLabel = new Label("Prénom");
@@ -425,7 +428,9 @@ public class SuperAdminTableViewOfAdminLogins {
             gridModif2.add(hboxBtn, 1, 6);
 
             Scene subModifScene = new Scene(gridModif2);
+            subModifScene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
             stage.setScene(subModifScene);
+            stage.setTitle("Modification du compte Administrateur");
             stage.show();
 
             btnValidate.setOnAction(new EventHandler<ActionEvent>() {
