@@ -207,7 +207,7 @@ public class ConnexionScene {
     }
     private void keepLoginWriting(String login) throws IOException {
 
-        File keepLoginFolder = new File("c://theEqlbSook/AdminInfo/Persistance/");
+        File keepLoginFolder = new File("c://theEqlBook/AdminInfo/Persistance/");
         if (!keepLoginFolder.exists()){
             keepLoginFolder.mkdirs();
         }

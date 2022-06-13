@@ -190,7 +190,6 @@ public class AdminScene {
                                     oldLogin = br.readLine() + ".txt";
                                     br.close();
                                     fr.close();
-                                    System.out.println(oldLogin);
                             } catch (IOException e) {
                                     throw new RuntimeException(e);
                             }
@@ -543,6 +542,7 @@ public class AdminScene {
                 throws IOException {
                 try {
                         Label titleLabel = new Label("Modification du compte");
+                        titleLabel.setFont(Font.font("Roboto", FontWeight.BOLD, 20));
                         Label surnameLabel = new Label("Nom");
                         TextField newSurname = new TextField(oldSurname);
                         Label nameLabel = new Label("Prénom");
@@ -581,9 +581,18 @@ public class AdminScene {
                         gridModif2.add(hboxBtn, 1, 6);
 
                         Scene subModifScene = new Scene(gridModif2);
+                        subModifScene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
                         stage.setScene(subModifScene);
+                        stage.setTitle("Modification des identifiants");
                         stage.show();
 
+
+                        btnCancel.setOnAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent event) {
+                                        stage.close();
+                                }
+                        });
                         btnValidate.setOnAction(new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent event) {

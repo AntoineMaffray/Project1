@@ -56,28 +56,6 @@ public class UserScene {
         label.setAlignment(Pos.TOP_CENTER);
         //////////////////////////////////////////////////////////////////////////////////////
 
-
-
-        ///////////////////////////// RECHERCHE PAR NOM //////////////////////////////////////
-        TextField recherche = new TextField();
-        recherche.setPromptText("Veuillez entrer le nom à rechercher");
-        recherche.setPrefSize(150, 30);
-
-        Button btnRechercher = new Button("Rechercher");
-        btnRechercher.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-
-            }
-        });
-        HBox hbox1 = new HBox();
-        hbox1.setSpacing(2);
-        hbox1.setAlignment(Pos.TOP_LEFT);
-        hbox1.getChildren().addAll(recherche, btnRechercher);
-        //////////////////////////////////////////////////////////////////////////////////////
-
-
-
         ///////////////////////////// MENU DU FICHIER //////////////////////////////////////
         /*
         Création du menuBar avec son menu et ses menusItems avec les événements liés :
@@ -234,6 +212,36 @@ public class UserScene {
         //On remplit la table avec la liste observable//
         table.setItems(data);
         /////////////////////////////////////////////////////////////////////////////////
+
+        ///////////////////////////// RECHERCHE PAR NOM //////////////////////////////////////
+        TextField recherche = new TextField();
+        recherche.setPromptText("Veuillez entrer le nom à rechercher");
+        recherche.setPrefSize(150, 30);
+
+        Button btnRechercher = new Button("Rechercher");
+        btnRechercher.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    data = arbre.arbreParcoursSearch(1, recherche.getText());
+                    table.setItems(data);
+
+                } catch (StringIndexOutOfBoundsException | IOException e) {
+                    try {
+                        data = arbre.arbreParcours();
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    table.setItems(data);
+                }
+
+            }
+        });
+        HBox hbox1 = new HBox();
+        hbox1.setSpacing(2);
+        hbox1.setAlignment(Pos.TOP_LEFT);
+        hbox1.getChildren().addAll(recherche, btnRechercher);
+        //////////////////////////////////////////////////////////////////////////////////////
 
 
 

@@ -466,7 +466,7 @@ public class Methods {
             doc.addPage(page);
             PDPageContentStream contentStream = new PDPageContentStream(doc, page);
             PDImageXObject image = PDImageXObject.createFromFile("C:/FolderProjet/eql.png", new PDDocument());
-            PDImageXObject image2 = PDImageXObject.createFromFile("C:/Users/FolderProjet/eqlfil.png", new PDDocument());
+            PDImageXObject image2 = PDImageXObject.createFromFile("C:/FolderProjet/eqlfil.png", new PDDocument());
             contentStream.drawImage(image, 30, 580);
             PDFont pdfFont = new PDType1Font(Standard14Fonts.FontName.HELVETICA);
             // taille des caractères

@@ -47,7 +47,7 @@ public class TriSimple {
         } catch (FileNotFoundException e) {
             throw new RAFException("Le fichier - C:/theEQLBook/Raf.bin/ - n'existe pas.", e);
         }
-        ArrayList <Stagiaire> stList1 = new ArrayList<>(); ArrayList <Stagiaire> stList2 = new ArrayList<>();
+        ObservableList <Stagiaire> stList1 = FXCollections.observableArrayList(); ArrayList <Stagiaire> stList2 = new ArrayList<>();
         ArrayList <Stagiaire> stList3 = new ArrayList<>(); ArrayList <Stagiaire> stList4 = new ArrayList<>();
         ObservableList <Stagiaire> stListResult = FXCollections.observableArrayList();
 
@@ -60,7 +60,7 @@ public class TriSimple {
             search1 = search1.substring(0,1).toUpperCase() + search1.substring(1).toLowerCase();
         }
         try {
-            stList1 = (ArrayList<Stagiaire>) arbre.arbreParcoursSearch(criterion1, search1);
+            stList1 =arbre.arbreParcoursSearch(criterion1, search1);
         } catch (IOException e) {
             throw new RAFException("Le fichier - C:/theEQLBook/Raf.bin/ - n'existe pas ou ne contient rien.", e);
         }
