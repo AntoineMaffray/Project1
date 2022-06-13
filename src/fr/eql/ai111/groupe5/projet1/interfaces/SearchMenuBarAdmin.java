@@ -1,11 +1,10 @@
 package fr.eql.ai111.groupe5.projet1.interfaces;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import fr.eql.ai111.groupe5.projet1.methodsback.Arbre;
 import fr.eql.ai111.groupe5.projet1.methodsback.Methods;
+import fr.eql.ai111.groupe5.projet1.methodsback.RAFException;
 import fr.eql.ai111.groupe5.projet1.methodsback.Stagiaire;
 import fr.eql.ai111.groupe5.projet1.methodsback.TriSimple;
-import fr.eql.ai111.groupe5.projet1.methodsback.RAFException;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,9 +13,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
@@ -27,7 +24,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -35,14 +31,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Optional;
 
-public class Search {
+public class SearchMenuBarAdmin {
     Arbre arbre = new Arbre();
     TriSimple triSimple = new TriSimple();
     ObservableList<Stagiaire> data;
@@ -56,12 +50,12 @@ public class Search {
     }
     int count = 1;
 
-    public Search(Stage primaryStage) {
+    public SearchMenuBarAdmin(Stage primaryStage) {
 
 
         //////////////////// LABEL - TITRE DE LA SCENE SEARCHSCENE //////////////////////////////
         /*
-        Crï¿½ation du titre du fichier en label avec son style.
+        Création du titre du fichier en label avec son style.
         Pour l'affichage, on utilise un AnchorPane.
          */
         Label label= new Label("RECHERCHE PAR CRITERES");
@@ -76,19 +70,34 @@ public class Search {
 
         ///////////////////////////// MENU DU FICHIER //////////////////////////////////////
         /*
-        Crï¿½ation du menuBar avec son menu et ses menusItems avec les ï¿½vï¿½nements liï¿½s :
-        Rechercher => redirection vers la page de recherche de critï¿½res.
+        Création du menuBar avec son menu et ses menusItems avec les événements liés :
+        Rechercher => redirection vers la page de recherche de critères.
         ExportPDF => export du fichier en PDF.
         Retour => redirection vers la page d'accueil.
         Documentation => consigne pour l'utilisation de l'application
         Quitter => quitter l'application.
-        Aprï¿½s avoir crï¿½ï¿½ le menuBar et les menuItems, on ajoute les menuItems au menu,
+        Après avoir créé le menuBar et les menuItems, on ajoute les menuItems au menu,
+        et le menu au menuBar.
+        Pour l'affichage du menu, on l'inclut dans une BorderPane.
+         */
+        //MenuBar et Menus//
+        ///////////////////////////// MENU DU FICHIER //////////////////////////////////////
+        /*
+        Création du menuBar avec son menu et ses menusItems avec les événements liés :
+        Rechercher => redirection vers la page de recherche de critères.
+        ExportPDF => export du fichier en PDF.
+        Retour => redirection vers la page d'accueil.
+        Compte administrateur => permet de modifier ses propres identifiants.
+        Documentation => consigne pour l'utilisation de l'application
+        Quitter => quitter l'application.
+        Après avoir créé le menuBar et les menuItems, on ajoute les menuItems au menu,
         et le menu au menuBar.
         Pour l'affichage du menu, on l'inclut dans une BorderPane.
          */
         //MenuBar et Menus//
         MenuBar menuBar = new MenuBar();
         Menu fichierMenu = new Menu("Fichier");
+        Menu compteMenu = new Menu("Compte administrateur");
         Menu aideMenu = new Menu("Aide");
 
         //MenuItems du fichier//
@@ -96,7 +105,8 @@ public class Search {
         rechercherItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                    new Search(primaryStage);
+
+                //new SearchMenuBarAdmin(primaryStage);
             }
         });
         MenuItem retourAccueilItem = new MenuItem("Retour accueil");
@@ -112,7 +122,7 @@ public class Search {
             @Override
             public void handle(ActionEvent event) {
                 final Stage dialog = new Stage();
-                Label label = new Label("Fichier ï¿½ exporter");
+                Label label = new Label("Fichier à exporter");
                 label.setFont(new Font("Montserrat", 20));
                 label.setOpacity(0.9);
                 label.setStyle("-fx-text-fill: black");
@@ -124,7 +134,7 @@ public class Search {
                 TextField tf = new TextField("");
                 tf.setPromptText("Veuillez entrer un nom de fichier");
                 Button btn = new Button("Valider");
-                EventHandler eventHandler = new EventHandler<ActionEvent>() {
+                btn.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
                         String namePDF = null;
@@ -137,9 +147,7 @@ public class Search {
                         }
                         dialog.close();
                     }
-                };
-                tf.setOnAction(eventHandler);
-                btn.setOnAction(eventHandler);
+                });
 
                 Button btnFermer = new Button("Fermer");
                 btnFermer.setOnAction(new EventHandler<ActionEvent>() {
@@ -172,18 +180,27 @@ public class Search {
         });
         SeparatorMenuItem separator= new SeparatorMenuItem();
         MenuItem quitterItem = new MenuItem("Quitter");
+        // Spécifier un raccourci clavier au menuItem Quitter.
         quitterItem.setAccelerator(KeyCombination.keyCombination("Ctrl+Q"));
+        // Gestion du click sur le menuItem Quitter.
         quitterItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event) {Platform.exit();}
+            public void handle(ActionEvent event) {
+                Platform.exit();
+            }
         });
-        //MenuItem du menu Aide//
+
+        // MenuItem du menu Mon compte //
+        MenuItem modifierItem = new MenuItem("Modifier mes identifiants");
+
+        // MenuItem du menu Aide //
         MenuItem documentationItem = new MenuItem("Documentation");
 
         //Ajout des menusItems au menu, et du menu au menuBar, affichage en BorderPane//
         fichierMenu.getItems().addAll(rechercherItem, retourAccueilItem, exportPDFItem, separator, quitterItem);
+        compteMenu.getItems().add(modifierItem);
         aideMenu.getItems().addAll(documentationItem);
-        menuBar.getMenus().addAll(fichierMenu, aideMenu);
+        menuBar.getMenus().addAll(fichierMenu, compteMenu, aideMenu);
         BorderPane bp = new BorderPane();
         bp.setTop(menuBar);
         ////////////////////////////////////////////////////////////////////////////////
@@ -192,22 +209,22 @@ public class Search {
 
         ///////////////////////////// TABLE STAGIAIRE /////////////////////////////////
         /*
-        Pour faire apparaï¿½tre la liste des stagiaires, on inclut les donnï¿½es dans une table.
-        Pour se faire, on crï¿½ï¿½ 5 colonnes avec les informations requises
-        (nom, prï¿½nom, dï¿½partement,formation et annï¿½e), en divisant par cellule,
-        et on rï¿½cupï¿½re les donnï¿½es du fichier via la mï¿½thode observable liste.
+        Pour faire apparaître la liste des stagiaires, on inclut les données dans une table.
+        Pour se faire, on créé 5 colonnes avec les informations requises
+        (nom, prénom, département,formation et année), en divisant par cellule,
+        et on récupère les données du fichier via la méthode observable liste.
          */
         TableView<Stagiaire> table = new TableView<Stagiaire>();
         table.setEditable(true);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        //Crï¿½ation des cinq colonnes de la table //
+        //Création des cinq colonnes de la table //
         TableColumn<Stagiaire, String> surnameCol = new TableColumn<Stagiaire, String>("Nom");
         surnameCol.setMinWidth(250);
-        //Spï¿½cifier comment remplir la donnï¿½e pour chaque cellule de cette colonne avec un "cell valu factory//
+        //Spécifier comment remplir la donnée pour chaque cellule de cette colonne avec un "cell valu factory//
         surnameCol.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("surname"));
 
-        TableColumn<Stagiaire, String> nameCol = new TableColumn<Stagiaire, String>("Prï¿½nom");
+        TableColumn<Stagiaire, String> nameCol = new TableColumn<Stagiaire, String>("Prénom");
         nameCol.setMinWidth(250);
         nameCol.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("name"));
 
@@ -219,11 +236,11 @@ public class Search {
         promoCol.setMinWidth(250);
         promoCol.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("promo"));
 
-        TableColumn<Stagiaire, Integer> yearCol = new TableColumn<Stagiaire, Integer>("Annï¿½e");
+        TableColumn<Stagiaire, Integer> yearCol = new TableColumn<Stagiaire, Integer>("Année");
         yearCol.setMinWidth(200);
         yearCol.setCellValueFactory(new PropertyValueFactory<Stagiaire,Integer>("year"));
 
-        //On ajoute les cinq colonnes ï¿½ la table//
+        //On ajoute les cinq colonnes à la table//
         table.getColumns().addAll(surnameCol, nameCol, deptCol, promoCol, yearCol);
 
         //On remplit la table avec la liste observable//
@@ -233,16 +250,16 @@ public class Search {
 
         ///////////////////////////// RECHERCHE PAR CRITERES /////////////////////////////////
         /*
-        Pour la recherche par critï¿½res, des champs de textes avec des listes ont ï¿½tï¿½ crï¿½ï¿½s,
+        Pour la recherche par critères, des champs de textes avec des listes ont été créés,
         avec des boutons plus et moins, et le bouton rechercher qui permet d'effectuer le
         tri simple.
-        Ces ï¿½lï¿½ments sont placï¿½s dans une Hbox
+        Ces éléments sont placés dans une Hbox
          */
-        //Crï¿½ation des champs de recherches, de leur apparition/disparition//
+        //Création des champs de recherches, de leur apparition/disparition//
         HBox hbox = new HBox();
         hbox.setSpacing(10);
         ObservableList<String> values = FXCollections.observableArrayList
-                ("Nom", "Prï¿½nom", "Dï¿½partement", "Formation", "Annï¿½e");
+                ("Nom", "Prénom", "Département", "Formation", "Année");
         TextField criterionField1 = new TextField();
         criterionField1.setPrefWidth(120);
         ChoiceBox<String> combo1 = new ChoiceBox<>();
@@ -342,14 +359,13 @@ public class Search {
         connectedComboBox.addComboBox(combo4);
         connectedComboBox.addComboBox(combo5);
 
-
         Button btnRechercher = new Button("Rechercher");
         /////////////////////////////////////////////////////////////////////////////////
 
 
         ///////////////////////////// AFFICHAGE DES ELEMENTS //////////////////////////////////
         /*
-        On affiche tous les ï¿½lï¿½ments dans une VBox, que l'on intï¿½gre dans une scï¿½ne et ensuite un stage.
+        On affiche tous les éléments dans une VBox, que l'on intègre dans une scène et ensuite un stage.
          */
         VBox search = new VBox();
         search.setSpacing(5);
@@ -365,11 +381,12 @@ public class Search {
 
         ///////////////////////////// METHODE DE TRI SIMPLE //////////////////////////////////
         /*
-        L'ï¿½vï¿½nement est placï¿½e ï¿½ la fin afin qu'il puisse prendre en compte tous les ï¿½lï¿½ments prï¿½cï¿½dents.
+        L'événement est placée à la fin afin qu'il puisse prendre en compte tous les éléments précédents.
          */
-        EventHandler cs = new EventHandler<ActionEvent>() {
+        btnRechercher.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                System.out.println(combo2.getValue()+"/" + combo3.getValue()+"/" +combo4.getValue()+"/" +combo5.getValue());
                 int criterion1 = conversionCriterion(combo1.getValue().toString());
                 String search1 = criterionField1.getText();
                 int criterion2;
@@ -402,6 +419,11 @@ public class Search {
                 }
                 String search5 = criterionField5.getText();
 
+                System.out.println(criterionField2.getText()+" "
+                        +criterionField3.getText()+" "
+                        +criterionField4.getText()+" "
+                        +criterionField5.getText());
+
                 try {
                     data = triSimple.searchByCriterion(criterion1, search1, criterion2, search2, criterion3, search3, criterion4,
                             search4, criterion5, search5);
@@ -411,41 +433,32 @@ public class Search {
                     throw new RuntimeException(e);
                 }
                 table.setItems(data);
-            }};
-        btnRechercher.setOnAction(cs);
+            }});
 
-//        combo1.setOnKeyPressed(event -> {
-//            if (event.getCode() == KeyCode.ENTER) {
-//
-//            }
-//        }););
+    }
 
+    private int conversionCriterion (String criterion){
+        int criterionConvert = 0;
+        switch (criterion){
+            case "Nom":
+                criterionConvert = 1;
+                break;
+            case "Prénom":
+                criterionConvert = 2;
+                break;
+            case "Département":
+                criterionConvert = 3;
+                break;
+            case "Formation":
+                criterionConvert = 4;
+                break;
+            case "Année":
+                criterionConvert = 5;
+                break;
+            default:
+                criterionConvert = 0;
+                break;
         }
-
-
-        private int conversionCriterion (String criterion){
-            int criterionConvert = 0;
-            switch (criterion){
-                case "Nom":
-                    criterionConvert = 1;
-                    break;
-                case "Prï¿½nom":
-                    criterionConvert = 2;
-                    break;
-                case "Dï¿½partement":
-                    criterionConvert = 3;
-                    break;
-                case "Formation":
-                    criterionConvert = 4;
-                    break;
-                case "Annï¿½e":
-                    criterionConvert = 5;
-                    break;
-                default:
-                    criterionConvert = 0;
-                    break;
-            }
-            return criterionConvert;
-        }
+        return criterionConvert;
+    }
 }
-

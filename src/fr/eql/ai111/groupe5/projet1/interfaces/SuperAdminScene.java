@@ -32,11 +32,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -81,7 +79,6 @@ public class SuperAdminScene {
             //MenuBar et Menus//
             MenuBar menuBar = new MenuBar();
             Menu fichierMenu = new Menu("Fichier");
-            Menu compteMenu = new Menu("Compte administrateur");
             Menu compteAdminMenu = new Menu("Gestion des comptes administrateurs");
             Menu aideMenu = new Menu("Aide");
 
@@ -90,7 +87,7 @@ public class SuperAdminScene {
             rechercherItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                new Search(primaryStage);
+                new SearchMenuBarSuperAdmin(primaryStage);
             }
              });
             MenuItem retourAccueilItem = new MenuItem("Retour accueil");
@@ -183,14 +180,6 @@ public class SuperAdminScene {
                 }
             });
 
-            // MenuItem du menu Mon compte //
-            MenuItem modifierItem = new MenuItem("Modifier mes identifiants");
-            modifierItem.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-
-                }
-            });
 
             // Cr�ation du MenuItem du menu Compte Admin
             MenuItem gestionAdminMenu = new MenuItem("Gestion de l'administrateur");
@@ -221,10 +210,9 @@ public class SuperAdminScene {
 
             // Ajouter les menuItems aux Menus
             fichierMenu.getItems().addAll(rechercherItem, retourAccueilItem, exportPDFItem, separator, quitterItem);
-            compteMenu.getItems().add(modifierItem);
             compteAdminMenu.getItems().addAll(gestionAdminMenu, deleteStagiairesViewMenu);
             aideMenu.getItems().addAll(documentationItem);
-            menuBar.getMenus().addAll(fichierMenu, compteMenu, compteAdminMenu, aideMenu);
+            menuBar.getMenus().addAll(fichierMenu, compteAdminMenu, aideMenu);
             BorderPane bp = new BorderPane();
             bp.setTop(menuBar);
             ////////////////////////////////////////////////////////////////////////////////

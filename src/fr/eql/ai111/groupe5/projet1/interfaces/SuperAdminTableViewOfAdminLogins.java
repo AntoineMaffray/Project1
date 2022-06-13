@@ -12,6 +12,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
@@ -31,8 +32,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.BufferedWriter;
@@ -82,7 +81,6 @@ public class SuperAdminTableViewOfAdminLogins {
             //MenuBar et Menus//
             MenuBar menuBar = new MenuBar();
             Menu fichierMenu = new Menu("Fichier");
-            Menu compteMenu = new Menu("Compte administrateur");
             Menu compteAdminMenu = new Menu("Gestion des comptes administrateurs");
             Menu aideMenu = new Menu("Aide");
 
@@ -91,7 +89,7 @@ public class SuperAdminTableViewOfAdminLogins {
         rechercherItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                new Search(primaryStage);
+                new SearchMenuBarSuperAdmin(primaryStage);
             }
         });
         MenuItem retourAccueilItem = new MenuItem("Retour accueil");
@@ -182,14 +180,6 @@ public class SuperAdminTableViewOfAdminLogins {
             }
         });
 
-        // MenuItem du menu Mon compte //
-        MenuItem modifierItem = new MenuItem("Modifier mes identifiants");
-        modifierItem.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-
-            }
-        });
 
         // Création du MenuItem du menu Compte Admin
         MenuItem gestionAdminMenu = new MenuItem("Gestion de l'administrateur");
@@ -204,20 +194,33 @@ public class SuperAdminTableViewOfAdminLogins {
             }
         });
 
-        MenuItem deleteAdminViewMenu = new MenuItem("Liste des administrateurs supprimés");
+        MenuItem deleteStagiairesViewMenu = new MenuItem("Liste des stagiares supprimés");
+        deleteStagiairesViewMenu.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    new SuperAdminStagiairesDesactives(primaryStage);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
 
         // MenuItems du menu Aide //
         MenuItem documentationItem = new MenuItem("Documentation");
 
         // Ajouter les menuItems aux Menus
         fichierMenu.getItems().addAll(rechercherItem, retourAccueilItem, exportPDFItem, separator, quitterItem);
-        compteMenu.getItems().add(modifierItem);
-        compteAdminMenu.getItems().addAll(gestionAdminMenu, deleteAdminViewMenu);
+        compteAdminMenu.getItems().addAll(gestionAdminMenu, deleteStagiairesViewMenu);
         aideMenu.getItems().addAll(documentationItem);
-        menuBar.getMenus().addAll(fichierMenu, compteMenu, compteAdminMenu, aideMenu);
+        menuBar.getMenus().addAll(fichierMenu, compteAdminMenu, aideMenu);
         BorderPane bp = new BorderPane();
         bp.setTop(menuBar);
         ////////////////////////////////////////////////////////////////////////////////
+
+
+
+
 
         ///////////////////////////// TABLE ADMINISTRATEUR /////////////////////////////////
             /*
@@ -261,7 +264,7 @@ public class SuperAdminTableViewOfAdminLogins {
         login.setPromptText("Login");
 
         //Creation du bouton avec l'événement et sa méthode de confirmation via une alerte. //
-        Button btnNewLogin = new Button("New Login");
+        Button btnNewLogin = new Button("Nouveau login");
         btnNewLogin.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -269,7 +272,7 @@ public class SuperAdminTableViewOfAdminLogins {
                     createLoginAdmin(login.getText());
                 } catch (IOException e) {
                     throw new RuntimeException(e);
-                }
+                } confirmationInscriptionAdmin();
                 try {
                     dataLogin = methodsConnexion.createUserList();
                     table.setItems(dataLogin);
@@ -281,7 +284,7 @@ public class SuperAdminTableViewOfAdminLogins {
 
         HBox hbox = new HBox();
         hbox.setSpacing(5);
-        hbox.setAlignment(Pos.BOTTOM_LEFT);
+        hbox.setAlignment(Pos.BOTTOM_CENTER);
         hbox.getChildren().addAll(login, btnNewLogin);
 
 
@@ -313,9 +316,11 @@ public class SuperAdminTableViewOfAdminLogins {
                             table.getSelectionModel().getSelectedItem().getName(),
                             table.getSelectionModel().getSelectedItem().getLogin(),
                             table.getSelectionModel().getSelectedItem().getPassword());
-                } catch (IOException e) {
+                }
+                catch (IOException e) {
                     throw new RuntimeException(e);
                 }
+                comptePasEncoreCree();
             }
         });
 
@@ -469,9 +474,28 @@ public class SuperAdminTableViewOfAdminLogins {
         File newLogin = new File ("C://theEQLBook/AdminInfo/"+login+".txt");
 
         if (newLogin.exists()){
-            // rajouter une POP UP identifiants déjà créés
+
         } else {
             newLogin.createNewFile();
         }
+    }
+
+    private void confirmationInscriptionAdmin() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Confirmation Inscription");
+
+        // Texte sans en-t?te
+        alert.setHeaderText(null);
+        alert.setContentText("Votre administrateur a bien été enregistré!");
+        alert.showAndWait();
+    }
+
+    private void comptePasEncoreCree() {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Message d'erreur");
+        // Header Text: null
+        alert.setHeaderText(null);
+        alert.setContentText("L'administrateur ne s'est pas encore inscrit! ");
+        alert.showAndWait();
     }
 }

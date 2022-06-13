@@ -120,7 +120,7 @@ public class AccueilScene {
         grille.add(label, 2, 1);
         grille.add(label1, 2, 2);
         grille.add(hbBtnUser, 1, 4);
-        grille.add(hbBtnAdmin, 2, 4);
+        grille.add(hbBtnAdmin, 3, 4);
 
         Scene accueil = new Scene(grille, 700, 400);
         accueil.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
