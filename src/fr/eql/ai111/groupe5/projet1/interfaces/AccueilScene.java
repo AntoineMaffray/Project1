@@ -37,7 +37,7 @@ public class AccueilScene {
 
         //////////////////// LABEL - TITRE DE LA SCENE ACCUEIL //////////////////////////////
         /*
-        Création du titre du fichier en label avec son style.
+        Cr?ation du titre du fichier en label avec son style.
         Pour l'affichage, on utilise un AnchorPane.
          */
         Label label = new Label("Bienvenue dans l'annuaire EQL BOOK! ");
@@ -49,7 +49,7 @@ public class AccueilScene {
         AnchorPane.setRightAnchor(label, 0.0);
         label.setAlignment(Pos.CENTER);
 
-        Label label1 = new Label("Vous êtes un :");
+        Label label1 = new Label("Vous ?tes un :");
         label1.setFont(new Font("Montserrat", 20));
         label1.setOpacity(0.9);
         label1.setStyle("-fx-text-fill: black");
@@ -62,16 +62,16 @@ public class AccueilScene {
 
         ///////////////////////////// REDIRECTIONS PAGES /////////////////////////////////
         /*
-        Pour faire apparaître les différentes interfaces, on utilise des boutons afin que l'utilisateur
-        ou l'administrateur puisse accéder au fichier correspondant.
-        Les boutons sont placés dans une HBox.
-        Afin que l'administrateur puisse accéder au fichier, il doit d'abord s'inscrire s'il n'a pas de compte
-        ou se connecter si son compte est créé.
+        Pour faire appara?tre les diff?rentes interfaces, on utilise des boutons afin que l'utilisateur
+        ou l'administrateur puisse acc?der au fichier correspondant.
+        Les boutons sont plac?s dans une HBox.
+        Afin que l'administrateur puisse acc?der au fichier, il doit d'abord s'inscrire s'il n'a pas de compte
+        ou se connecter si son compte est cr??.
         Pour le SuperAdmin, il ne peut que se connecter via la page de connexion via ses identifiants, sinon il
-        ne peut accéder au fichier correspondant.
+        ne peut acc?der au fichier correspondant.
          */
 
-        //Création du bouton User avec l'événement permettant la redirection vers son fichier//
+        //Cr?ation du bouton User avec l'?v?nement permettant la redirection vers son fichier//
         Button btnUser = new Button("User");
         btnUser.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -84,7 +84,7 @@ public class AccueilScene {
             }
         });
 
-        //Création du bouton Admin avec l'événement permettant la redirection vers son fichier//
+        //Cr?ation du bouton Admin avec l'?v?nement permettant la redirection vers son fichier//
         Button btnAdmin = new Button("Admin");
         btnAdmin.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -110,7 +110,7 @@ public class AccueilScene {
 
         ///////////////////////////// AFFICHAGE DES ELEMENTS //////////////////////////////////
         /*
-        On affiche tous les éléments dans une GridPane, que l'on intègre dans une scène et ensuite un stage.
+        On affiche tous les ?l?ments dans une GridPane, que l'on int?gre dans une sc?ne et ensuite un stage.
          */
         GridPane grille = new GridPane();
         grille.setAlignment(Pos.CENTER);

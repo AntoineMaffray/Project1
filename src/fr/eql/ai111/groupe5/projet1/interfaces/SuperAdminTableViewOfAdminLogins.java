@@ -49,6 +49,7 @@ public class SuperAdminTableViewOfAdminLogins {
     ObservableList <User> dataLogin = methodsConnexion.createUserList();
     TableView<User> table = new TableView<>();
 
+
     public SuperAdminTableViewOfAdminLogins (Stage primaryStage) throws IOException {
 
         /////////////////LABEL - TITRE DE LA SCENE SUPER_ADMIN_TABLE_ADMIN_SCENE //////////////////
