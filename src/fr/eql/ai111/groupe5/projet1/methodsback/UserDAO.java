@@ -23,8 +23,7 @@ public class UserDAO {
             String surname,
             String name,
             String login,
-            String password,
-            String role) {
+            String password) {
         boolean isCreated = false;
         // Je déclare le fichier utilisateur
         File userFile = new File("C://theEqlbook/AdminInfo/" +login + ".txt");

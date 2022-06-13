@@ -32,8 +32,8 @@ public class InscriptionScene {
 
         //////////////////// LABEL - TITRE DE LA SCENE INSCRIPTION //////////////////////////////
         /*
-        Création du titre du fichier en texte avec son style.
-        Création du formulaire d'inscription avec le login, le nom, le prénom, le password et le rôle.
+        Cr?ation du titre du fichier en texte avec son style.
+        Cr?ation du formulaire d'inscription avec le login, le nom, le pr?nom, le password et le r?le.
          */
         Text titre = new Text("Inscription");
         titre.setFont(Font.font("Roboto", FontWeight.BOLD, 20));
@@ -43,7 +43,7 @@ public class InscriptionScene {
         TextField loginTextField = new TextField("");
         Label nom = new Label("Nom:");
         TextField nomTextField = new TextField("");
-        Label prenom = new Label("Prénom :");
+        Label prenom = new Label("Pr?nom :");
         TextField prenomTextField = new TextField("");
         Label pswd = new Label("Mot de passe :");
         PasswordField pswdPasswordField = new PasswordField();
@@ -52,18 +52,23 @@ public class InscriptionScene {
 
         ///////////////////////////// REDIRECTIONS PAGES ////////////////////////////////////
         /*
-        Pour faire apparaître les différentes interfaces, on utilise des boutons afin que
-        l'administrateur puisse accéder au fichier correspondant.
-        Les boutons sont placés dans une HBox.
-        Afin que l'administrateur puisse accéder au fichier, il doit d'abord s'inscrire s'il n'a pas de compte
-        ou se connecter si son compte est créé.
+        Pour faire appara?tre les diff?rentes interfaces, on utilise des boutons afin que
+        l'administrateur puisse acc?der au fichier correspondant.
+        Les boutons sont plac?s dans une HBox.
+        Afin que l'administrateur puisse acc?der au fichier, il doit d'abord s'inscrire s'il n'a pas de compte
+        ou se connecter si son compte est cr??.
         Si ce n'est pas un administrateur mais un utilisateur, il peut retourner sur la page d'accueil.
          */
-        //Création du bouton de validation et du bouton de redirection vers la page d'accueil//
+        //Cr?ation du bouton de validation et du bouton de redirection vers la page d'accueil//
         Button btnValidate = new Button("Validez");
         btnValidate.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
+                user = new User(nomTextField.getText(),
+                        prenomTextField.getText(),
+                        loginTextField.getText(),
+                        pswdPasswordField.getText());
+                inscriptionUser(user);
                 try {
                     new ConnexionScene(primaryStage);
                 } catch (IOException ex) {
@@ -89,7 +94,7 @@ public class InscriptionScene {
 
         ///////////////////////////// AFFICHAGE DES ELEMENTS //////////////////////////////////
         /*
-        On affiche tous les éléments dans une GridPane, que l'on intègre dans une scène et ensuite un stage.
+        On affiche tous les ?l?ments dans une GridPane, que l'on int?gre dans une sc?ne et ensuite un stage.
          */
         HBox hbBtn = new HBox(10);
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
@@ -137,6 +142,22 @@ public class InscriptionScene {
 
     public String loginMemory (User user) {
         return user.getLogin();
+    }
+
+    private void inscriptionUser(User user) {
+
+        /*
+         Si la m?thode 'createAccount' retourne false, alors le fichier utilisateur
+         n'as pas ?t? cr?? car un autre portant le m?me nom (correspondant au login
+         entr?) existe d?j?.
+         */
+        boolean isCreated = dao.createAccount(user.getName(),
+                user.getSurname(),
+                user.getLogin(),
+                user.getPassword());
+        if (!isCreated) {
+            idendifiantsDejaCrees();
+        }
     }
 
 }

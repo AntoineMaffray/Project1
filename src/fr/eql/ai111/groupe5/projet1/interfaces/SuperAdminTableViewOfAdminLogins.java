@@ -53,7 +53,7 @@ public class SuperAdminTableViewOfAdminLogins {
 
         /////////////////LABEL - TITRE DE LA SCENE SUPER_ADMIN_TABLE_ADMIN_SCENE //////////////////
             /*
-             Création du titre du fichier en label avec son style.
+             Cr?ation du titre du fichier en label avec son style.
              Pour l'affichage, on utilise un AnchorPane.
             */
             Label label= new Label("ANNUAIRE ADMINISTRATEURS");
@@ -68,14 +68,14 @@ public class SuperAdminTableViewOfAdminLogins {
 
         ///////////////////////////// MENU DU FICHIER //////////////////////////////////////
             /*
-            Création du menuBar avec son menu et ses menusItems avec les événements liés :
-            Rechercher => redirection vers la page de recherche de critères.
+            Cr?ation du menuBar avec son menu et ses menusItems avec les ?v?nements li?s :
+            Rechercher => redirection vers la page de recherche de crit?res.
             ExportPDF => export du fichier en PDF.
             Retour => redirection vers la page d'accueil.
             Compte administrateur => permet de modifier ses propres identifiants.
             Documentation => consigne pour l'utilisation de l'application
             Quitter => quitter l'application.
-            Après avoir créé le menuBar et les menuItems, on ajoute les menuItems au menu,
+            Apr?s avoir cr?? le menuBar et les menuItems, on ajoute les menuItems au menu,
             et le menu au menuBar.
             Pour l'affichage du menu, on l'inclut dans une BorderPane.
             */
@@ -107,7 +107,7 @@ public class SuperAdminTableViewOfAdminLogins {
             @Override
             public void handle(ActionEvent event) {
                 final Stage dialog = new Stage();
-                Label label = new Label("Fichier à exporter");
+                Label label = new Label("Fichier ? exporter");
                 label.setFont(new Font("Montserrat", 20));
                 label.setOpacity(0.9);
                 label.setStyle("-fx-text-fill: black");
@@ -165,7 +165,7 @@ public class SuperAdminTableViewOfAdminLogins {
         });
         SeparatorMenuItem separator= new SeparatorMenuItem();
         MenuItem quitterItem = new MenuItem("Quitter");
-        // Spécifier un raccourci clavier au menuItem Quitter.
+        // Sp?cifier un raccourci clavier au menuItem Quitter.
         quitterItem.setAccelerator(KeyCombination.keyCombination("Ctrl+Q"));
         // Gestion du click sur le menuItem Quitter.
         quitterItem.setOnAction(new EventHandler<ActionEvent>() {
@@ -175,9 +175,9 @@ public class SuperAdminTableViewOfAdminLogins {
 //                File delete = new File ("Identifiants/Persistance/Login.txt");
 //                boolean isDeleted = delete.delete();
 //                if (isDeleted) {
-//                    System.out.println("Le fichier a bien été supprimé");
+//                    System.out.println("Le fichier a bien ?t? supprim?");
 //                } else {
-//                    System.out.println("Le fichier a bien été créé");
+//                    System.out.println("Le fichier a bien ?t? cr??");
 //                }
             }
         });
@@ -191,7 +191,7 @@ public class SuperAdminTableViewOfAdminLogins {
             }
         });
 
-        // Création du MenuItem du menu Compte Admin
+        // Cr?ation du MenuItem du menu Compte Admin
         MenuItem gestionAdminMenu = new MenuItem("Gestion de l'administrateur");
         gestionAdminMenu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -204,7 +204,7 @@ public class SuperAdminTableViewOfAdminLogins {
             }
         });
 
-        MenuItem deleteAdminViewMenu = new MenuItem("Liste des administrateurs supprimés");
+        MenuItem deleteAdminViewMenu = new MenuItem("Liste des administrateurs supprim?s");
 
         // MenuItems du menu Aide //
         MenuItem documentationItem = new MenuItem("Documentation");
@@ -221,21 +221,21 @@ public class SuperAdminTableViewOfAdminLogins {
 
         ///////////////////////////// TABLE ADMINISTRATEUR /////////////////////////////////
             /*
-            Pour faire apparaître la liste des admin, on inclut les données dans une table.
-            Pour se faire, on créé 3 colonnes avec les informations requises
-            (nom, prénom, login), en divisant par cellule,
-            et on récupère les données du fichier via la méthode observable liste.
+            Pour faire appara?tre la liste des admin, on inclut les donn?es dans une table.
+            Pour se faire, on cr?? 3 colonnes avec les informations requises
+            (nom, pr?nom, login), en divisant par cellule,
+            et on r?cup?re les donn?es du fichier via la m?thode observable liste.
             */
             table.setEditable(true);
             table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        //Création des trois colonnes de la table //
+        //Cr?ation des trois colonnes de la table //
         TableColumn<User, String> surnameCol = new TableColumn<>("Nom");
         surnameCol.setMinWidth(250);
-        ////Spécifier comment remplir la donnée pour chaque cellule de cette colonne avec un "cell valu factory//
+        ////Sp?cifier comment remplir la donn?e pour chaque cellule de cette colonne avec un "cell valu factory//
         surnameCol.setCellValueFactory(new PropertyValueFactory<>("surname"));
 
-        TableColumn<User, String> nameCol = new TableColumn<>("Prénom");
+        TableColumn<User, String> nameCol = new TableColumn<>("Pr?nom");
         nameCol.setMinWidth(250);
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
 
@@ -243,7 +243,7 @@ public class SuperAdminTableViewOfAdminLogins {
         loginCol.setMinWidth(250);
         loginCol.setCellValueFactory(new PropertyValueFactory<>("login"));
 
-        //On ajoute les trois colonnes à la table//
+        //On ajoute les trois colonnes ? la table//
         table.getColumns().addAll(loginCol, surnameCol, nameCol);
 
         //On remplit la table avec la liste observable//
@@ -253,14 +253,14 @@ public class SuperAdminTableViewOfAdminLogins {
 
         ///////////////////////////// AJOUT ADMINISTRATEUR //////////////////////////////////
         /*
-        Création de des champs et du bouton d'ajout pour ajouter un stagiaire à la liste.
+        Cr?ation de des champs et du bouton d'ajout pour ajouter un stagiaire ? la liste.
         On les inclut dans une HBox.
          */
         //Creation champs de rajout//
         TextField login = new TextField();
         login.setPromptText("Login");
 
-        //Creation du bouton avec l'événement et sa méthode de confirmation via une alerte. //
+        //Creation du bouton avec l'?v?nement et sa m?thode de confirmation via une alerte. //
         Button btnNewLogin = new Button("New Login");
         btnNewLogin.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -286,9 +286,9 @@ public class SuperAdminTableViewOfAdminLogins {
 
 
         ///////////////////// MODIFICATION ET/OU SUPPRESSION DE L'ADMINISTRATEUR ////////////////
-            /* Pour faciliter la gestion du stagiaire, un context menu a été créé permettant
+            /* Pour faciliter la gestion du stagiaire, un context menu a ?t? cr?? permettant
             en faisant un clic-droit sur la liste des stagiaires,  de modifier ou supprimer
-            le stagiaire sélectionné.
+            le stagiaire s?lectionn?.
             */
         // ContextMenu et ses MenuItems //
         ContextMenu contextMenu = new ContextMenu();
@@ -308,13 +308,16 @@ public class SuperAdminTableViewOfAdminLogins {
         modifierAdmin.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                try {
-                    modifFormAdmin(new Stage(), table.getSelectionModel().getSelectedItem().getSurname(),
-                            table.getSelectionModel().getSelectedItem().getName(),
-                            table.getSelectionModel().getSelectedItem().getLogin(),
-                            table.getSelectionModel().getSelectedItem().getPassword());
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                if (table.getSelectionModel().getSelectedItem().getSurname() != null
+                        && table.getSelectionModel().getSelectedItem().getName() != null){
+                    try {
+                        modifFormAdmin(new Stage(), table.getSelectionModel().getSelectedItem().getSurname(),
+                                table.getSelectionModel().getSelectedItem().getName(),
+                                table.getSelectionModel().getSelectedItem().getLogin(),
+                                table.getSelectionModel().getSelectedItem().getPassword());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         });
@@ -326,10 +329,9 @@ public class SuperAdminTableViewOfAdminLogins {
                 File filetoDelete = new File("C://theEqlbook/AdminInfo/" + toDelete + ".txt");
                 System.out.println(toDelete+".txt");
                 filetoDelete.delete();
-                if (filetoDelete.delete()){
+                if (filetoDelete.exists() == false){
                     System.out.println("file deleted");
                 }else{
-                    System.out.println("wtf?");
                 }
                 try {
                     dataLogin = methodsConnexion.createUserList();
@@ -344,8 +346,8 @@ public class SuperAdminTableViewOfAdminLogins {
 
         ///////////////////////////// AFFICHAGE DES ELEMENTS //////////////////////////////////
             /*
-            On affiche tous les éléments dans une VBox, que
-            l'on intègre dans une scène et ensuite un stage.
+            On affiche tous les ?l?ments dans une VBox, que
+            l'on int?gre dans une sc?ne et ensuite un stage.
             */
         VBox vbox = new VBox();
         vbox.setSpacing(5);
@@ -363,7 +365,7 @@ public class SuperAdminTableViewOfAdminLogins {
 
     //////////////////////////////////////////////////////////////////////////////////////
 
-    private void modifFormAdmin (Stage stage, String oldSurname, String oldName, String oldLogin, String oldPassword)
+    public void modifFormAdmin (Stage stage, String oldSurname, String oldName, String oldLogin, String oldPassword)
             throws IOException {
         try {
             Label titleLabel = new Label("Modification du compte");
@@ -445,7 +447,7 @@ public class SuperAdminTableViewOfAdminLogins {
                         }
                     } else if (oldSurname == newSurname.getText() && oldName == newName.getText() && oldLogin == newLogin.getText()
                             && oldPassword == newPw.getText()) {
-                        System.out.println("Informations identiques, compte non modifié.");
+                        System.out.println("Informations identiques, compte non modifi?.");
                     }
                     try {
                         dataLogin = methodsConnexion.createUserList();
@@ -460,7 +462,7 @@ public class SuperAdminTableViewOfAdminLogins {
             });
 
         } catch (StringIndexOutOfBoundsException e) {
-                // popup à faire identifiant pas encore activé
+                // popup ? faire identifiant pas encore activ?
         }
     }
 
@@ -469,7 +471,7 @@ public class SuperAdminTableViewOfAdminLogins {
         File newLogin = new File ("C://theEQLBook/AdminInfo/"+login+".txt");
 
         if (newLogin.exists()){
-            // rajouter une POP UP identifiants déjà créés
+            // rajouter une POP UP identifiants d?j? cr??s
         } else {
             newLogin.createNewFile();
         }

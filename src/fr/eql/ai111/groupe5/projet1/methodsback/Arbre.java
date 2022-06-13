@@ -515,7 +515,7 @@ public class Arbre {
 
         long knot = 0;
 
-        arbreRecursif(rafDataBase, methods, listSearch);
+        arbreRecursifInv(rafDataBase, methods, listSearch);
 
         return listSearch;
 
@@ -541,7 +541,7 @@ public class Arbre {
             rafDataBase.seek(knot+REF6);
             String child = String.valueOf(rafDataBase.readChar());
             rafDataBase.seek(Long.parseLong(methods.removeDollarFromRef(rafDataBase, child)));
-            arbreRecursif(rafDataBase, methods, listSearch);
+            arbreRecursifInv(rafDataBase, methods, listSearch);
         }
 
         temp = "";
@@ -559,7 +559,7 @@ public class Arbre {
             rafDataBase.seek(knot+REF7);
             String child = String.valueOf(rafDataBase.readChar());
             rafDataBase.seek(Long.parseLong(methods.removeDollarFromRef(rafDataBase, child)));
-            arbreRecursif(rafDataBase, methods, listSearch);
+            arbreRecursifInv(rafDataBase, methods, listSearch);
         }
 
         return listSearch;

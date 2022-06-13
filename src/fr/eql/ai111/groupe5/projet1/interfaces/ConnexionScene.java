@@ -1,9 +1,9 @@
 package fr.eql.ai111.groupe5.projet1.interfaces;
 
-import com.sun.media.sound.FFT;
 import fr.eql.ai111.groupe5.projet1.methodsback.Methods;
 import fr.eql.ai111.groupe5.projet1.methodsback.User;
 import fr.eql.ai111.groupe5.projet1.methodsback.UserDAO;
+import fr.eql.ai111.groupe5.projet1.methodsback.UserPersistance;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -22,24 +22,23 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 
 public class ConnexionScene {
     User user;
     UserDAO dao = new UserDAO();
     Methods methods = new Methods();
+    UserPersistance userPersistance = new UserPersistance();
 
     public ConnexionScene(Stage primaryStage) throws IOException {
 
         //////////////////// LABEL - TITRE DE LA SCENE CONNEXION //////////////////////////////
         /*
-        Création du titre du fichier en texte avec son style.
-        Création du formulaire de connexion avec le login et password.
+        Crï¿½ation du titre du fichier en texte avec son style.
+        Crï¿½ation du formulaire de connexion avec le login et password.
          */
         Text titre = new Text("Connexion");
         titre.setFont(Font.font("Roboto", FontWeight.BOLD, 20));
@@ -52,22 +51,21 @@ public class ConnexionScene {
 
         ///////////////////////////// REDIRECTIONS PAGES ////////////////////////////////////
         /*
-        Pour faire apparaître les différentes interfaces, on utilise des boutons afin que
-        l'administrateur puisse accéder au fichier correspondant.
-        Les boutons sont placés dans une HBox.
-        Afin que l'administrateur puisse accéder au fichier, il doit d'abord s'inscrire s'il n'a pas de compte
-        ou se connecter si son compte est créé.
+        Pour faire apparaï¿½tre les diffï¿½rentes interfaces, on utilise des boutons afin que
+        l'administrateur puisse accï¿½der au fichier correspondant.
+        Les boutons sont placï¿½s dans une HBox.
+        Afin que l'administrateur puisse accï¿½der au fichier, il doit d'abord s'inscrire s'il n'a pas de compte
+        ou se connecter si son compte est crï¿½ï¿½.
         Pour le SuperAdmin, il ne peut que se connecter via la page de connexion via ses identifiants, sinon il
-        ne peut accéder au fichier correspondant.
+        ne peut accï¿½der au fichier correspondant.
          */
-        //Création du bouton de validation et du bouton de redirection
+        //Crï¿½ation du bouton de validation et du bouton de redirection
         // vers la page d'inscription s'il n'est pas inscrit//
         Button btnValidation = new Button("Validez");
         btnValidation.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-               User userPersistance = new User(loginTextField.getText(), pswdPasswordField.getText());
-
+                userPersistance.setLogin(loginTextField.getText());
                 if (loginTextField.getText().equals("SUPERADMIN")) {
                     File readLogin = new File("C://theEqlbook/AdminInfo/SuperAdmin/SUPERADMIN.txt");
                     FileReader fr = null;
@@ -80,7 +78,6 @@ public class ConnexionScene {
                     String verif = "";
                     try {
                         verif = br.readLine();
-                        System.out.println(verif + "y");
                         fr.close();
                         br.close();
                     } catch (IOException ex) {
@@ -105,7 +102,6 @@ public class ConnexionScene {
                     String verif = "";
                     try {
                         verif = br.readLine();
-                        System.out.println(verif + "y");
                         fr.close();
                         br.close();
                     } catch (IOException ex) {
@@ -115,12 +111,12 @@ public class ConnexionScene {
                         try {
                             new AdminScene(primaryStage);
                         } catch (IOException ex) {
-                            throw new RuntimeException(ex);
+                            idendifiantsIncorrects();
                         }
                     }
 
                 }
-                messageBienvenue();
+                messageBienvenue(userPersistance);
 
 
 
@@ -145,7 +141,7 @@ public class ConnexionScene {
 //
             }
         });
-                Button btnRedirectionInscription = new Button("Première connexion ");
+                Button btnRedirectionInscription = new Button("Premiï¿½re connexion ");
                 btnRedirectionInscription.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent e) {
@@ -165,7 +161,7 @@ public class ConnexionScene {
 
                 ///////////////////////////// AFFICHAGE DES ELEMENTS //////////////////////////////////
         /*
-        On affiche tous les éléments dans une GridPane, que l'on intègre dans une scène et ensuite un stage.
+        On affiche tous les ï¿½lï¿½ments dans une GridPane, que l'on intï¿½gre dans une scï¿½ne et ensuite un stage.
          */
                 HBox hbBtnValidation = new HBox(10);
                 hbBtnValidation.setAlignment(Pos.BOTTOM_RIGHT);
@@ -214,13 +210,13 @@ public class ConnexionScene {
                 alert.showAndWait();
             }
 
-            private void messageBienvenue() {
+            private void messageBienvenue(UserPersistance userPersistance) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Message de Bienvenue");
 
                 // Header Text: null
                 alert.setHeaderText(null);
-                alert.setContentText("Bienvenue " + user.getSurname() + " " + user.getName() + " " + " ! " + " ;)");
+                alert.setContentText("Bienvenue " + userPersistance.getLogin() + " " + " ! ");
 
                 alert.showAndWait();
             }
@@ -229,6 +225,5 @@ public class ConnexionScene {
                 return user.getLogin();
             }
 
-
-        }
+}
 

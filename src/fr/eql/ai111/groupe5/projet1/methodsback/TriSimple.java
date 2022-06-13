@@ -311,7 +311,6 @@ public class TriSimple {
         }
 
         rafDataBase.close();
-        System.out.println(stListResult);
         stListResult.sorted();
         return stListResult;
     }
