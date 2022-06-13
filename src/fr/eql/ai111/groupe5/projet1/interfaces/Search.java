@@ -30,6 +30,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -45,7 +46,6 @@ public class Search {
     TriSimple triSimple = new TriSimple();
     ObservableList<Stagiaire> data;
     Methods methods = new Methods();
-
     {
         try {
             data = arbre.arbreParcours();
@@ -53,112 +53,193 @@ public class Search {
             throw new RuntimeException(e);
         }
     }
-
     int count = 1;
 
     public Search(Stage primaryStage) {
 
+
+        //////////////////// LABEL - TITRE DE LA SCENE SEARCHSCENE //////////////////////////////
+        /*
+        Création du titre du fichier en label avec son style.
+        Pour l'affichage, on utilise un AnchorPane.
+         */
         Label label= new Label("RECHERCHE PAR CRITERES");
-        label.setFont(new Font("Arial", 35));
+        label.setFont(new Font("Montserrat", 35));
         label.setMaxWidth(Double.MAX_VALUE);
         AnchorPane.setLeftAnchor(label, 0.0);
         AnchorPane.setRightAnchor(label, 0.0);
         label.setAlignment(Pos.TOP_CENTER);
+        //////////////////////////////////////////////////////////////////////////////////////
 
-        // Crï¿½ation de MenuBar
+
+
+        ///////////////////////////// MENU DU FICHIER //////////////////////////////////////
+        /*
+        Création du menuBar avec son menu et ses menusItems avec les événements liés :
+        Rechercher => redirection vers la page de recherche de critères.
+        ExportPDF => export du fichier en PDF.
+        Retour => redirection vers la page d'accueil.
+        Documentation => consigne pour l'utilisation de l'application
+        Quitter => quitter l'application.
+        Après avoir créé le menuBar et les menuItems, on ajoute les menuItems au menu,
+        et le menu au menuBar.
+        Pour l'affichage du menu, on l'inclut dans une BorderPane.
+         */
+        //MenuBar et Menus//
         MenuBar menuBar = new MenuBar();
-
-        // Creation des menus
         Menu fichierMenu = new Menu("Fichier");
-        Menu identifiantMenu = new Menu("Identifiants Admin");
         Menu aideMenu = new Menu("Aide");
 
-        // Creation des MenuItems du menu Fichier
-        MenuItem nouveauItem = new MenuItem("Export");
-        SeparatorMenuItem separator= new SeparatorMenuItem();
-        MenuItem quitterItem = new MenuItem("Quitter");
-        // Spï¿½cifier un raccourci clavier au menuItem Quitter.
-        quitterItem.setAccelerator(KeyCombination.keyCombination("Ctrl+Q"));
-        // Gestion du click sur le menuItem Quitter.
-        quitterItem.setOnAction(new EventHandler<ActionEvent>() {
+        //MenuItems du fichier//
+        MenuItem rechercherItem = new MenuItem("Rechercher");
+        rechercherItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                Platform.exit();
+                    new Search(primaryStage);
+            }
+        });
+        MenuItem retourAccueilItem = new MenuItem("Retour accueil");
+        retourAccueilItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                new AccueilScene(primaryStage);
             }
         });
         MenuItem exportPDFItem = new MenuItem("Exporter au format PDF");
         exportPDFItem.setAccelerator(KeyCombination.keyCombination("Ctrl+E"));
+        exportPDFItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                final Stage dialog = new Stage();
+                Label label = new Label("Fichier à exporter");
+                label.setFont(new Font("Montserrat", 20));
+                label.setOpacity(0.9);
+                label.setStyle("-fx-text-fill: black");
+                label.setMaxWidth(Double.MAX_VALUE);
+                AnchorPane.setLeftAnchor(label, 0.0);
+                AnchorPane.setRightAnchor(label, 0.0);
+                label.setAlignment(Pos.CENTER);
 
+                TextField tf = new TextField("");
+                tf.setPromptText("Veuillez entrer un nom de fichier");
+                Button btn = new Button("Valider");
+                btn.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        String namePDF = null;
+                        namePDF = tf.getText();
+                        tf.clear();
+                        try {
+                            methods.ExportPDF(data, namePDF);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                        dialog.close();
+                    }
+                });
 
-        // Creation des MenuItems du menu Identifiants Admin
-        MenuItem creerItem = new MenuItem("CrÃ©er");
-        MenuItem supprimerItem = new MenuItem("Supprimer");
+                Button btnFermer = new Button("Fermer");
+                btnFermer.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        dialog.close();
+                    }
+                });
 
-        // Creation des MenuItems du menu Aide
+                HBox hbBtnFermer = new HBox(10);
+                hbBtnFermer.setAlignment(Pos.BOTTOM_RIGHT);
+                hbBtnFermer.getChildren().add(btnFermer);
+
+                GridPane grille = new GridPane();
+                grille.setPadding(new Insets(10, 10, 10, 10));
+                grille.setAlignment(Pos.CENTER);
+                grille.setHgap(10);
+                grille.setVgap(10);
+                grille.getChildren().add(label);
+                grille.add(tf, 0, 1);
+                grille.add(btn, 1, 6);
+                grille.add(hbBtnFermer, 1, 8);
+
+                Scene dialogScene = new Scene(grille, 500, 400);
+                dialog.setScene(dialogScene);
+                dialogScene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+                dialog.setTitle("Export fichier PDF");
+                dialog.show();
+            }
+        });
+        SeparatorMenuItem separator= new SeparatorMenuItem();
+        MenuItem quitterItem = new MenuItem("Quitter");
+        quitterItem.setAccelerator(KeyCombination.keyCombination("Ctrl+Q"));
+        quitterItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {Platform.exit();}
+        });
+        //MenuItem du menu Aide//
         MenuItem documentationItem = new MenuItem("Documentation");
-        SeparatorMenuItem separator1= new SeparatorMenuItem();
 
-
-        // Ajouter les menuItems aux Menus
-        fichierMenu.getItems().addAll(exportPDFItem, separator, quitterItem);
-        identifiantMenu.getItems().addAll(creerItem, supprimerItem);
+        //Ajout des menusItems au menu, et du menu au menuBar, affichage en BorderPane//
+        fichierMenu.getItems().addAll(rechercherItem, retourAccueilItem, exportPDFItem, separator, quitterItem);
         aideMenu.getItems().addAll(documentationItem);
-        // Ajouter les menus ? la barre de menus
-        menuBar.getMenus().addAll(fichierMenu, identifiantMenu, aideMenu);
-
+        menuBar.getMenus().addAll(fichierMenu, aideMenu);
         BorderPane bp = new BorderPane();
         bp.setTop(menuBar);
+        ////////////////////////////////////////////////////////////////////////////////
 
-        //Crï¿½ation de la table
+
+
+        ///////////////////////////// TABLE STAGIAIRE /////////////////////////////////
+        /*
+        Pour faire apparaître la liste des stagiaires, on inclut les données dans une table.
+        Pour se faire, on créé 5 colonnes avec les informations requises
+        (nom, prénom, département,formation et année), en divisant par cellule,
+        et on récupère les données du fichier via la méthode observable liste.
+         */
         TableView<Stagiaire> table = new TableView<Stagiaire>();
         table.setEditable(true);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        //Crï¿½ation des cinq colonnes
-        TableColumn<Stagiaire, String> surnameCol =
-                new TableColumn<Stagiaire, String>("Nom");
+        //Création des cinq colonnes de la table //
+        TableColumn<Stagiaire, String> surnameCol = new TableColumn<Stagiaire, String>("Nom");
         surnameCol.setMinWidth(250);
-        //Spï¿½cifier comment remplir la donn?e pour chaque cellule de cette colonne
-        //Ceci se fait en specifiant un "cell value factory" pour cette colonne.
-        surnameCol.setCellValueFactory(
-                new PropertyValueFactory<Stagiaire, String>("surname"));
+        //Spécifier comment remplir la donnée pour chaque cellule de cette colonne avec un "cell valu factory//
+        surnameCol.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("surname"));
 
-        TableColumn<Stagiaire, String> nameCol = new TableColumn<Stagiaire, String>("Prï¿½nom");
+        TableColumn<Stagiaire, String> nameCol = new TableColumn<Stagiaire, String>("Prénom");
         nameCol.setMinWidth(250);
-        //specifier un "cell factory" pour cette colonne.
-        nameCol.setCellValueFactory(
-                new PropertyValueFactory<Stagiaire, String>("name"));
+        nameCol.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("name"));
 
-        TableColumn<Stagiaire, Integer> deptCol =
-                new TableColumn<Stagiaire, Integer>("Dï¿½partement");
+        TableColumn<Stagiaire, Integer> deptCol = new TableColumn<Stagiaire, Integer>("Departement");
         deptCol.setMinWidth(200);
-        //specifier un "cell factory" pour cette colonne.
-        deptCol.setCellValueFactory(
-                new PropertyValueFactory<Stagiaire, Integer>("dept"));
+        deptCol.setCellValueFactory(new PropertyValueFactory<Stagiaire, Integer>("dept"));
 
         TableColumn<Stagiaire, String> promoCol = new TableColumn<Stagiaire, String>("Formation");
         promoCol.setMinWidth(250);
-        //specifier un "cell factory" pour cette colonne.
-        promoCol.setCellValueFactory(
-                new PropertyValueFactory<Stagiaire, String>("promo"));
+        promoCol.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("promo"));
 
-        TableColumn<Stagiaire, Integer> yearCol = new TableColumn<Stagiaire, Integer>("Annï¿½e");
+        TableColumn<Stagiaire, Integer> yearCol = new TableColumn<Stagiaire, Integer>("Année");
         yearCol.setMinWidth(200);
-        //specifier un "cell factory" pour cette colonne.
-        yearCol.setCellValueFactory(
-                new PropertyValueFactory<Stagiaire,Integer>("year"));
+        yearCol.setCellValueFactory(new PropertyValueFactory<Stagiaire,Integer>("year"));
 
-
-        //On ajoute les trois colonnes ? la table
+        //On ajoute les cinq colonnes à la table//
         table.getColumns().addAll(surnameCol, nameCol, deptCol, promoCol, yearCol);
 
-        //On remplit la table avec la liste observable
+        //On remplit la table avec la liste observable//
         table.setItems(data);
+        /////////////////////////////////////////////////////////////////////////////////
 
-        //Crï¿½ation des champs de recherches, de leur apparition/disparition
+
+        ///////////////////////////// RECHERCHE PAR CRITERES /////////////////////////////////
+        /*
+        Pour la recherche par critères, des champs de textes avec des listes ont été créés,
+        avec des boutons plus et moins, et le bouton rechercher qui permet d'effectuer le
+        tri simple.
+        Ces éléments sont placés dans une Hbox
+         */
+        //Création des champs de recherches, de leur apparition/disparition//
         HBox hbox = new HBox();
         hbox.setSpacing(10);
-        ObservableList<String> values = FXCollections.observableArrayList("Nom", "Prï¿½nom", "Dï¿½partement", "Formation", "Annï¿½e");
+        ObservableList<String> values = FXCollections.observableArrayList
+                ("Nom", "Prénom", "Département", "Formation", "Année");
         TextField criterionField1 = new TextField();
         criterionField1.setPrefWidth(120);
         ChoiceBox<String> combo1 = new ChoiceBox<>();
@@ -186,7 +267,6 @@ public class Search {
         hbox.getChildren().addAll(combo1, criterionField1, buttonPlus);
 
         ConnectedComboBox<String> connectedComboBox = new ConnectedComboBox();
-
         buttonPlus.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -259,15 +339,30 @@ public class Search {
         connectedComboBox.addComboBox(combo4);
         connectedComboBox.addComboBox(combo5);
 
-        //Creation boutons + Actions
         Button btnRechercher = new Button("Rechercher");
+        /////////////////////////////////////////////////////////////////////////////////
 
-        //On place le label et la table dans une VBox
-        VBox vbox = new VBox();
-        vbox.setSpacing(5);
-        vbox.setPadding(new Insets(0, 0, 20, 0));
-        vbox.getChildren().addAll(menuBar, label, hbox, btnRechercher, table);
 
+        ///////////////////////////// AFFICHAGE DES ELEMENTS //////////////////////////////////
+        /*
+        On affiche tous les éléments dans une VBox, que l'on intègre dans une scène et ensuite un stage.
+         */
+        VBox search = new VBox();
+        search.setSpacing(5);
+        search.setPadding(new Insets(0, 0, 20, 0));
+        search.getChildren().addAll(menuBar, label, hbox, btnRechercher, table);
+        Scene searchScene = new Scene(search);
+        search.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+        primaryStage.setScene(searchScene);
+        primaryStage.setTitle("SearchScene");
+        primaryStage.show();
+        ////////////////////////////////////////////////////////////////////////////////////////
+
+
+        ///////////////////////////// METHODE DE TRI SIMPLE //////////////////////////////////
+        /*
+        L'événement est placée à la fin afin qu'il puisse prendre en compte tous les éléments précédents.
+         */
         btnRechercher.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -304,7 +399,10 @@ public class Search {
                 }
                 String search5 = criterionField5.getText();
 
-                System.out.println(criterionField2.getText()+" "+criterionField3.getText()+" "+criterionField4.getText()+" "+criterionField5.getText());
+                System.out.println(criterionField2.getText()+" "
+                        +criterionField3.getText()+" "
+                        +criterionField4.getText()+" "
+                        +criterionField5.getText());
 
                 try {
                     data = triSimple.searchByCriterion(criterion1, search1, criterion2, search2, criterion3, search3, criterion4,
@@ -317,91 +415,6 @@ public class Search {
                 table.setItems(data);
             }});
 
-        exportPDFItem.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                final Stage dialog = new Stage();
-                dialog.initModality(Modality.APPLICATION_MODAL);
-                dialog.initOwner(primaryStage);
-                VBox dialogVbox = new VBox();
-                HBox hBox = new HBox();
-                dialogVbox.getChildren().add(new Text("Veuillez entrer un nom de fichier"));
-                TextField tf = new TextField();
-                hBox.getChildren().add(tf);
-                Button btn = new Button("Valider");
-                hBox.getChildren().add(btn);
-                dialogVbox.getChildren().add(hBox);
-                btn.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        String namePDF = null;
-                        namePDF = tf.getText();
-                        tf.clear();
-                        try {
-                            methods.ExportPDF(data, namePDF);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                        dialog.close();
-                    }
-                });
-                Scene dialogScene = new Scene(dialogVbox, 300, 200);
-                dialog.setScene(dialogScene);
-                dialog.show();
-            }
-        });
-
-            Scene scene = new Scene(vbox);
-            scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
-            primaryStage.setTitle("Annuaire");
-            primaryStage.setWidth(1250);
-            primaryStage.setHeight(800);
-            primaryStage.setScene(scene);
-            primaryStage.show();
-        }
-
-        private void createContact(String surname, String name, String dept, String promo, String year,
-                ObservableList<Stagiaire> data){
-            Stagiaire stagiaireX = new Stagiaire(surname, name, dept, promo, year);
-            data.add(stagiaireX);
-        }
-
-
-        // Mï¿½thode pour crï¿½er une fenï¿½tre d'information
-        private void confirmationInscription() {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Confirmation Inscription");
-
-            // Texte sans en-tï¿½te
-            alert.setHeaderText(null);
-            alert.setContentText("Votre stagiaire a bien ï¿½tï¿½ enregistrï¿½!");
-            alert.showAndWait();
-        }
-
-        // Mï¿½thode pour afficher une confirmation de suppresion via une fen?tre pop-up
-        private Label label;
-
-        private boolean confirmationSuppression() {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Supprimer l'utilisateur");
-            alert.setHeaderText("Etes-vous sï¿½r de vouloir supprimer l'utilisateur?");
-
-            // option != null.
-            Optional<ButtonType> option = alert.showAndWait();
-
-            if (option.get() == null) {
-                this.label.setText("Aucun utilisateur n'a ï¿½tï¿½ sï¿½lectionnï¿½.");
-            } else if (option.get() == ButtonType.OK) {
-                this.label.setText("Utilisateur supprimï¿½!");
-                return true;
-            } else if (option.get() == ButtonType.CANCEL) {
-                this.label.setText("Annulï¿½");
-                alert.close();
-            } else {
-                this.label.setText("-");
-            }
-
-            return false;
         }
 
         private int conversionCriterion (String criterion){
@@ -410,16 +423,16 @@ public class Search {
                 case "Nom":
                     criterionConvert = 1;
                     break;
-                case "Prï¿½nom":
+                case "Prénom":
                     criterionConvert = 2;
                     break;
-                case "Dï¿½partement":
+                case "Département":
                     criterionConvert = 3;
                     break;
                 case "Formation":
                     criterionConvert = 4;
                     break;
-                case "Annï¿½e":
+                case "Année":
                     criterionConvert = 5;
                     break;
                 default:

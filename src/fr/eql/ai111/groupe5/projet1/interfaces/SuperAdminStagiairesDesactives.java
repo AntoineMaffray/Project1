@@ -1,39 +1,282 @@
 package fr.eql.ai111.groupe5.projet1.interfaces;
 import fr.eql.ai111.groupe5.projet1.methodsback.Arbre;
+import fr.eql.ai111.groupe5.projet1.methodsback.Methods;
 import fr.eql.ai111.groupe5.projet1.methodsback.Stagiaire;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 
 public class SuperAdminStagiairesDesactives {
 
     Arbre arbre = new Arbre();
+    Methods methods = new Methods();
     ObservableList <Stagiaire> listDeactivated = arbre.arbreParcoursInv();
+    ObservableList<Stagiaire> data = arbre.arbreParcours();
     TableView<Stagiaire> tableDeactivated = new TableView<Stagiaire>();
+    public SuperAdminStagiairesDesactives (Stage primaryStage) throws IOException {
+        //////////////////// LABEL - TITRE DE LA SCENE SUPERADMINSCENE //////////////////////////////
+            /*
+             Création du titre du fichier en label avec son style.
+             Pour l'affichage, on utilise un AnchorPane.
+            */
+        Label label= new Label("STAGIAIRES DESACTIVES");
+        label.setFont(new Font("Montserrat", 35));
+        label.setMaxWidth(Double.MAX_VALUE);
+        AnchorPane.setLeftAnchor(label, 0.0);
+        AnchorPane.setRightAnchor(label, 0.0);
+        label.setAlignment(Pos.TOP_CENTER);
+        //////////////////////////////////////////////////////////////////////////////////////
 
 
-    private SuperAdminStagiairesDesactives (Stage primaryStage) throws IOException {
 
+        ///////////////////////////// MENU DU FICHIER //////////////////////////////////////
+            /*
+            Création du menuBar avec son menu et ses menusItems avec les événements liés :
+            Rechercher => redirection vers la page de recherche de critères.
+            ExportPDF => export du fichier en PDF.
+            Retour => redirection vers la page d'accueil.
+            Compte administrateur => permet de modifier ses propres identifiants.
+            Documentation => consigne pour l'utilisation de l'application
+            Quitter => quitter l'application.
+            Après avoir créé le menuBar et les menuItems, on ajoute les menuItems au menu,
+            et le menu au menuBar.
+            Pour l'affichage du menu, on l'inclut dans une BorderPane.
+            */
+        //MenuBar et Menus//
+        MenuBar menuBar = new MenuBar();
+        Menu fichierMenu = new Menu("Fichier");
+        Menu compteMenu = new Menu("Compte administrateur");
+        Menu compteAdminMenu = new Menu("Gestion des comptes administrateurs");
+        Menu aideMenu = new Menu("Aide");
+
+        //MenuItems du fichier//
+        MenuItem rechercherItem = new MenuItem("Rechercher");
+        rechercherItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                new Search(primaryStage);
+            }
+        });
+        MenuItem retourAccueilItem = new MenuItem("Retour accueil");
+        retourAccueilItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                new AccueilScene(primaryStage);
+            }
+        });
+        MenuItem exportPDFItem = new MenuItem("Exporter au format PDF");
+        exportPDFItem.setAccelerator(KeyCombination.keyCombination("Ctrl+E"));
+        exportPDFItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                final Stage dialog = new Stage();
+                Label label = new Label("Fichier à exporter");
+                label.setFont(new Font("Montserrat", 20));
+                label.setOpacity(0.9);
+                label.setStyle("-fx-text-fill: black");
+                label.setMaxWidth(Double.MAX_VALUE);
+                AnchorPane.setLeftAnchor(label, 0.0);
+                AnchorPane.setRightAnchor(label, 0.0);
+                label.setAlignment(Pos.CENTER);
+
+                TextField tf = new TextField("");
+                tf.setPromptText("Veuillez entrer un nom de fichier");
+                Button btn = new Button("Valider");
+                btn.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        String namePDF = null;
+                        namePDF = tf.getText();
+                        tf.clear();
+                        try {
+                            methods.ExportPDF(data, namePDF);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                        dialog.close();
+                    }
+                });
+
+                Button btnFermer = new Button("Fermer");
+                btnFermer.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        dialog.close();
+                    }
+                });
+
+                HBox hbBtnFermer = new HBox(10);
+                hbBtnFermer.setAlignment(Pos.BOTTOM_RIGHT);
+                hbBtnFermer.getChildren().add(btnFermer);
+
+                GridPane grille = new GridPane();
+                grille.setPadding(new Insets(10, 10, 10, 10));
+                grille.setAlignment(Pos.CENTER);
+                grille.setHgap(10);
+                grille.setVgap(10);
+                grille.getChildren().add(label);
+                grille.add(tf, 0, 1);
+                grille.add(btn, 1, 6);
+                grille.add(hbBtnFermer, 1, 8);
+
+                Scene dialogScene = new Scene(grille, 500, 400);
+                dialog.setScene(dialogScene);
+                dialogScene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+                dialog.setTitle("Export fichier PDF");
+                dialog.show();
+            }
+        });
+        SeparatorMenuItem separator= new SeparatorMenuItem();
+        MenuItem quitterItem = new MenuItem("Quitter");
+        // Spécifier un raccourci clavier au menuItem Quitter.
+        quitterItem.setAccelerator(KeyCombination.keyCombination("Ctrl+Q"));
+        // Gestion du click sur le menuItem Quitter.
+        quitterItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Platform.exit();
+                File delete = new File ("Identifiants/Persistance/Login.txt");
+                boolean isDeleted = delete.delete();
+                if (isDeleted) {
+                    System.out.println("Le fichier a bien été supprimé");
+                } else {
+                    System.out.println("Le fichier a bien été créé");
+                }
+            }
+        });
+
+        // MenuItem du menu Mon compte //
+        MenuItem modifierItem = new MenuItem("Modifier mes identifiants");
+        modifierItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+            }
+        });
+
+        // Création du MenuItem du menu Compte Admin
+        MenuItem gestionAdminMenu = new MenuItem("Gestion de l'administrateur");
+        gestionAdminMenu.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    new SuperAdminTableViewOfAdminLogins(primaryStage);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        MenuItem deleteAdminViewMenu = new MenuItem("Liste des administrateurs supprimés");
+        deleteAdminViewMenu.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+            }
+        });
+
+        // MenuItems du menu Aide //
+        MenuItem documentationItem = new MenuItem("Documentation");
+
+        // Ajouter les menuItems aux Menus
+        fichierMenu.getItems().addAll(rechercherItem, retourAccueilItem, exportPDFItem, separator, quitterItem);
+        compteMenu.getItems().add(modifierItem);
+        compteAdminMenu.getItems().addAll(gestionAdminMenu, deleteAdminViewMenu);
+        aideMenu.getItems().addAll(documentationItem);
+        menuBar.getMenus().addAll(fichierMenu, compteMenu, compteAdminMenu, aideMenu);
+        BorderPane bp = new BorderPane();
+        bp.setTop(menuBar);
+        ////////////////////////////////////////////////////////////////////////////////
+
+
+
+        ///////////////////////////// TABLE STAGIAIRE SUPPRIME /////////////////////////////////
+            /*
+            Pour faire apparaître la liste des stagiaires supprimés, on inclut les données dans une table.
+            Pour se faire, on créé 5 colonnes avec les informations requises
+            (nom, prénom, département,formation et année), en divisant par cellule,
+            et on récupère les données du fichier via la méthode observable liste.
+            */
+        TableView<Stagiaire> table = new TableView<Stagiaire>();
+        table.setEditable(true);
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        //Création des cinq colonnes de la table //
+        TableColumn<Stagiaire, String> surnameCol = new TableColumn<Stagiaire, String>("Nom");
+        surnameCol.setMinWidth(250);
+        //Spécifier comment remplir la donnée pour chaque cellule de cette colonne avec un "cell valu factory//
+        surnameCol.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("surname"));
+
+        TableColumn<Stagiaire, String> nameCol = new TableColumn<Stagiaire, String>("Prénom");
+        nameCol.setMinWidth(250);
+        nameCol.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("name"));
+
+        TableColumn<Stagiaire, Integer> deptCol = new TableColumn<Stagiaire, Integer>("Departement");
+        deptCol.setMinWidth(200);
+        deptCol.setCellValueFactory(new PropertyValueFactory<Stagiaire, Integer>("dept"));
+
+        TableColumn<Stagiaire, String> promoCol = new TableColumn<Stagiaire, String>("Formation");
+        promoCol.setMinWidth(250);
+        promoCol.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("promo"));
+
+        TableColumn<Stagiaire, Integer> yearCol = new TableColumn<Stagiaire, Integer>("Année");
+        yearCol.setMinWidth(200);
+        yearCol.setCellValueFactory(new PropertyValueFactory<Stagiaire,Integer>("year"));
+
+        //On ajoute les cinq colonnes à la table//
+        table.getColumns().addAll(surnameCol, nameCol, deptCol, promoCol, yearCol);
+
+        //On remplit la table avec la liste observable//
+        table.setItems(listDeactivated);
+        /////////////////////////////////////////////////////////////////////////////////
+
+
+
+        ///////////////////// REACTIVATION DU STAGIAIRE ////////////////
+            /* Pour faciliter la gestion du stagiaire, un context menu a été créé permettant
+            en faisant un clic-droit sur la liste des stagiaires,  de réactiver le stagiaire
+            sélectionné.
+            */
+        // ContextMenu et ses MenuItems //
         ContextMenu contextMenu = new ContextMenu();
-        MenuItem item1 = new MenuItem("RÃ©activer");
-        contextMenu.getItems().add(item1);
-
-
+        MenuItem reactivate = new MenuItem("Réactiver");
+        contextMenu.getItems().add(reactivate);
         tableDeactivated.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
             @Override
             public void handle(ContextMenuEvent event) {
                 contextMenu.show(tableDeactivated, event.getScreenX(), event.getScreenY());
             }
         });
-        // Item 1, "RÃ©activers", du menu clic-droit
-        item1.setOnAction(new EventHandler<ActionEvent>() {
+        // Item 1, "Réactivers", du menu clic-droit
+        reactivate.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent event) {
@@ -47,5 +290,21 @@ public class SuperAdminStagiairesDesactives {
             }
 
         });
-    }
+
+            ///////////////////////////// AFFICHAGE DES ELEMENTS //////////////////////////////////
+                /*
+                On affiche tous les éléments dans une VBox, que l'on intègre dans une scène et ensuite un stage.
+                */
+                VBox vbox = new VBox();
+                vbox.setSpacing(5);
+                vbox.setPadding(new Insets(0, 0, 20, 0));
+                vbox.getChildren().addAll(menuBar, label, table);
+                Scene supAdminStagiaireDesactive = new Scene(vbox);
+                supAdminStagiaireDesactive.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+                primaryStage.setScene(supAdminStagiaireDesactive);
+                primaryStage.setTitle("SuperAdminScene");
+                primaryStage.show();
+            }
+        ////////////////////////////////////////////////////////////////////////////////////////
 }
+
