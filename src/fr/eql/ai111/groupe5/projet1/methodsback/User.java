@@ -31,6 +31,9 @@ public class User {
         this.password = password;
     }
 
+    public User(String text) {
+    }
+
     public String getSurname() {
         return surname;
     }

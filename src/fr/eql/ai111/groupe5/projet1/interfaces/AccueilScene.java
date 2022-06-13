@@ -49,7 +49,7 @@ public class AccueilScene {
         AnchorPane.setRightAnchor(label, 0.0);
         label.setAlignment(Pos.CENTER);
 
-        Label label1 = new Label("Vous ?tes un :");
+        Label label1 = new Label("Vous êtes un :");
         label1.setFont(new Font("Montserrat", 20));
         label1.setOpacity(0.9);
         label1.setStyle("-fx-text-fill: black");
@@ -62,7 +62,7 @@ public class AccueilScene {
 
         ///////////////////////////// REDIRECTIONS PAGES /////////////////////////////////
         /*
-        Pour faire appara?tre les diff?rentes interfaces, on utilise des boutons afin que l'utilisateur
+        Pour faire apparaître les différentes interfaces, on utilise des boutons afin que l'utilisateur
         ou l'administrateur puisse acc?der au fichier correspondant.
         Les boutons sont plac?s dans une HBox.
         Afin que l'administrateur puisse acc?der au fichier, il doit d'abord s'inscrire s'il n'a pas de compte
@@ -84,7 +84,7 @@ public class AccueilScene {
             }
         });
 
-        //Cr?ation du bouton Admin avec l'?v?nement permettant la redirection vers son fichier//
+        //Cr?ation du bouton Admin avec l'événement permettant la redirection vers son fichier//
         Button btnAdmin = new Button("Admin");
         btnAdmin.setOnAction(new EventHandler<ActionEvent>() {
             @Override

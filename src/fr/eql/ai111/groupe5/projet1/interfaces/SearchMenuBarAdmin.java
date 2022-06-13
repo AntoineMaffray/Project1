@@ -109,8 +109,20 @@ public class SearchMenuBarAdmin {
                 //new SearchMenuBarAdmin(primaryStage);
             }
         });
-        MenuItem retourAccueilItem = new MenuItem("Retour accueil");
-        retourAccueilItem.setOnAction(new EventHandler<ActionEvent>() {
+        MenuItem retourPagePrincipaleItem = new MenuItem("Retour page principale");
+        retourPagePrincipaleItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    new AdminScene(primaryStage);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+        MenuItem deconnexionItem = new MenuItem("Déconnexion");
+        deconnexionItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 new AccueilScene(primaryStage);
@@ -197,7 +209,7 @@ public class SearchMenuBarAdmin {
         MenuItem documentationItem = new MenuItem("Documentation");
 
         //Ajout des menusItems au menu, et du menu au menuBar, affichage en BorderPane//
-        fichierMenu.getItems().addAll(rechercherItem, retourAccueilItem, exportPDFItem, separator, quitterItem);
+        fichierMenu.getItems().addAll(rechercherItem, retourPagePrincipaleItem, deconnexionItem, exportPDFItem, separator, quitterItem);
         compteMenu.getItems().add(modifierItem);
         aideMenu.getItems().addAll(documentationItem);
         menuBar.getMenus().addAll(fichierMenu, compteMenu, aideMenu);

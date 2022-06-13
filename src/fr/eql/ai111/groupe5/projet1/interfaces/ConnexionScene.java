@@ -3,7 +3,6 @@ package fr.eql.ai111.groupe5.projet1.interfaces;
 import fr.eql.ai111.groupe5.projet1.methodsback.Methods;
 import fr.eql.ai111.groupe5.projet1.methodsback.User;
 import fr.eql.ai111.groupe5.projet1.methodsback.UserDAO;
-import fr.eql.ai111.groupe5.projet1.methodsback.UserPersistance;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -14,7 +13,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
@@ -32,7 +30,6 @@ public class ConnexionScene {
     User user;
     UserDAO dao = new UserDAO();
     Methods methods = new Methods();
-    UserPersistance userPersistance = new UserPersistance();
 
     public ConnexionScene(Stage primaryStage) throws IOException {
 
@@ -66,7 +63,7 @@ public class ConnexionScene {
         EventHandler eventHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                userPersistance.setLogin(loginTextField.getText());
+                User user = new User(loginTextField.getText());
                 if (loginTextField.getText().equals("SUPERADMIN")) {
                     File readLogin = new File("C://theEqlbook/AdminInfo/SuperAdmin/SUPERADMIN.txt");
                     FileReader fr = null;
@@ -117,7 +114,7 @@ public class ConnexionScene {
                     }
 
                 }
-                messageBienvenue(userPersistance);
+                messageBienvenue();
 
 //                try {
 //                    new AdminScene(primaryStage);
@@ -153,7 +150,7 @@ public class ConnexionScene {
                     }
                 });
 
-                Button btnRetourAccueil = new Button("Retour accueil");
+                Button btnRetourAccueil = new Button("Déconnexion");
                 btnRetourAccueil.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
@@ -214,13 +211,13 @@ public class ConnexionScene {
                 alert.showAndWait();
             }
 
-            private void messageBienvenue(UserPersistance userPersistance) {
+            private void messageBienvenue() {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Message de Bienvenue");
 
                 // Header Text: null
                 alert.setHeaderText(null);
-                alert.setContentText("Bienvenue " + userPersistance.getLogin() + " " + " ! ");
+                alert.setContentText("Bienvenue " + user.getLogin() + " " + " ! ");
 
                 alert.showAndWait();
             }

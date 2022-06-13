@@ -32,6 +32,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.FileNotFoundException;
@@ -90,7 +92,7 @@ public class SuperAdminScene {
                 new SearchMenuBarSuperAdmin(primaryStage);
             }
              });
-            MenuItem retourAccueilItem = new MenuItem("Retour accueil");
+            MenuItem retourAccueilItem = new MenuItem("Déconnexion");
             retourAccueilItem.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
@@ -443,6 +445,9 @@ public class SuperAdminScene {
     private void modifFormStagiaire (Stage stage, String oldSurname, String oldName, String oldDept,
                                      String oldPromo, String oldYear, String newAdd){
 
+        Text titre = new Text("Connexion");
+        titre.setFont(Font.font("Roboto", FontWeight.BOLD, 20));
+
         Label surnameLabel = new Label();
         TextField newSurname = new TextField(oldSurname);
         Label nameLabel = new Label();
@@ -457,10 +462,10 @@ public class SuperAdminScene {
         Button btnCancel = new Button("Annuler");
 
         GridPane gridModif = new GridPane();
-        gridModif.setVgap(5);
-        gridModif.setHgap(5);
+        gridModif.setAlignment(Pos.CENTER);
+        gridModif.setVgap(10);
+        gridModif.setHgap(10);
         gridModif.setPadding(new Insets(5,5,5,5));
-
         gridModif.add(surnameLabel, 0, 0);
         gridModif.add(newSurname, 1, 0);
         gridModif.add(nameLabel, 0, 1);
@@ -474,8 +479,10 @@ public class SuperAdminScene {
         gridModif.add(btnValidate, 1, 5);
         gridModif.add(btnCancel, 2, 5);
 
-        Scene subScene = new Scene(gridModif);
+        Scene subScene = new Scene(gridModif, 800, 500);
+        subScene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         stage.setScene(subScene);
+        stage.setTitle("Modifier stagiaire");
         stage.show();
 
         btnValidate.setOnAction(new EventHandler<ActionEvent>() {
