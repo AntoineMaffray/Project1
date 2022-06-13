@@ -97,18 +97,6 @@ public class AccueilScene {
             }
         });
 
-
-        Button btnSuperAdmin = new Button("SuperAdmin");
-        btnSuperAdmin.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                try {
-                    new SuperAdminScene(primaryStage);
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        });
         HBox hbBtnUser = new HBox(10);
         hbBtnUser.setAlignment(Pos.BOTTOM_RIGHT);
         hbBtnUser.getChildren().add(btnUser);
@@ -118,9 +106,6 @@ public class AccueilScene {
         hbBtnAdmin.getChildren().add(btnAdmin);
         ////////////////////////////////////////////////////////////////////////////////////////
 
-        HBox hbBtnSuperAdmin = new HBox(12);
-        hbBtnSuperAdmin.setAlignment(Pos.BOTTOM_LEFT);
-        hbBtnSuperAdmin.getChildren().add(btnSuperAdmin);
 
 
         ///////////////////////////// AFFICHAGE DES ELEMENTS //////////////////////////////////
@@ -136,7 +121,6 @@ public class AccueilScene {
         grille.add(label1, 2, 2);
         grille.add(hbBtnUser, 1, 4);
         grille.add(hbBtnAdmin, 2, 4);
-        grille.add(hbBtnSuperAdmin, 3, 4);
 
         Scene accueil = new Scene(grille, 700, 400);
         accueil.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
