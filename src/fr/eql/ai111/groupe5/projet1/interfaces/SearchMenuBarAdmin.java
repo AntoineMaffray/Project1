@@ -1,11 +1,10 @@
 package fr.eql.ai111.groupe5.projet1.interfaces;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import fr.eql.ai111.groupe5.projet1.methodsback.Arbre;
 import fr.eql.ai111.groupe5.projet1.methodsback.Methods;
+import fr.eql.ai111.groupe5.projet1.methodsback.RAFException;
 import fr.eql.ai111.groupe5.projet1.methodsback.Stagiaire;
 import fr.eql.ai111.groupe5.projet1.methodsback.TriSimple;
-import fr.eql.ai111.groupe5.projet1.methodsback.RAFException;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,9 +13,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
@@ -34,14 +31,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Optional;
 
-public class Search {
+public class SearchMenuBarAdmin {
     Arbre arbre = new Arbre();
     TriSimple triSimple = new TriSimple();
     ObservableList<Stagiaire> data;
@@ -55,7 +50,7 @@ public class Search {
     }
     int count = 1;
 
-    public Search(Stage primaryStage) {
+    public SearchMenuBarAdmin(Stage primaryStage) {
 
 
         //////////////////// LABEL - TITRE DE LA SCENE SEARCHSCENE //////////////////////////////
@@ -86,8 +81,23 @@ public class Search {
         Pour l'affichage du menu, on l'inclut dans une BorderPane.
          */
         //MenuBar et Menus//
+        ///////////////////////////// MENU DU FICHIER //////////////////////////////////////
+        /*
+        Création du menuBar avec son menu et ses menusItems avec les événements liés :
+        Rechercher => redirection vers la page de recherche de critères.
+        ExportPDF => export du fichier en PDF.
+        Retour => redirection vers la page d'accueil.
+        Compte administrateur => permet de modifier ses propres identifiants.
+        Documentation => consigne pour l'utilisation de l'application
+        Quitter => quitter l'application.
+        Après avoir créé le menuBar et les menuItems, on ajoute les menuItems au menu,
+        et le menu au menuBar.
+        Pour l'affichage du menu, on l'inclut dans une BorderPane.
+         */
+        //MenuBar et Menus//
         MenuBar menuBar = new MenuBar();
         Menu fichierMenu = new Menu("Fichier");
+        Menu compteMenu = new Menu("Compte administrateur");
         Menu aideMenu = new Menu("Aide");
 
         //MenuItems du fichier//
@@ -95,7 +105,8 @@ public class Search {
         rechercherItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                    new Search(primaryStage);
+
+                //new SearchMenuBarAdmin(primaryStage);
             }
         });
         MenuItem retourAccueilItem = new MenuItem("Retour accueil");
@@ -169,18 +180,27 @@ public class Search {
         });
         SeparatorMenuItem separator= new SeparatorMenuItem();
         MenuItem quitterItem = new MenuItem("Quitter");
+        // Spécifier un raccourci clavier au menuItem Quitter.
         quitterItem.setAccelerator(KeyCombination.keyCombination("Ctrl+Q"));
+        // Gestion du click sur le menuItem Quitter.
         quitterItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event) {Platform.exit();}
+            public void handle(ActionEvent event) {
+                Platform.exit();
+            }
         });
-        //MenuItem du menu Aide//
+
+        // MenuItem du menu Mon compte //
+        MenuItem modifierItem = new MenuItem("Modifier mes identifiants");
+
+        // MenuItem du menu Aide //
         MenuItem documentationItem = new MenuItem("Documentation");
 
         //Ajout des menusItems au menu, et du menu au menuBar, affichage en BorderPane//
         fichierMenu.getItems().addAll(rechercherItem, retourAccueilItem, exportPDFItem, separator, quitterItem);
+        compteMenu.getItems().add(modifierItem);
         aideMenu.getItems().addAll(documentationItem);
-        menuBar.getMenus().addAll(fichierMenu, aideMenu);
+        menuBar.getMenus().addAll(fichierMenu, compteMenu, aideMenu);
         BorderPane bp = new BorderPane();
         bp.setTop(menuBar);
         ////////////////////////////////////////////////////////////////////////////////
@@ -415,31 +435,30 @@ public class Search {
                 table.setItems(data);
             }});
 
-        }
+    }
 
-        private int conversionCriterion (String criterion){
-            int criterionConvert = 0;
-            switch (criterion){
-                case "Nom":
-                    criterionConvert = 1;
-                    break;
-                case "Prénom":
-                    criterionConvert = 2;
-                    break;
-                case "Département":
-                    criterionConvert = 3;
-                    break;
-                case "Formation":
-                    criterionConvert = 4;
-                    break;
-                case "Année":
-                    criterionConvert = 5;
-                    break;
-                default:
-                    criterionConvert = 0;
-                    break;
-            }
-            return criterionConvert;
+    private int conversionCriterion (String criterion){
+        int criterionConvert = 0;
+        switch (criterion){
+            case "Nom":
+                criterionConvert = 1;
+                break;
+            case "Prénom":
+                criterionConvert = 2;
+                break;
+            case "Département":
+                criterionConvert = 3;
+                break;
+            case "Formation":
+                criterionConvert = 4;
+                break;
+            case "Année":
+                criterionConvert = 5;
+                break;
+            default:
+                criterionConvert = 0;
+                break;
         }
+        return criterionConvert;
+    }
 }
-

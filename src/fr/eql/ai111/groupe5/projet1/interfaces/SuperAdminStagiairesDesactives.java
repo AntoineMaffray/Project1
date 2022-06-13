@@ -28,11 +28,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class SuperAdminStagiairesDesactives {
@@ -45,7 +44,7 @@ public class SuperAdminStagiairesDesactives {
     public SuperAdminStagiairesDesactives (Stage primaryStage) throws IOException {
         //////////////////// LABEL - TITRE DE LA SCENE SUPERADMINSCENE //////////////////////////////
             /*
-             Création du titre du fichier en label avec son style.
+             Cr?ation du titre du fichier en label avec son style.
              Pour l'affichage, on utilise un AnchorPane.
             */
         Label label= new Label("STAGIAIRES DESACTIVES");
@@ -60,21 +59,20 @@ public class SuperAdminStagiairesDesactives {
 
         ///////////////////////////// MENU DU FICHIER //////////////////////////////////////
             /*
-            Création du menuBar avec son menu et ses menusItems avec les événements liés :
-            Rechercher => redirection vers la page de recherche de critères.
+            Cr?ation du menuBar avec son menu et ses menusItems avec les ?v?nements li?s :
+            Rechercher => redirection vers la page de recherche de crit?res.
             ExportPDF => export du fichier en PDF.
             Retour => redirection vers la page d'accueil.
             Compte administrateur => permet de modifier ses propres identifiants.
             Documentation => consigne pour l'utilisation de l'application
             Quitter => quitter l'application.
-            Après avoir créé le menuBar et les menuItems, on ajoute les menuItems au menu,
+            Apr?s avoir cr?? le menuBar et les menuItems, on ajoute les menuItems au menu,
             et le menu au menuBar.
             Pour l'affichage du menu, on l'inclut dans une BorderPane.
             */
         //MenuBar et Menus//
         MenuBar menuBar = new MenuBar();
         Menu fichierMenu = new Menu("Fichier");
-        Menu compteMenu = new Menu("Compte administrateur");
         Menu compteAdminMenu = new Menu("Gestion des comptes administrateurs");
         Menu aideMenu = new Menu("Aide");
 
@@ -83,7 +81,7 @@ public class SuperAdminStagiairesDesactives {
         rechercherItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                new Search(primaryStage);
+                new SearchMenuBarSuperAdmin(primaryStage);
             }
         });
         MenuItem retourAccueilItem = new MenuItem("Retour accueil");
@@ -157,7 +155,7 @@ public class SuperAdminStagiairesDesactives {
         });
         SeparatorMenuItem separator= new SeparatorMenuItem();
         MenuItem quitterItem = new MenuItem("Quitter");
-        // Spécifier un raccourci clavier au menuItem Quitter.
+        // Sp?cifier un raccourci clavier au menuItem Quitter.
         quitterItem.setAccelerator(KeyCombination.keyCombination("Ctrl+Q"));
         // Gestion du click sur le menuItem Quitter.
         quitterItem.setOnAction(new EventHandler<ActionEvent>() {
@@ -167,9 +165,9 @@ public class SuperAdminStagiairesDesactives {
                 File delete = new File ("Identifiants/Persistance/Login.txt");
                 boolean isDeleted = delete.delete();
                 if (isDeleted) {
-                    System.out.println("Le fichier a bien été supprimé");
+                    System.out.println("Le fichier a bien ?t? supprim?");
                 } else {
-                    System.out.println("Le fichier a bien été créé");
+                    System.out.println("Le fichier a bien ?t? cr??");
                 }
             }
         });
@@ -183,7 +181,7 @@ public class SuperAdminStagiairesDesactives {
             }
         });
 
-        // Création du MenuItem du menu Compte Admin
+        // Cr?ation du MenuItem du menu Compte Admin
         MenuItem gestionAdminMenu = new MenuItem("Gestion de l'administrateur");
         gestionAdminMenu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -195,11 +193,15 @@ public class SuperAdminStagiairesDesactives {
                 }
             }
         });
-        MenuItem deleteAdminViewMenu = new MenuItem("Liste des administrateurs supprimés");
+        MenuItem deleteAdminViewMenu = new MenuItem("Liste des administrateurs supprim?s");
         deleteAdminViewMenu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
+                try {
+                    new SuperAdminStagiairesDesactives(primaryStage);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
@@ -208,10 +210,9 @@ public class SuperAdminStagiairesDesactives {
 
         // Ajouter les menuItems aux Menus
         fichierMenu.getItems().addAll(rechercherItem, retourAccueilItem, exportPDFItem, separator, quitterItem);
-        compteMenu.getItems().add(modifierItem);
         compteAdminMenu.getItems().addAll(gestionAdminMenu, deleteAdminViewMenu);
         aideMenu.getItems().addAll(documentationItem);
-        menuBar.getMenus().addAll(fichierMenu, compteMenu, compteAdminMenu, aideMenu);
+        menuBar.getMenus().addAll(fichierMenu, compteAdminMenu, aideMenu);
         BorderPane bp = new BorderPane();
         bp.setTop(menuBar);
         ////////////////////////////////////////////////////////////////////////////////
@@ -220,19 +221,19 @@ public class SuperAdminStagiairesDesactives {
 
         ///////////////////////////// TABLE STAGIAIRE SUPPRIME /////////////////////////////////
             /*
-            Pour faire apparaître la liste des stagiaires supprimés, on inclut les données dans une table.
-            Pour se faire, on créé 5 colonnes avec les informations requises
-            (nom, prénom, département,formation et année), en divisant par cellule,
-            et on récupère les données du fichier via la méthode observable liste.
+            Pour faire appara?tre la liste des stagiaires supprim?s, on inclut les donn?es dans une table.
+            Pour se faire, on cr?? 5 colonnes avec les informations requises
+            (nom, pr?nom, d?partement,formation et ann?e), en divisant par cellule,
+            et on r?cup?re les donn?es du fichier via la m?thode observable liste.
             */
         TableView<Stagiaire> table = new TableView<Stagiaire>();
         table.setEditable(true);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        //Création des cinq colonnes de la table //
+        //Cr?ation des cinq colonnes de la table //
         TableColumn<Stagiaire, String> surnameCol = new TableColumn<Stagiaire, String>("Nom");
         surnameCol.setMinWidth(250);
-        //Spécifier comment remplir la donnée pour chaque cellule de cette colonne avec un "cell valu factory//
+        //Sp?cifier comment remplir la donn?e pour chaque cellule de cette colonne avec un "cell valu factory//
         surnameCol.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("surname"));
 
         TableColumn<Stagiaire, String> nameCol = new TableColumn<Stagiaire, String>("Prénom");
@@ -251,7 +252,7 @@ public class SuperAdminStagiairesDesactives {
         yearCol.setMinWidth(200);
         yearCol.setCellValueFactory(new PropertyValueFactory<Stagiaire,Integer>("year"));
 
-        //On ajoute les cinq colonnes à la table//
+        //On ajoute les cinq colonnes ? la table//
         table.getColumns().addAll(surnameCol, nameCol, deptCol, promoCol, yearCol);
 
         //On remplit la table avec la liste observable//
@@ -261,13 +262,13 @@ public class SuperAdminStagiairesDesactives {
 
 
         ///////////////////// REACTIVATION DU STAGIAIRE ////////////////
-            /* Pour faciliter la gestion du stagiaire, un context menu a été créé permettant
-            en faisant un clic-droit sur la liste des stagiaires,  de réactiver le stagiaire
-            sélectionné.
+            /* Pour faciliter la gestion du stagiaire, un context menu a ?t? cr?? permettant
+            en faisant un clic-droit sur la liste des stagiaires,  de r?activer le stagiaire
+            s?lectionn?.
             */
         // ContextMenu et ses MenuItems //
         ContextMenu contextMenu = new ContextMenu();
-        MenuItem reactivate = new MenuItem("Réactiver");
+        MenuItem reactivate = new MenuItem("R?activer");
         contextMenu.getItems().add(reactivate);
         tableDeactivated.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
             @Override
@@ -275,7 +276,7 @@ public class SuperAdminStagiairesDesactives {
                 contextMenu.show(tableDeactivated, event.getScreenX(), event.getScreenY());
             }
         });
-        // Item 1, "Réactivers", du menu clic-droit
+        // Item 1, "R?activers", du menu clic-droit
         reactivate.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
@@ -293,7 +294,7 @@ public class SuperAdminStagiairesDesactives {
 
             ///////////////////////////// AFFICHAGE DES ELEMENTS //////////////////////////////////
                 /*
-                On affiche tous les éléments dans une VBox, que l'on intègre dans une scène et ensuite un stage.
+                On affiche tous les ?l?ments dans une VBox, que l'on int?gre dans une sc?ne et ensuite un stage.
                 */
                 VBox vbox = new VBox();
                 vbox.setSpacing(5);
