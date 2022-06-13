@@ -21,14 +21,14 @@ public class Execute {
         }
 
 //        Création du fichier d'identifiant SuperAdmin
-        File eqlBookAdmin = new File("C:/theEQLBook/AdminInfo/SuperAdmin/SuperAdmin.txt");
+        File eqlBookAdmin = new File("C:/theEQLBook/AdminInfo/SuperAdmin/SUPERADMIN.txt");
         if(!eqlBookAdmin.exists()){
             eqlBookAdmin.createNewFile();
-            FileWriter fw = new FileWriter("C:/theEQLBook/AdminInfo/SuperAdmin/SuperAdmin.txt", false);
+            FileWriter fw = new FileWriter("C:/theEQLBook/AdminInfo/SuperAdmin/SUPERADMIN.txt", false);
             BufferedWriter bw  = new BufferedWriter(fw);
             bw.write(methods.hashage("12345EQL"));
             bw.newLine();
-            bw.write("superAdmin");
+            bw.write("SUPERADMIN");
             bw.close();
             fw.close();
         }

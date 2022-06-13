@@ -6,6 +6,8 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 public class AnnuaireApplication extends Application {
+
+    // La méthode start permet l'ouverture de l'application //
     @Override
     public void start(Stage primaryStage) throws Exception {
         new Execute().executeAtStart();

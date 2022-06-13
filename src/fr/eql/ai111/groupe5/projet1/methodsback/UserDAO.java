@@ -1,5 +1,7 @@
 package fr.eql.ai111.groupe5.projet1.methodsback;
 
+import fr.eql.ai111.groupe5.projet1.interfaces.InscriptionScene;
+import javafx.scene.control.Alert;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,49 +14,44 @@ import java.io.IOException;
 
 public class UserDAO {
 
-
+    Methods methods = new Methods();
     private static final Logger logger = LogManager.getLogger();
     private static final String IDENTIFIANTS = "Identifiants";
-    Methods methods = new Methods();
 
+    // Méthode permettant de créer le dossier identifiants incluant les fichiers utilisateurs //
     public boolean createAccount(
             String surname,
             String name,
             String login,
             String password,
             String role) {
-        File folder = new File(IDENTIFIANTS);
-        // Si le dossier n'existe pas, je le crée.
-        if (!folder.exists()) {
-            folder.mkdir();
-        }
         boolean isCreated = false;
-        // Je d�clare le fichier utilisateur
-        File userFile = new File(folder + "/" + login + ".txt");
+        // Je déclare le fichier utilisateur
+        File userFile = new File("C://theEqlbook/AdminInfo/" +login + ".txt");
         try {
-            // Je tente de créer le fichier sur le disque, s'il n'existe pas déjà.
-            isCreated = userFile.createNewFile();
-            if (isCreated) {
-                FileWriter fw = new FileWriter(userFile, false);
-                BufferedWriter bw = new BufferedWriter(fw);
-                bw.write(surname);
-                bw.newLine();
-                bw.write(name);
-                bw.newLine();
-                bw.write(login);
-                bw.newLine();
-                bw.write(password);
-                bw.newLine();
-                bw.write(role);
-                bw.close();
-                fw.close();
+            if(userFile.length() < 1 ) {
+                if (userFile.exists()) {
+                    FileWriter fw = new FileWriter(userFile, false);
+                    BufferedWriter bw = new BufferedWriter(fw);
+                    bw.write(methods.hashage(password));
+                    bw.newLine();
+                    bw.write(surname);
+                    bw.newLine();
+                    bw.write(name);
+                    bw.close();
+                    fw.close();
+                }
+            } else {
+                idendifiantsDejaCrees();
             }
+
         } catch (IOException e) {
-            logger.warn("Le fichier utilisateur n'a pas été créé.");
+            logger.warn("Le fichier administrateur n'a pas été créé.");
         }
         return isCreated;
     }
 
+    // Méthode permettant de récupérer les informations utilisateurs afin de pourvoir se connecter//
     public User connect(String login, String password) {
         File userFile = new File(IDENTIFIANTS + "/" + login + ".txt");
         User user = null;
@@ -74,7 +71,7 @@ public class UserDAO {
             br.close();
             fr.close();
         } catch (IOException e) {
-            logger.warn("Un problme s'est produit lors de la lecture du fichier utilisateur.");
+            logger.warn("Un problème s'est produit lors de la lecture du fichier utilisateur.");
         }
         // Si le password est correct, on retourne l'instance du reader.
         if (user.getPassword().equals(password)) {
@@ -82,5 +79,14 @@ public class UserDAO {
         } else {
             return null;
         }
+    }
+
+    private void idendifiantsDejaCrees() {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Message d'erreur");
+        // Header Text: null
+        alert.setHeaderText(null);
+        alert.setContentText("Attention ces identifiants existent d?j?!");
+        alert.showAndWait();
     }
 }
