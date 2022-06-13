@@ -30,8 +30,6 @@ public class User {
         this.login = login;
     }
 
-    public User(String text) {
-    }
 
     public String getSurname() {
         return surname;

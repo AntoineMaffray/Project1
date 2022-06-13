@@ -119,7 +119,7 @@ public class SuperAdminScene {
                 TextField tf = new TextField("");
                 tf.setPromptText("Veuillez entrer un nom de fichier");
                 Button btn = new Button("Valider");
-                btn.setOnAction(new EventHandler<ActionEvent>() {
+                EventHandler epdf = new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
                         String namePDF = null;
