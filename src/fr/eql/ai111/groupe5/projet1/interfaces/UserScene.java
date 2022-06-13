@@ -44,7 +44,7 @@ public class UserScene {
 
         //////////////////// LABEL - TITRE DE LA SCENE USERSCENE //////////////////////////////
         /*
-        Création du titre du fichier en label avec son style.
+        Crï¿½ation du titre du fichier en label avec son style.
         Pour l'affichage, on utilise un AnchorPane.
          */
         Label label= new Label("ANNUAIRE STAGIAIRES");
@@ -59,13 +59,13 @@ public class UserScene {
 
         ///////////////////////////// MENU DU FICHIER //////////////////////////////////////
         /*
-        Création du menuBar avec son menu et ses menusItems avec les événements liés :
-        Rechercher => redirection vers la page de recherche de critères.
+        Crï¿½ation du menuBar avec son menu et ses menusItems avec les ï¿½vï¿½nements liï¿½s :
+        Rechercher => redirection vers la page de recherche de critï¿½res.
         ExportPDF => export du fichier en PDF.
         Retour => redirection vers la page d'accueil.
         Documentation => consigne pour l'utilisation de l'application
         Quitter => quitter l'application.
-        Après avoir créé le menuBar et les menuItems, on ajoute les menuItems au menu,
+        Aprï¿½s avoir crï¿½ï¿½ le menuBar et les menuItems, on ajoute les menuItems au menu,
         et le menu au menuBar.
         Pour l'affichage du menu, on l'inclut dans une BorderPane.
          */
@@ -95,7 +95,7 @@ public class UserScene {
             @Override
             public void handle(ActionEvent event) {
                 final Stage dialog = new Stage();
-                Label label = new Label("Fichier à exporter");
+                Label label = new Label("Fichier ï¿½ exporter");
                 label.setFont(new Font("Montserrat", 20));
                 label.setOpacity(0.9);
                 label.setStyle("-fx-text-fill: black");
@@ -107,7 +107,7 @@ public class UserScene {
                 TextField tf = new TextField("");
                 tf.setPromptText("Veuillez entrer un nom de fichier");
                 Button btn = new Button("Valider");
-                btn.setOnAction(new EventHandler<ActionEvent>() {
+                EventHandler epdf = new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
                         String namePDF = null;
@@ -120,7 +120,9 @@ public class UserScene {
                         }
                         dialog.close();
                     }
-                });
+                };
+                btn.setOnAction(epdf);
+                tf.setOnAction(epdf);
 
                 Button btnFermer = new Button("Fermer");
                 btnFermer.setOnAction(new EventHandler<ActionEvent>() {
@@ -173,22 +175,22 @@ public class UserScene {
 
         ///////////////////////////// TABLE STAGIAIRE /////////////////////////////////
         /*
-        Pour faire apparaître la liste des stagiaires, on inclut les données dans une table.
-        Pour se faire, on créé 5 colonnes avec les informations requises
-        (nom, prénom, département,formation et année), en divisant par cellule,
-        et on récupère les données du fichier via la méthode observable liste.
+        Pour faire apparaï¿½tre la liste des stagiaires, on inclut les donnï¿½es dans une table.
+        Pour se faire, on crï¿½ï¿½ 5 colonnes avec les informations requises
+        (nom, prï¿½nom, dï¿½partement,formation et annï¿½e), en divisant par cellule,
+        et on rï¿½cupï¿½re les donnï¿½es du fichier via la mï¿½thode observable liste.
          */
         TableView<Stagiaire> table = new TableView<Stagiaire>();
         table.setEditable(true);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        //Création des cinq colonnes de la table //
+        //Crï¿½ation des cinq colonnes de la table //
         TableColumn<Stagiaire, String> surnameCol = new TableColumn<Stagiaire, String>("Nom");
         surnameCol.setMinWidth(100);
-        //Spécifier comment remplir la donnée pour chaque cellule de cette colonne avec un "cell valu factory//
+        //Spï¿½cifier comment remplir la donnï¿½e pour chaque cellule de cette colonne avec un "cell valu factory//
         surnameCol.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("surname"));
 
-        TableColumn<Stagiaire, String> nameCol = new TableColumn<Stagiaire, String>("Prénom");
+        TableColumn<Stagiaire, String> nameCol = new TableColumn<Stagiaire, String>("Prï¿½nom");
         nameCol.setMinWidth(100);
         nameCol.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("name"));
 
@@ -200,11 +202,11 @@ public class UserScene {
         promoCol.setMinWidth(75);
         promoCol.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("promo"));
 
-        TableColumn<Stagiaire, Integer> yearCol = new TableColumn<Stagiaire, Integer>("Année");
+        TableColumn<Stagiaire, Integer> yearCol = new TableColumn<Stagiaire, Integer>("Annï¿½e");
         yearCol.setMinWidth(50);
         yearCol.setCellValueFactory(new PropertyValueFactory<Stagiaire,Integer>("year"));
 
-        //On ajoute les cinq colonnes à la table//
+        //On ajoute les cinq colonnes ï¿½ la table//
         table.getColumns().addAll(surnameCol, nameCol, deptCol, promoCol, yearCol);
 
         //On remplit la table avec la liste observable//
@@ -216,22 +218,22 @@ public class UserScene {
 
         ///////////////////////////// AJOUT DU STAGIAIRE //////////////////////////////////
         /*
-        Création de des champs et du bouton d'ajout pour ajouter un stagiaire à la liste.
+        Crï¿½ation de des champs et du bouton d'ajout pour ajouter un stagiaire ï¿½ la liste.
         On les inclut dans une HBox.
          */
         //Creation champs de rajout//
         TextField surname = new TextField();
         surname.setPromptText("Nom");
         TextField name = new TextField();
-        name.setPromptText("Prénom");
+        name.setPromptText("Prï¿½nom");
         TextField dept = new TextField();
-        dept.setPromptText("Département");
+        dept.setPromptText("Dï¿½partement");
         TextField promo = new TextField();
         promo.setPromptText("Promotion");
         TextField year = new TextField();
-        year.setPromptText("Année");
+        year.setPromptText("Annï¿½e");
 
-        //Creation du bouton avec l'événement et sa méthode de confirmation via une alerte. //
+        //Creation du bouton avec l'ï¿½vï¿½nement et sa mï¿½thode de confirmation via une alerte. //
         Button btnAjouter = new Button("Ajouter");
         btnAjouter.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -271,7 +273,7 @@ public class UserScene {
 
         ///////////////////////////// AFFICHAGE DES ELEMENTS //////////////////////////////////
         /*
-        On affiche tous les éléments dans une VBox, que l'on intègre dans une scène et ensuite un stage.
+        On affiche tous les ï¿½lï¿½ments dans une VBox, que l'on intï¿½gre dans une scï¿½ne et ensuite un stage.
          */
         VBox vbox = new VBox();
         vbox.setSpacing(5);
@@ -291,7 +293,7 @@ public class UserScene {
 
         // Texte sans en-t?te
         alert.setHeaderText(null);
-        alert.setContentText("Votre stagiaire a bien été enregistré!");
+        alert.setContentText("Votre stagiaire a bien ï¿½tï¿½ enregistrï¿½!");
         alert.showAndWait();
     }
 

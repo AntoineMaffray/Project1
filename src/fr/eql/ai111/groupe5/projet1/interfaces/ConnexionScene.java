@@ -14,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
@@ -38,8 +39,8 @@ public class ConnexionScene {
 
         //////////////////// LABEL - TITRE DE LA SCENE CONNEXION //////////////////////////////
         /*
-        Création du titre du fichier en texte avec son style.
-        Création du formulaire de connexion avec le login et password.
+        Crï¿½ation du titre du fichier en texte avec son style.
+        Crï¿½ation du formulaire de connexion avec le login et password.
          */
         Text titre = new Text("Connexion");
         titre.setFont(Font.font("Roboto", FontWeight.BOLD, 20));
@@ -52,18 +53,18 @@ public class ConnexionScene {
 
         ///////////////////////////// REDIRECTIONS PAGES ////////////////////////////////////
         /*
-        Pour faire apparaître les différentes interfaces, on utilise des boutons afin que
-        l'administrateur puisse accéder au fichier correspondant.
-        Les boutons sont placés dans une HBox.
-        Afin que l'administrateur puisse accéder au fichier, il doit d'abord s'inscrire s'il n'a pas de compte
-        ou se connecter si son compte est créé.
+        Pour faire apparaï¿½tre les diffï¿½rentes interfaces, on utilise des boutons afin que
+        l'administrateur puisse accï¿½der au fichier correspondant.
+        Les boutons sont placï¿½s dans une HBox.
+        Afin que l'administrateur puisse accï¿½der au fichier, il doit d'abord s'inscrire s'il n'a pas de compte
+        ou se connecter si son compte est crï¿½ï¿½.
         Pour le SuperAdmin, il ne peut que se connecter via la page de connexion via ses identifiants, sinon il
-        ne peut accéder au fichier correspondant.
+        ne peut accï¿½der au fichier correspondant.
          */
-        //Création du bouton de validation et du bouton de redirection
+        //Crï¿½ation du bouton de validation et du bouton de redirection
         // vers la page d'inscription s'il n'est pas inscrit//
         Button btnValidation = new Button("Validez");
-        btnValidation.setOnAction(new EventHandler<ActionEvent>() {
+        EventHandler eventHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
                User userPersistance = new User(loginTextField.getText(), pswdPasswordField.getText());
@@ -122,9 +123,6 @@ public class ConnexionScene {
                 }
                 messageBienvenue();
 
-
-
-
 //                try {
 //                    new AdminScene(primaryStage);
 //                } catch (IOException ex) {
@@ -142,10 +140,16 @@ public class ConnexionScene {
 //                } catch (IOException ex) {
 //                    throw new RuntimeException(ex);
 //                }
-//
+
             }
-        });
-                Button btnRedirectionInscription = new Button("Première connexion ");
+        };
+
+        btnValidation.setOnAction(eventHandler);
+
+        pswdPasswordField.setOnAction(eventHandler);
+
+
+                Button btnRedirectionInscription = new Button("Premiï¿½re connexion ");
                 btnRedirectionInscription.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent e) {
@@ -165,7 +169,7 @@ public class ConnexionScene {
 
                 ///////////////////////////// AFFICHAGE DES ELEMENTS //////////////////////////////////
         /*
-        On affiche tous les éléments dans une GridPane, que l'on intègre dans une scène et ensuite un stage.
+        On affiche tous les ï¿½lï¿½ments dans une GridPane, que l'on intï¿½gre dans une scï¿½ne et ensuite un stage.
          */
                 HBox hbBtnValidation = new HBox(10);
                 hbBtnValidation.setAlignment(Pos.BOTTOM_RIGHT);

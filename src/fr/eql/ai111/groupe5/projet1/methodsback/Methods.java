@@ -481,7 +481,6 @@ public class Methods {
             contentStream.beginText();
             contentStream.setFont(pdfFont, fontSize);
             contentStream.newLineAtOffset(30, 550);
-            System.out.println(stagiaires.size());
             for (Stagiaire s : stagiaires) {
                 int nspace1 = 20 - (s.getSurname().trim().length());
                 String space1 = "";
