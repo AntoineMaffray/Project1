@@ -34,8 +34,11 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -175,22 +178,37 @@ public class AdminScene {
             modifierItem.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
+                            String oldLogin = "";
                             try {
-                                    String oldLogin = "";
-                                    SuperAdminTableViewOfAdminLogins superAdminTableViewOfAdminLogins =
-                                            new SuperAdminTableViewOfAdminLogins(primaryStage);
-                                    File file = new File("C://theEqlBook/AdminInfo/"+ ".txt");
+                                    File file = new File("C://theEqlbook/AdminInfo/Persistance/Login.txt");
                                     FileReader fr = new FileReader(file);
                                     BufferedReader br = new BufferedReader(fr);
-                                    String oldPassword = br.readLine();
-                                    String oldSurname = br.readLine();
-                                    String oldName = br.readLine();
+                                    oldLogin = br.readLine() + ".txt";
                                     br.close();
                                     fr.close();
-                                    superAdminTableViewOfAdminLogins.modifFormAdmin(new Stage(), oldSurname, oldName, oldLogin, oldPassword);
+                                    System.out.println(oldLogin);
                             } catch (IOException e) {
                                     throw new RuntimeException(e);
                             }
+
+                            File fileLogin = new File("C://theEqlbook/AdminInfo/"+ oldLogin);
+                            FileReader frl = null;
+                            try {
+                                    frl = new FileReader(fileLogin);
+                                    BufferedReader brl = new BufferedReader(frl);
+                                    String oldPassword = brl.readLine();
+                                    String oldSurname = brl.readLine();
+                                    String oldName = brl.readLine();
+                                    brl.close();
+                                    frl.close();
+                                    modifFormAdmin(new Stage(), oldSurname, oldName, oldLogin, oldPassword);
+                            } catch (FileNotFoundException e) {
+                                    throw new RuntimeException(e);
+                            } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                            }
+
+
                     }
             });
 
@@ -259,15 +277,15 @@ public class AdminScene {
             TextField surname = new TextField();
             surname.setPromptText("Nom");
             TextField name = new TextField();
-            name.setPromptText("Pr�nom");
+            name.setPromptText("Prénom");
             TextField dept = new TextField();
-            dept.setPromptText("D�partement");
+            dept.setPromptText("Département");
             TextField promo = new TextField();
             promo.setPromptText("Promotion");
             TextField year = new TextField();
-            year.setPromptText("Ann�e");
+            year.setPromptText("Année");
 
-            //Creation du bouton avec l'�v�nement et sa m�thode de confirmation via une alerte. //
+            //Creation du bouton avec l'évènement et sa méthode de confirmation via une alerte. //
             Button btnAjouter = new Button("Ajouter");
             btnAjouter.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
@@ -386,10 +404,8 @@ public class AdminScene {
                 alert.setContentText("Votre stagiaire a bien �t� enregistr�!");
                 alert.showAndWait();
         }
-
-        private Label label;
-
         private boolean confirmationSuppression() {
+            Label label = new Label();
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Supprimer l'utilisateur");
                 alert.setHeaderText("Etes-vous s?r de vouloir supprimer l'utilisateur?");
@@ -398,19 +414,18 @@ public class AdminScene {
                 Optional<ButtonType> option = alert.showAndWait();
 
                 if (option.get() == null) {
-                        this.label.setText("Aucun utilisateur n'a ?t? s?lectionn?");
+                        label.setText("Aucun utilisateur n'a ?t? s?lectionn?");
                 } else if (option.get() == ButtonType.OK) {
-                        this.label.setText("Utilisateur supprim?!");
+                        label.setText("Utilisateur supprim?!");
                         return true;
                 } else if (option.get() == ButtonType.CANCEL) {
-                        this.label.setText("Annul?");
+                        label.setText("Annul?");
                         alert.close();
                 } else {
-                        this.label.setText("-");
+                        label.setText("-");
                 }
                 return false;
         }
-
         public void modifFormStagiaire (Stage stage, String oldSurname, String oldName, String oldDept,
                                          String oldPromo, String oldYear, String newAdd){
                 Label surnameLabel = new Label();
@@ -515,9 +530,100 @@ public class AdminScene {
                         }
                 });
         }
+        public void modifFormAdmin (Stage stage, String oldSurname, String oldName, String oldLogin, String oldPassword)
+                throws IOException {
+                try {
+                        Label titleLabel = new Label("Modification du compte");
+                        Label surnameLabel = new Label("Nom");
+                        TextField newSurname = new TextField(oldSurname);
+                        Label nameLabel = new Label("Prénom");
+                        TextField newName = new TextField(oldName);
+                        Label loginLabel = new Label("Identifiant");
+                        TextField newLogin = new TextField(oldLogin.substring(0, oldLogin.length() - 4));
+                        Label newPwLabel = new Label("Nouveau mot de passe");
+                        TextField newPw = new TextField();
+                        Label verifPwLabel = new Label("Vérification du mot de passe");
+                        TextField verifPw = new TextField();
 
+                        Button btnValidate = new Button("Valider");
+                        Button btnCancel = new Button("Annuler");
+                        HBox hboxBtn = new HBox();
+                        hboxBtn.getChildren().addAll(btnValidate, btnCancel);
+                        hboxBtn.setSpacing(50);
+                        hboxBtn.setAlignment(Pos.CENTER_RIGHT);
 
+                        GridPane gridModif2 = new GridPane();
+                        gridModif2.setAlignment(Pos.TOP_CENTER);
+                        gridModif2.setVgap(15);
+                        gridModif2.setHgap(20);
+                        gridModif2.setPadding(new Insets(10, 10, 10, 10));
 
+                        gridModif2.add(titleLabel, 0, 0, 2, 1);
+                        gridModif2.add(surnameLabel, 0, 1);
+                        gridModif2.add(newSurname, 1, 1);
+                        gridModif2.add(nameLabel, 0, 2);
+                        gridModif2.add(newName, 1, 2);
+                        gridModif2.add(loginLabel, 0, 3);
+                        gridModif2.add(newLogin, 1, 3);
+                        gridModif2.add(newPwLabel, 0, 4);
+                        gridModif2.add(newPw, 1, 4);
+                        gridModif2.add(verifPwLabel, 0, 5);
+                        gridModif2.add(verifPw, 1, 5);
+                        gridModif2.add(hboxBtn, 1, 6);
+
+                        Scene subModifScene = new Scene(gridModif2);
+                        stage.setScene(subModifScene);
+                        stage.show();
+
+                        btnValidate.setOnAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent event) {
+                                        if (oldSurname != newSurname.getText() && oldName != newName.getText() && oldLogin != newLogin.getText()
+                                                && oldPassword != newPw.getText()) {
+
+                                                if (newPw.getText().equals(verifPw.getText())) {
+                                                        File loginFileX = new File("C://theEQLBook/AdminInfo/" + newLogin.getText() + ".txt");
+                                                        try {
+                                                                loginFileX.createNewFile();
+                                                        } catch (IOException e) {
+                                                                throw new RuntimeException(e);
+                                                        }
+                                                        try {
+                                                                FileWriter frX = new FileWriter(loginFileX);
+                                                                BufferedWriter bwX = new BufferedWriter(frX);
+                                                                bwX.write(methods.hashage(newPw.getText()));
+                                                                bwX.newLine();
+                                                                bwX.write(newSurname.getText());
+                                                                bwX.newLine();
+                                                                bwX.write(newName.getText());
+                                                                bwX.newLine();
+                                                                bwX.write("Admin");
+                                                                bwX.close();
+                                                                frX.close();
+                                                                File toRemove = new File("C://theEQLBook/AdminInfo/" + oldLogin + ".txt");
+                                                                toRemove.delete();
+                                                        } catch (FileNotFoundException e) {
+                                                                throw new RuntimeException(e);
+                                                        } catch (IOException e) {
+                                                                throw new RuntimeException(e);
+                                                        }
+                                                } else {
+                                                        System.out.println("Passwords non identiques.");
+                                                }
+                                        } else if (oldSurname == newSurname.getText() && oldName == newName.getText() && oldLogin == newLogin.getText()
+                                                && oldPassword == newPw.getText()) {
+                                                System.out.println("Informations identiques, compte non modifi?.");
+                                        }
+                                        File filetoDelete = new File("C://theEQLBook/AdminInfo/" + oldLogin + ".txt");
+                                        filetoDelete.delete();
+                                        stage.close();
+                                }
+                        });
+
+                } catch (StringIndexOutOfBoundsException e) {
+                        // popup ? faire identifiant pas encore activ?
+                }
+        }
 }
 
 
