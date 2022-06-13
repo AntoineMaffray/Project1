@@ -3,6 +3,8 @@ package fr.eql.ai111.groupe5.projet1.interfaces;
 import fr.eql.ai111.groupe5.projet1.methodsback.Arbre;
 import fr.eql.ai111.groupe5.projet1.methodsback.Methods;
 import fr.eql.ai111.groupe5.projet1.methodsback.Stagiaire;
+import fr.eql.ai111.groupe5.projet1.methodsback.User;
+import fr.eql.ai111.groupe5.projet1.methodsback.UserPersistance;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -33,7 +35,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import java.io.FileNotFoundException;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -172,6 +176,27 @@ public class AdminScene {
 
             // MenuItem du menu Mon compte //
             MenuItem modifierItem = new MenuItem("Modifier mes identifiants");
+            modifierItem.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                            try {
+                                    String oldLogin = "";
+                                    SuperAdminTableViewOfAdminLogins superAdminTableViewOfAdminLogins =
+                                            new SuperAdminTableViewOfAdminLogins(primaryStage);
+                                    File file = new File("C://theEqlBook/AdminInfo/"+ ".txt");
+                                    FileReader fr = new FileReader(file);
+                                    BufferedReader br = new BufferedReader(fr);
+                                    String oldPassword = br.readLine();
+                                    String oldSurname = br.readLine();
+                                    String oldName = br.readLine();
+                                    br.close();
+                                    fr.close();
+                                    superAdminTableViewOfAdminLogins.modifFormAdmin(new Stage(), oldSurname, oldName, oldLogin, oldPassword);
+                            } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                            }
+                    }
+            });
 
             // MenuItem du menu Aide //
             MenuItem documentationItem = new MenuItem("Documentation");
@@ -371,18 +396,18 @@ public class AdminScene {
         private boolean confirmationSuppression() {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Supprimer l'utilisateur");
-                alert.setHeaderText("Etes-vous sûr de vouloir supprimer l'utilisateur?");
+                alert.setHeaderText("Etes-vous sï¿½r de vouloir supprimer l'utilisateur?");
 
                 // option != null.
                 Optional<ButtonType> option = alert.showAndWait();
 
                 if (option.get() == null) {
-                        this.label.setText("Aucun utilisateur n'a été sélectionné");
+                        this.label.setText("Aucun utilisateur n'a ï¿½tï¿½ sï¿½lectionnï¿½");
                 } else if (option.get() == ButtonType.OK) {
-                        this.label.setText("Utilisateur supprimé!");
+                        this.label.setText("Utilisateur supprimï¿½!");
                         return true;
                 } else if (option.get() == ButtonType.CANCEL) {
-                        this.label.setText("Annulé");
+                        this.label.setText("Annulï¿½");
                         alert.close();
                 } else {
                         this.label.setText("-");
@@ -426,6 +451,42 @@ public class AdminScene {
                 Scene subScene = new Scene(gridModif);
                 stage.setScene(subScene);
                 stage.show();
+
+//                public void modifFormAdmin (Stage stage, String login){
+//                        Label surnameLabel = new Label();
+//                        TextField newSurname = new TextField(oldSurname);
+//                        Label nameLabel = new Label();
+//                        TextField newName = new TextField(oldName);
+//                        Label deptLabel = new Label();
+//                        TextField newDept = new TextField(oldDept);
+//                        Label promoLabel = new Label();
+//                        TextField newPromo = new TextField(oldPromo);
+//                        Label yearLabel = new Label();
+//                        TextField newYear = new TextField(oldYear);
+//                        Button btnValidate = new Button("Valider");
+//                        Button btnCancel = new Button("Annuler");
+//
+//                        GridPane gridModif = new GridPane();
+//                        gridModif.setVgap(5);
+//                        gridModif.setHgap(5);
+//                        gridModif.setPadding(new Insets(5,5,5,5));
+//
+//                        gridModif.add(surnameLabel, 0, 0);
+//                        gridModif.add(newSurname, 1, 0);
+//                        gridModif.add(nameLabel, 0, 1);
+//                        gridModif.add(newName, 1, 1);
+//                        gridModif.add(deptLabel, 0, 2);
+//                        gridModif.add(newDept, 1, 2);
+//                        gridModif.add(promoLabel, 0, 3);
+//                        gridModif.add(newPromo, 1, 3);
+//                        gridModif.add(yearLabel, 0, 4);
+//                        gridModif.add(newYear, 1, 4);
+//                        gridModif.add(btnValidate, 1, 5);
+//                        gridModif.add(btnCancel, 2, 5);
+//
+//                        Scene subScene = new Scene(gridModif);
+//                        stage.setScene(subScene);
+//                        stage.show();
 
                 btnValidate.setOnAction(new EventHandler<ActionEvent>() {
                         @Override

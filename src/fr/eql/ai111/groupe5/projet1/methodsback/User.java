@@ -8,7 +8,7 @@ public class User {
         private String password;
         private String role;
 
-        // Constructeur utilisé pour les méthodes de bases //
+        // Constructeur utilisï¿½ pour les mï¿½thodes de bases //
         public User(String surname, String name, String login, String password, String role) {
             this.surname = surname;
             this.name = name;
@@ -44,5 +44,9 @@ public class User {
     public String getPassword() { return password; }
 
     public String getRole() { return role; }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
 }
 

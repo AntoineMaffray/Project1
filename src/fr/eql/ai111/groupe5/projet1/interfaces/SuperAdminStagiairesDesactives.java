@@ -39,7 +39,6 @@ public class SuperAdminStagiairesDesactives {
     Arbre arbre = new Arbre();
     Methods methods = new Methods();
     ObservableList <Stagiaire> listDeactivated = arbre.arbreParcoursInv();
-    ObservableList<Stagiaire> data = arbre.arbreParcours();
     TableView<Stagiaire> tableDeactivated = new TableView<Stagiaire>();
     public SuperAdminStagiairesDesactives (Stage primaryStage) throws IOException {
         //////////////////// LABEL - TITRE DE LA SCENE SUPERADMINSCENE //////////////////////////////
@@ -97,7 +96,7 @@ public class SuperAdminStagiairesDesactives {
             @Override
             public void handle(ActionEvent event) {
                 final Stage dialog = new Stage();
-                Label label = new Label("Fichier à exporter");
+                Label label = new Label("Fichier ï¿½ exporter");
                 label.setFont(new Font("Montserrat", 20));
                 label.setOpacity(0.9);
                 label.setStyle("-fx-text-fill: black");
@@ -116,7 +115,7 @@ public class SuperAdminStagiairesDesactives {
                         namePDF = tf.getText();
                         tf.clear();
                         try {
-                            methods.ExportPDF(data, namePDF);
+                            methods.ExportPDF(listDeactivated, namePDF);
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
@@ -226,9 +225,8 @@ public class SuperAdminStagiairesDesactives {
             (nom, pr?nom, d?partement,formation et ann?e), en divisant par cellule,
             et on r?cup?re les donn?es du fichier via la m?thode observable liste.
             */
-        TableView<Stagiaire> table = new TableView<Stagiaire>();
-        table.setEditable(true);
-        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tableDeactivated.setEditable(true);
+        tableDeactivated.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         //Cr?ation des cinq colonnes de la table //
         TableColumn<Stagiaire, String> surnameCol = new TableColumn<Stagiaire, String>("Nom");
@@ -236,7 +234,7 @@ public class SuperAdminStagiairesDesactives {
         //Sp?cifier comment remplir la donn?e pour chaque cellule de cette colonne avec un "cell valu factory//
         surnameCol.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("surname"));
 
-        TableColumn<Stagiaire, String> nameCol = new TableColumn<Stagiaire, String>("Prénom");
+        TableColumn<Stagiaire, String> nameCol = new TableColumn<Stagiaire, String>("Prï¿½nom");
         nameCol.setMinWidth(250);
         nameCol.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("name"));
 
@@ -248,15 +246,17 @@ public class SuperAdminStagiairesDesactives {
         promoCol.setMinWidth(250);
         promoCol.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("promo"));
 
-        TableColumn<Stagiaire, Integer> yearCol = new TableColumn<Stagiaire, Integer>("Année");
+        TableColumn<Stagiaire, Integer> yearCol = new TableColumn<Stagiaire, Integer>("Annï¿½e");
         yearCol.setMinWidth(200);
         yearCol.setCellValueFactory(new PropertyValueFactory<Stagiaire,Integer>("year"));
 
         //On ajoute les cinq colonnes ? la table//
         table.getColumns().addAll(surnameCol, nameCol, deptCol, promoCol, yearCol);
+        //On ajoute les cinq colonnes ï¿½ la table//
+        tableDeactivated.getColumns().addAll(surnameCol, nameCol, deptCol, promoCol, yearCol);
 
         //On remplit la table avec la liste observable//
-        table.setItems(listDeactivated);
+        tableDeactivated.setItems(listDeactivated);
         /////////////////////////////////////////////////////////////////////////////////
 
 
@@ -281,10 +281,18 @@ public class SuperAdminStagiairesDesactives {
 
             @Override
             public void handle(ActionEvent event) {
-                tableDeactivated.getSelectionModel();
-                String newAdd = "";
                 try {
-                    arbre.arbreDReactivation(newAdd, "V");
+                    arbre.arbreDReactivation(methods.createStringOneStagiaire(tableDeactivated.getSelectionModel().getSelectedItem().getSurname(),
+                            tableDeactivated.getSelectionModel().getSelectedItem().getName(),
+                            tableDeactivated.getSelectionModel().getSelectedItem().getDept(),
+                            tableDeactivated.getSelectionModel().getSelectedItem().getPromo(),
+                            tableDeactivated.getSelectionModel().getSelectedItem().getYear()), "V");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                try {
+                    listDeactivated = arbre.arbreParcoursInv();
+                    tableDeactivated.setItems(listDeactivated);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -299,7 +307,7 @@ public class SuperAdminStagiairesDesactives {
                 VBox vbox = new VBox();
                 vbox.setSpacing(5);
                 vbox.setPadding(new Insets(0, 0, 20, 0));
-                vbox.getChildren().addAll(menuBar, label, table);
+                vbox.getChildren().addAll(menuBar, label, tableDeactivated);
                 Scene supAdminStagiaireDesactive = new Scene(vbox);
                 supAdminStagiaireDesactive.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
                 primaryStage.setScene(supAdminStagiaireDesactive);

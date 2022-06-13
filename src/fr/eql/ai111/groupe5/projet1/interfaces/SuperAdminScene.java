@@ -290,8 +290,14 @@ public class SuperAdminScene {
 
                     String newAdd = methods.createStringOneStagiaire(oldSurname, oldName, oldDept, oldPromo, oldYear);
                     modifFormStagiaire(new Stage(), oldSurname, oldName, oldDept, oldPromo, oldYear, newAdd);
+                    try {
+                        data = arbre.arbreParcours();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
-                });
+                    table.setItems(data);
+                }
+            });
             supprimerStagiaire.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
@@ -304,14 +310,14 @@ public class SuperAdminScene {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                    try {
-                        data = arbre.arbreParcours();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
                     boolean suppression = confirmationSuppression();
                     if (suppression){
-                        table.setItems(data);
+                        try {
+                            data = arbre.arbreParcours();
+                            table.setItems(data);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 }
             });
@@ -404,7 +410,6 @@ public class SuperAdminScene {
         }
 
     // M?thode pour afficher une confirmation de suppresion via une fen?tre pop-up
-        private Label label;
 
         private boolean confirmationSuppression() {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -413,21 +418,27 @@ public class SuperAdminScene {
 
         // option != null.
             Optional<ButtonType> option = alert.showAndWait();
+            Label label = new Label();
+
+            boolean status = false;
 
             if (option.get() == null) {
-                this.label.setText("Aucun utilisateur n'a ?t? s?lectionn?");
+                label.setText("Aucun utilisateur n'a ?t? s?lectionn?");
+                status = false;
             } else if (option.get() == ButtonType.OK) {
-                this.label.setText("Utilisateur supprim?!");
-                return true;
+                label.setText("Utilisateur supprimé!");
+                status = true;
             } else if (option.get() == ButtonType.CANCEL) {
-                this.label.setText("Annul?");
+                label.setText("Annul?");
                 alert.close();
+                status = false;
             } else {
-                this.label.setText("-");
+                label.setText("-");
+                status = false;
             }
-
-            return false;
+            return status;
         }
+
 
     private void modifFormStagiaire (Stage stage, String oldSurname, String oldName, String oldDept,
                                      String oldPromo, String oldYear, String newAdd){
@@ -478,15 +489,9 @@ public class SuperAdminScene {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                    try {
-                        data = arbre.arbreParcours();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                    table.setItems(data);
                     stage.close();
                 } else {
-                    System.out.println("Le stagiaire n'a pas ?t? modifi?.");
+                    System.out.println("Le stagiaire n'a pas été modifié.");
                 }
             }
         });

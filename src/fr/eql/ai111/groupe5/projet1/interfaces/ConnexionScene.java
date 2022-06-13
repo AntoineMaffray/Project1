@@ -1,9 +1,9 @@
 package fr.eql.ai111.groupe5.projet1.interfaces;
 
-import com.sun.media.sound.FFT;
 import fr.eql.ai111.groupe5.projet1.methodsback.Methods;
 import fr.eql.ai111.groupe5.projet1.methodsback.User;
 import fr.eql.ai111.groupe5.projet1.methodsback.UserDAO;
+import fr.eql.ai111.groupe5.projet1.methodsback.UserPersistance;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -23,17 +23,16 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 
 public class ConnexionScene {
     User user;
     UserDAO dao = new UserDAO();
     Methods methods = new Methods();
+    UserPersistance userPersistance = new UserPersistance();
 
     public ConnexionScene(Stage primaryStage) throws IOException {
 
@@ -67,8 +66,7 @@ public class ConnexionScene {
         EventHandler eventHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-               User userPersistance = new User(loginTextField.getText(), pswdPasswordField.getText());
-
+                userPersistance.setLogin(loginTextField.getText());
                 if (loginTextField.getText().equals("SUPERADMIN")) {
                     File readLogin = new File("C://theEqlbook/AdminInfo/SuperAdmin/SUPERADMIN.txt");
                     FileReader fr = null;
@@ -81,7 +79,6 @@ public class ConnexionScene {
                     String verif = "";
                     try {
                         verif = br.readLine();
-                        System.out.println(verif + "y");
                         fr.close();
                         br.close();
                     } catch (IOException ex) {
@@ -106,7 +103,6 @@ public class ConnexionScene {
                     String verif = "";
                     try {
                         verif = br.readLine();
-                        System.out.println(verif + "y");
                         fr.close();
                         br.close();
                     } catch (IOException ex) {
@@ -116,12 +112,12 @@ public class ConnexionScene {
                         try {
                             new AdminScene(primaryStage);
                         } catch (IOException ex) {
-                            throw new RuntimeException(ex);
+                            idendifiantsIncorrects();
                         }
                     }
 
                 }
-                messageBienvenue();
+                messageBienvenue(userPersistance);
 
 //                try {
 //                    new AdminScene(primaryStage);
@@ -218,13 +214,13 @@ public class ConnexionScene {
                 alert.showAndWait();
             }
 
-            private void messageBienvenue() {
+            private void messageBienvenue(UserPersistance userPersistance) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Message de Bienvenue");
 
                 // Header Text: null
                 alert.setHeaderText(null);
-                alert.setContentText("Bienvenue " + user.getSurname() + " " + user.getName() + " " + " ! " + " ;)");
+                alert.setContentText("Bienvenue " + userPersistance.getLogin() + " " + " ! ");
 
                 alert.showAndWait();
             }
@@ -233,6 +229,5 @@ public class ConnexionScene {
                 return user.getLogin();
             }
 
-
-        }
+}
 
