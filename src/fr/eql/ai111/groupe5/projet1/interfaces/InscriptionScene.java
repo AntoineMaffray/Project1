@@ -132,30 +132,12 @@ public class InscriptionScene {
 
 
 
-    private void inscriptionUser(User user) {
-
-        /*
-         Si la m?thode 'createAccount' retourne false, alors le fichier utilisateur
-         n'as pas ?t? cr?? car un autre portant le m?me nom (correspondant au login
-         entr?) existe d?j?.
-         */
-        boolean isCreated = dao.createAccount(user.getName(),
-                user.getSurname(),
-                user.getLogin(),
-                user.getPassword(),
-                user.getRole());
-        if (!isCreated) {
-            ;
-        }
-    }
-
-
     private void idendifiantsDejaCrees() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Message d'erreur");
         // Header Text: null
         alert.setHeaderText(null);
-        alert.setContentText("Attention ces identifiants existent déjà!");
+        alert.setContentText("Attention ces identifiants existent dï¿½jï¿½!");
         alert.showAndWait();
     }
 

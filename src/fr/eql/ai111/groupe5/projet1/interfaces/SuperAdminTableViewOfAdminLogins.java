@@ -118,7 +118,7 @@ public class SuperAdminTableViewOfAdminLogins {
                 TextField tf = new TextField("");
                 tf.setPromptText("Veuillez entrer un nom de fichier");
                 Button btn = new Button("Valider");
-                btn.setOnAction(new EventHandler<ActionEvent>() {
+                EventHandler epdf = new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
                         String namePDF = null;
@@ -131,7 +131,9 @@ public class SuperAdminTableViewOfAdminLogins {
                         }
                         dialog.close();
                     }
-                });
+                };
+                btn.setOnAction(epdf);
+                tf.setOnAction(epdf);
 
                 Button btnFermer = new Button("Fermer");
                 btnFermer.setOnAction(new EventHandler<ActionEvent>() {
@@ -195,7 +197,7 @@ public class SuperAdminTableViewOfAdminLogins {
             }
         });
 
-        MenuItem deleteStagiairesViewMenu = new MenuItem("Liste des stagiares supprimés");
+        MenuItem deleteStagiairesViewMenu = new MenuItem("Liste des stagiares supprimï¿½s");
         deleteStagiairesViewMenu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -265,9 +267,9 @@ public class SuperAdminTableViewOfAdminLogins {
         TextField login = new TextField();
         login.setPromptText("Login");
 
-        //Creation du bouton avec l'événement et sa méthode de confirmation via une alerte. //
+        //Creation du bouton avec l'ï¿½vï¿½nement et sa mï¿½thode de confirmation via une alerte. //
         Button btnNewLogin = new Button("Nouveau login");
-        btnNewLogin.setOnAction(new EventHandler<ActionEvent>() {
+                EventHandler eventHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 try {
@@ -282,7 +284,9 @@ public class SuperAdminTableViewOfAdminLogins {
                     throw new RuntimeException(e);
                 }
             }
-        });
+        };
+        btnNewLogin.setOnAction(eventHandler);
+        login.setOnAction(eventHandler);
 
         HBox hbox = new HBox();
         hbox.setSpacing(5);
@@ -377,13 +381,13 @@ public class SuperAdminTableViewOfAdminLogins {
             Label titleLabel = new Label("Modification du compte");
             Label surnameLabel = new Label("Nom");
             TextField newSurname = new TextField(oldSurname);
-            Label nameLabel = new Label("Prénom");
+            Label nameLabel = new Label("Prï¿½nom");
             TextField newName = new TextField(oldName);
             Label loginLabel = new Label("Identifiant");
             TextField newLogin = new TextField(oldLogin.substring(0, oldLogin.length() - 4));
             Label newPwLabel = new Label("Nouveau mot de passe");
             TextField newPw = new TextField();
-            Label verifPwLabel = new Label("Vérification du mot de passe");
+            Label verifPwLabel = new Label("Vï¿½rification du mot de passe");
             TextField verifPw = new TextField();
 
             Button btnValidate = new Button("Valider");
@@ -489,7 +493,7 @@ public class SuperAdminTableViewOfAdminLogins {
 
         // Texte sans en-t?te
         alert.setHeaderText(null);
-        alert.setContentText("Votre administrateur a bien été enregistré!");
+        alert.setContentText("Votre administrateur a bien ï¿½tï¿½ enregistrï¿½!");
         alert.showAndWait();
     }
 

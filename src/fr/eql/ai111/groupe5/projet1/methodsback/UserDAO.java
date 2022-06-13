@@ -39,8 +39,9 @@ public class UserDAO {
                     bw.write(name);
                     bw.close();
                     fw.close();
+                    isCreated = true;
                 }
-            } else {
+            } else if (userFile.length() >= 1) {
                 idendifiantsDejaCrees();
             }
 

@@ -64,7 +64,7 @@ public class ConnexionScene {
         //Cr�ation du bouton de validation et du bouton de redirection
         // vers la page d'inscription s'il n'est pas inscrit//
         Button btnValidation = new Button("Validez");
-        btnValidation.setOnAction(new EventHandler<ActionEvent>() {
+        EventHandler eventHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
                 User user = new User(loginTextField.getText());
@@ -124,7 +124,9 @@ public class ConnexionScene {
                         idendifiantsIncorrects();
                     }
                 }}
-        });
+        };
+        btnValidation.setOnAction(eventHandler);
+        pswdPasswordField.setOnAction(eventHandler);
 
         Button btnRedirectionInscription = new Button("Première connexion ");
         btnRedirectionInscription.setOnAction(new EventHandler<ActionEvent>() {

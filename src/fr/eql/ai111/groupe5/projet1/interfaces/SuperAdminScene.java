@@ -52,7 +52,7 @@ public class SuperAdminScene {
 
             //////////////////// LABEL - TITRE DE LA SCENE SUPERADMINSCENE //////////////////////////////
             /*
-             Création du titre du fichier en label avec son style.
+             Crï¿½ation du titre du fichier en label avec son style.
              Pour l'affichage, on utilise un AnchorPane.
             */
             Label label= new Label("ANNUAIRE STAGIAIRES");
@@ -67,14 +67,14 @@ public class SuperAdminScene {
 
             ///////////////////////////// MENU DU FICHIER //////////////////////////////////////
             /*
-            Création du menuBar avec son menu et ses menusItems avec les événements liés :
-            Rechercher => redirection vers la page de recherche de critères.
+            Crï¿½ation du menuBar avec son menu et ses menusItems avec les ï¿½vï¿½nements liï¿½s :
+            Rechercher => redirection vers la page de recherche de critï¿½res.
             ExportPDF => export du fichier en PDF.
             Retour => redirection vers la page d'accueil.
             Compte administrateur => permet de modifier ses propres identifiants.
             Documentation => consigne pour l'utilisation de l'application
             Quitter => quitter l'application.
-            Après avoir créé le menuBar et les menuItems, on ajoute les menuItems au menu,
+            Aprï¿½s avoir crï¿½ï¿½ le menuBar et les menuItems, on ajoute les menuItems au menu,
             et le menu au menuBar.
             Pour l'affichage du menu, on l'inclut dans une BorderPane.
             */
@@ -106,7 +106,7 @@ public class SuperAdminScene {
             @Override
             public void handle(ActionEvent event) {
                 final Stage dialog = new Stage();
-                Label label = new Label("Fichier à exporter");
+                Label label = new Label("Fichier ï¿½ exporter");
                 label.setFont(new Font("Montserrat", 20));
                 label.setOpacity(0.9);
                 label.setStyle("-fx-text-fill: black");
@@ -118,7 +118,7 @@ public class SuperAdminScene {
                 TextField tf = new TextField("");
                 tf.setPromptText("Veuillez entrer un nom de fichier");
                 Button btn = new Button("Valider");
-                btn.setOnAction(new EventHandler<ActionEvent>() {
+                EventHandler epdf = new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
                         String namePDF = null;
@@ -131,7 +131,9 @@ public class SuperAdminScene {
                         }
                         dialog.close();
                     }
-                });
+                };
+                btn.setOnAction(epdf);
+                tf.setOnAction(epdf);
 
                 Button btnFermer = new Button("Fermer");
                 btnFermer.setOnAction(new EventHandler<ActionEvent>() {
@@ -164,7 +166,7 @@ public class SuperAdminScene {
             });
             SeparatorMenuItem separator= new SeparatorMenuItem();
             MenuItem quitterItem = new MenuItem("Quitter");
-            // Spécifier un raccourci clavier au menuItem Quitter.
+            // Spï¿½cifier un raccourci clavier au menuItem Quitter.
             quitterItem.setAccelerator(KeyCombination.keyCombination("Ctrl+Q"));
             // Gestion du click sur le menuItem Quitter.
             quitterItem.setOnAction(new EventHandler<ActionEvent>() {
@@ -174,9 +176,9 @@ public class SuperAdminScene {
                 File delete = new File ("Identifiants/Persistance/Login.txt");
                 boolean isDeleted = delete.delete();
                 if (isDeleted) {
-                    System.out.println("Le fichier a bien été supprimé");
+                    System.out.println("Le fichier a bien ï¿½tï¿½ supprimï¿½");
                 } else {
-                    System.out.println("Le fichier a bien été créé");
+                    System.out.println("Le fichier a bien ï¿½tï¿½ crï¿½ï¿½");
                 }
                 }
             });
@@ -190,7 +192,7 @@ public class SuperAdminScene {
                 }
             });
 
-            // Création du MenuItem du menu Compte Admin
+            // Crï¿½ation du MenuItem du menu Compte Admin
             MenuItem gestionAdminMenu = new MenuItem("Gestion de l'administrateur");
             gestionAdminMenu.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
@@ -202,7 +204,7 @@ public class SuperAdminScene {
                     }
                 }
             });
-            MenuItem deleteStagiairesViewMenu = new MenuItem("Liste des stagiairess supprimés");
+            MenuItem deleteStagiairesViewMenu = new MenuItem("Liste des stagiairess supprimï¿½s");
             deleteStagiairesViewMenu.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
@@ -231,22 +233,22 @@ public class SuperAdminScene {
 
             ///////////////////////////// TABLE STAGIAIRE /////////////////////////////////
             /*
-            Pour faire apparaître la liste des stagiaires, on inclut les données dans une table.
-            Pour se faire, on créé 5 colonnes avec les informations requises
-            (nom, prénom, département,formation et année), en divisant par cellule,
-            et on récupère les données du fichier via la méthode observable liste.
+            Pour faire apparaï¿½tre la liste des stagiaires, on inclut les donnï¿½es dans une table.
+            Pour se faire, on crï¿½ï¿½ 5 colonnes avec les informations requises
+            (nom, prï¿½nom, dï¿½partement,formation et annï¿½e), en divisant par cellule,
+            et on rï¿½cupï¿½re les donnï¿½es du fichier via la mï¿½thode observable liste.
             */
             TableView<Stagiaire> table = new TableView<Stagiaire>();
             table.setEditable(true);
             table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-            //Création des cinq colonnes de la table //
+            //Crï¿½ation des cinq colonnes de la table //
             TableColumn<Stagiaire, String> surnameCol = new TableColumn<Stagiaire, String>("Nom");
             surnameCol.setMinWidth(250);
-            //Spécifier comment remplir la donnée pour chaque cellule de cette colonne avec un "cell valu factory//
+            //Spï¿½cifier comment remplir la donnï¿½e pour chaque cellule de cette colonne avec un "cell valu factory//
             surnameCol.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("surname"));
 
-            TableColumn<Stagiaire, String> nameCol = new TableColumn<Stagiaire, String>("Prénom");
+            TableColumn<Stagiaire, String> nameCol = new TableColumn<Stagiaire, String>("Prï¿½nom");
             nameCol.setMinWidth(250);
             nameCol.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("name"));
 
@@ -258,11 +260,11 @@ public class SuperAdminScene {
             promoCol.setMinWidth(250);
             promoCol.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("promo"));
 
-            TableColumn<Stagiaire, Integer> yearCol = new TableColumn<Stagiaire, Integer>("Année");
+            TableColumn<Stagiaire, Integer> yearCol = new TableColumn<Stagiaire, Integer>("Annï¿½e");
             yearCol.setMinWidth(200);
             yearCol.setCellValueFactory(new PropertyValueFactory<Stagiaire,Integer>("year"));
 
-            //On ajoute les cinq colonnes à la table//
+            //On ajoute les cinq colonnes ï¿½ la table//
             table.getColumns().addAll(surnameCol, nameCol, deptCol, promoCol, yearCol);
 
             //On remplit la table avec la liste observable//
@@ -272,9 +274,9 @@ public class SuperAdminScene {
 
 
             ///////////////////// MODIFICATION ET/OU SUPPRESSION DU STAGIAIRE ////////////////
-            /* Pour faciliter la gestion du stagiaire, un context menu a été créé permettant
+            /* Pour faciliter la gestion du stagiaire, un context menu a ï¿½tï¿½ crï¿½ï¿½ permettant
             en faisant un clic-droit sur la liste des stagiaires,  de modifier ou supprimer
-            le stagiaire sélectionné.
+            le stagiaire sï¿½lectionnï¿½.
             */
             // ContextMenu et ses MenuItems //
             ContextMenu contextMenu = new ContextMenu();
@@ -336,21 +338,21 @@ public class SuperAdminScene {
 
             ///////////////////////////// AJOUT DU STAGIAIRE //////////////////////////////////
                 /*
-                Création de des champs et du bouton d'ajout pour ajouter un stagiaire à la liste.
+                Crï¿½ation de des champs et du bouton d'ajout pour ajouter un stagiaire ï¿½ la liste.
                 On les inclut dans une HBox.
                 */
             TextField surname = new TextField();
             surname.setPromptText("Nom");
             TextField name = new TextField();
-            name.setPromptText("Prénom");
+            name.setPromptText("Prï¿½nom");
             TextField dept = new TextField();
-            dept.setPromptText("Département");
+            dept.setPromptText("Dï¿½partement");
             TextField promo = new TextField();
             promo.setPromptText("Promotion");
             TextField year = new TextField();
-            year.setPromptText("Année");
+            year.setPromptText("Annï¿½e");
 
-            //Creation du bouton avec l'événement et sa méthode de confirmation via une alerte. //
+            //Creation du bouton avec l'ï¿½vï¿½nement et sa mï¿½thode de confirmation via une alerte. //
             Button btnAjouter = new Button("Ajouter");
             btnAjouter.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
@@ -389,7 +391,7 @@ public class SuperAdminScene {
 
         ///////////////////////////// AFFICHAGE DES ELEMENTS //////////////////////////////////
             /*
-            On affiche tous les éléments dans une VBox, que l'on intègre dans une scène et ensuite un stage.
+            On affiche tous les ï¿½lï¿½ments dans une VBox, que l'on intï¿½gre dans une scï¿½ne et ensuite un stage.
             */
             VBox vbox = new VBox();
             vbox.setSpacing(5);
@@ -436,7 +438,7 @@ public class SuperAdminScene {
                 label.setText("Aucun utilisateur n'a ?t? s?lectionn?");
                 status = false;
             } else if (option.get() == ButtonType.OK) {
-                label.setText("Utilisateur supprimé!");
+                label.setText("Utilisateur supprimï¿½!");
                 status = true;
             } else if (option.get() == ButtonType.CANCEL) {
                 label.setText("Annul?");
@@ -501,7 +503,7 @@ public class SuperAdminScene {
                     }
                     stage.close();
                 } else {
-                    System.out.println("Le stagiaire n'a pas été modifié.");
+                    System.out.println("Le stagiaire n'a pas ï¿½tï¿½ modifiï¿½.");
                 }
             }
         });
