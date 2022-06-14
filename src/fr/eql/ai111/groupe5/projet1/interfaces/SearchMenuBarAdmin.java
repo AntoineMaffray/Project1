@@ -2,6 +2,7 @@ package fr.eql.ai111.groupe5.projet1.interfaces;
 
 import fr.eql.ai111.groupe5.projet1.methodsback.Arbre;
 import fr.eql.ai111.groupe5.projet1.methodsback.Methods;
+import fr.eql.ai111.groupe5.projet1.methodsback.PDFReader;
 import fr.eql.ai111.groupe5.projet1.methodsback.RAFException;
 import fr.eql.ai111.groupe5.projet1.methodsback.Stagiaire;
 import fr.eql.ai111.groupe5.projet1.methodsback.TriSimple;
@@ -101,7 +102,7 @@ public class SearchMenuBarAdmin {
         Menu aideMenu = new Menu("Aide");
 
         //MenuItems du fichier//
-        MenuItem rechercherItem = new MenuItem("Rechercher");
+        MenuItem rechercherItem = new MenuItem("Recherche par critères");
         rechercherItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -121,7 +122,7 @@ public class SearchMenuBarAdmin {
             }
         });
 
-        MenuItem deconnexionItem = new MenuItem("D?connexion");
+        MenuItem deconnexionItem = new MenuItem("Déconnexion");
         deconnexionItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -134,7 +135,7 @@ public class SearchMenuBarAdmin {
             @Override
             public void handle(ActionEvent event) {
                 final Stage dialog = new Stage();
-                Label label = new Label("Fichier ? exporter");
+                Label label = new Label("Nom du fichier à exporter :");
                 label.setFont(new Font("Montserrat", 20));
                 label.setOpacity(0.9);
                 label.setStyle("-fx-text-fill: black");
@@ -185,7 +186,7 @@ public class SearchMenuBarAdmin {
 
                 Scene dialogScene = new Scene(grille, 500, 400);
                 dialog.setScene(dialogScene);
-                dialogScene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+                dialogScene.getStylesheets().add(getClass().getResource("styleAdmin.css").toExternalForm());
                 dialog.setTitle("Export fichier PDF");
                 dialog.show();
             }
@@ -207,6 +208,17 @@ public class SearchMenuBarAdmin {
 
         // MenuItem du menu Aide //
         MenuItem documentationItem = new MenuItem("Documentation");
+        documentationItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                PDFReader pdfReader = new PDFReader();
+                try {
+                    pdfReader.openPdf();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
 
         //Ajout des menusItems au menu, et du menu au menuBar, affichage en BorderPane//
         fichierMenu.getItems().addAll(rechercherItem, retourPagePrincipaleItem, deconnexionItem, exportPDFItem, separator, quitterItem);
@@ -236,11 +248,11 @@ public class SearchMenuBarAdmin {
         //Sp?cifier comment remplir la donn?e pour chaque cellule de cette colonne avec un "cell valu factory//
         surnameCol.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("surname"));
 
-        TableColumn<Stagiaire, String> nameCol = new TableColumn<Stagiaire, String>("Pr?nom");
+        TableColumn<Stagiaire, String> nameCol = new TableColumn<Stagiaire, String>("Prénom");
         nameCol.setMinWidth(250);
         nameCol.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("name"));
 
-        TableColumn<Stagiaire, Integer> deptCol = new TableColumn<Stagiaire, Integer>("Departement");
+        TableColumn<Stagiaire, Integer> deptCol = new TableColumn<Stagiaire, Integer>("Département");
         deptCol.setMinWidth(200);
         deptCol.setCellValueFactory(new PropertyValueFactory<Stagiaire, Integer>("dept"));
 
@@ -248,7 +260,7 @@ public class SearchMenuBarAdmin {
         promoCol.setMinWidth(250);
         promoCol.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("promo"));
 
-        TableColumn<Stagiaire, Integer> yearCol = new TableColumn<Stagiaire, Integer>("Ann?e");
+        TableColumn<Stagiaire, Integer> yearCol = new TableColumn<Stagiaire, Integer>("Année");
         yearCol.setMinWidth(200);
         yearCol.setCellValueFactory(new PropertyValueFactory<Stagiaire,Integer>("year"));
 
@@ -271,7 +283,7 @@ public class SearchMenuBarAdmin {
         HBox hbox = new HBox();
         hbox.setSpacing(10);
         ObservableList<String> values = FXCollections.observableArrayList
-                ("Nom", "Pr?nom", "D?partement", "Formation", "Ann?e");
+                ("Nom", "Prénom", "Département", "Formation", "Année");
         TextField criterionField1 = new TextField();
         criterionField1.setPrefWidth(120);
         ChoiceBox<String> combo1 = new ChoiceBox<>();
@@ -384,7 +396,7 @@ public class SearchMenuBarAdmin {
         search.setPadding(new Insets(0, 0, 20, 0));
         search.getChildren().addAll(menuBar, label, hbox, btnRechercher, table);
         Scene searchScene = new Scene(search);
-        search.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+        search.getStylesheets().add(getClass().getResource("styleAdmin.css").toExternalForm());
         primaryStage.setScene(searchScene);
         primaryStage.setTitle("SearchScene");
         primaryStage.show();
@@ -398,51 +410,58 @@ public class SearchMenuBarAdmin {
         EventHandler cs = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println(combo2.getValue()+"/" + combo3.getValue()+"/" +combo4.getValue()+"/" +combo5.getValue());
-                int criterion1 = conversionCriterion(combo1.getValue().toString());
-                String search1 = criterionField1.getText();
-                int criterion2;
-                if (combo2.getValue() == null){
-                    criterion2 = 0;
-                } else{
-                    criterion2 = conversionCriterion(combo2.getValue().toString());
-                }
-                String search2 = criterionField2.getText();
-                int criterion3;
-                if(combo3.getValue() == null){
-                    criterion3 = 0;
-                } else {
-                    criterion3 = conversionCriterion(combo3.getValue().toString());
-                }
-                String search3 = criterionField3.getText();
-
-                int criterion4;
-                if(combo4.getValue() == null){
-                    criterion4 = 0;
-                } else {
-                    criterion4 = conversionCriterion(combo4.getValue().toString());
-                }
-                String search4 = criterionField4.getText();
-                int criterion5;
-                if(combo5.getValue() == null){
-                    criterion5 = 0;
-                } else {
-                    criterion5 = conversionCriterion(combo5.getValue().toString());
-                }
-                String search5 = criterionField5.getText();
-
-                System.out.println(criterionField2.getText()+" "
-                        +criterionField3.getText()+" "
-                        +criterionField4.getText()+" "
-                        +criterionField5.getText());
-
                 try {
+                    int criterion1 = conversionCriterion(combo1.getValue().toString());
+                    String search1 = criterionField1.getText();
+                    int criterion2;
+                    if (combo2.getValue() == null){
+                        criterion2 = 0;
+                    } else{
+                        criterion2 = conversionCriterion(combo2.getValue().toString());
+                    }
+                    String search2 = criterionField2.getText();
+                    int criterion3;
+                    if(combo3.getValue() == null){
+                        criterion3 = 0;
+                    } else {
+                        criterion3 = conversionCriterion(combo3.getValue().toString());
+                    }
+                    String search3 = criterionField3.getText();
+
+                    int criterion4;
+                    if(combo4.getValue() == null){
+                        criterion4 = 0;
+                    } else {
+                        criterion4 = conversionCriterion(combo4.getValue().toString());
+                    }
+                    String search4 = criterionField4.getText();
+                    int criterion5;
+                    if(combo5.getValue() == null){
+                        criterion5 = 0;
+                    } else {
+                        criterion5 = conversionCriterion(combo5.getValue().toString());
+                    }
+                    String search5 = criterionField5.getText();
                     data = triSimple.searchByCriterion(criterion1, search1, criterion2, search2, criterion3, search3, criterion4,
                             search4, criterion5, search5);
                 } catch (RAFException e) {
-                    throw new RuntimeException(e);
+                    try {
+                        data = arbre.arbreParcours();
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    try {
+                        data = arbre.arbreParcours();
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                } catch (StringIndexOutOfBoundsException e){
+                    try {
+                        data = arbre.arbreParcours();
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
                 table.setItems(data);
             }};

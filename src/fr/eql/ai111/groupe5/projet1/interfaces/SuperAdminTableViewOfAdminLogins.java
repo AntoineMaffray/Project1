@@ -3,6 +3,7 @@ package fr.eql.ai111.groupe5.projet1.interfaces;
 import fr.eql.ai111.groupe5.projet1.methodsback.Arbre;
 import fr.eql.ai111.groupe5.projet1.methodsback.Methods;
 import fr.eql.ai111.groupe5.projet1.methodsback.MethodsConnexion;
+import fr.eql.ai111.groupe5.projet1.methodsback.PDFReader;
 import fr.eql.ai111.groupe5.projet1.methodsback.Stagiaire;
 import fr.eql.ai111.groupe5.projet1.methodsback.User;
 import javafx.application.Platform;
@@ -170,14 +171,14 @@ public class SuperAdminTableViewOfAdminLogins {
 
                 Scene dialogScene = new Scene(grille, 500, 400);
                 dialog.setScene(dialogScene);
-                dialogScene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+                dialogScene.getStylesheets().add(getClass().getResource("styleSuperAdmin.css").toExternalForm());
                 dialog.setTitle("Export fichier PDF");
                 dialog.show();
             }
         });
         SeparatorMenuItem separator= new SeparatorMenuItem();
         MenuItem quitterItem = new MenuItem("Quitter");
-        // Sp?cifier un raccourci clavier au menuItem Quitter.
+        // Spécifier un raccourci clavier au menuItem Quitter.
         quitterItem.setAccelerator(KeyCombination.keyCombination("Ctrl+Q"));
         // Gestion du click sur le menuItem Quitter.
         quitterItem.setOnAction(new EventHandler<ActionEvent>() {
@@ -223,6 +224,17 @@ public class SuperAdminTableViewOfAdminLogins {
 
         // MenuItems du menu Aide //
         MenuItem documentationItem = new MenuItem("Documentation");
+        documentationItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                PDFReader pdfReader = new PDFReader();
+                try {
+                    pdfReader.openPdf();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
 
         // Ajouter les menuItems aux Menus
         fichierMenu.getItems().addAll(rechercherItem, retourPagePrincipaleItem, deconnexionItem, exportPDFItem, separator, quitterItem);
@@ -253,7 +265,7 @@ public class SuperAdminTableViewOfAdminLogins {
         ////Sp?cifier comment remplir la donn?e pour chaque cellule de cette colonne avec un "cell valu factory//
         surnameCol.setCellValueFactory(new PropertyValueFactory<>("surname"));
 
-        TableColumn<User, String> nameCol = new TableColumn<>("Pr?nom");
+        TableColumn<User, String> nameCol = new TableColumn<>("Prénom");
         nameCol.setMinWidth(250);
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
 
@@ -375,7 +387,7 @@ public class SuperAdminTableViewOfAdminLogins {
         vbox.getChildren().addAll(menuBar, label, table, hbox);
 
         Scene scene = new Scene(vbox);
-        scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("styleSuperAdmin.css").toExternalForm());
         primaryStage.setTitle("Gestion des Administrateurs");
         primaryStage.setWidth(1250);
         primaryStage.setHeight(800);
@@ -428,7 +440,7 @@ public class SuperAdminTableViewOfAdminLogins {
             gridModif2.add(hboxBtn, 1, 6);
 
             Scene subModifScene = new Scene(gridModif2);
-            subModifScene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+            subModifScene.getStylesheets().add(getClass().getResource("styleSuperAdmin.css").toExternalForm());
             stage.setScene(subModifScene);
             stage.setTitle("Modification du compte Administrateur");
             stage.show();

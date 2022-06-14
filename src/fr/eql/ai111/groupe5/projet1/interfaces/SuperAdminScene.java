@@ -2,6 +2,7 @@ package fr.eql.ai111.groupe5.projet1.interfaces;
 
 import fr.eql.ai111.groupe5.projet1.methodsback.Arbre;
 import fr.eql.ai111.groupe5.projet1.methodsback.Methods;
+import fr.eql.ai111.groupe5.projet1.methodsback.PDFReader;
 import fr.eql.ai111.groupe5.projet1.methodsback.Stagiaire;
 import fr.eql.ai111.groupe5.projet1.methodsback.User;
 import javafx.application.Platform;
@@ -160,7 +161,7 @@ public class SuperAdminScene {
 
                 Scene dialogScene = new Scene(grille, 500, 400);
                 dialog.setScene(dialogScene);
-                dialogScene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+                dialogScene.getStylesheets().add(getClass().getResource("styleSuperAdmin.css").toExternalForm());
                 dialog.setTitle("Export fichier PDF");
                 dialog.show();
                 }
@@ -211,6 +212,17 @@ public class SuperAdminScene {
 
             // MenuItems du menu Aide //
             MenuItem documentationItem = new MenuItem("Documentation");
+            documentationItem.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    PDFReader pdfReader = new PDFReader();
+                    try {
+                        pdfReader.openPdf();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
 
             // Ajouter les menuItems aux Menus
             fichierMenu.getItems().addAll(rechercherItem, retourAccueilItem, exportPDFItem, separator, quitterItem);
@@ -263,7 +275,35 @@ public class SuperAdminScene {
             table.setItems(data);
             /////////////////////////////////////////////////////////////////////////////////
 
+            ///////////////////////////// RECHERCHE PAR NOM //////////////////////////////////////
+        TextField recherche = new TextField();
+        recherche.setPromptText("Veuillez entrer le nom à rechercher");
+        recherche.setPrefSize(150, 30);
 
+        Button btnRechercher = new Button("Rechercher");
+        btnRechercher.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    data = arbre.arbreParcoursSearch(1, recherche.getText().toUpperCase());
+                    table.setItems(data);
+
+                } catch (StringIndexOutOfBoundsException | IOException e) {
+                    try {
+                        data = arbre.arbreParcours();
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    table.setItems(data);
+                }
+
+            }
+        });
+        HBox hbox1 = new HBox();
+        hbox1.setSpacing(2);
+        hbox1.setAlignment(Pos.TOP_LEFT);
+        hbox1.getChildren().addAll(recherche, btnRechercher);
+        //////////////////////////////////////////////////////////////////////////////////////
 
             ///////////////////// MODIFICATION ET/OU SUPPRESSION DU STAGIAIRE ////////////////
             /* Pour faciliter la gestion du stagiaire, un context menu a été créé permettant
@@ -388,9 +428,9 @@ public class SuperAdminScene {
             VBox vbox = new VBox();
             vbox.setSpacing(5);
             vbox.setPadding(new Insets(0, 0, 20, 0));
-            vbox.getChildren().addAll(menuBar, label, table, hbox);
+            vbox.getChildren().addAll(menuBar, label, hbox1, table, hbox);
             Scene supAdmin = new Scene(vbox);
-            supAdmin.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+            supAdmin.getStylesheets().add(getClass().getResource("styleSuperAdmin.css").toExternalForm());
             primaryStage.setScene(supAdmin);
             primaryStage.setTitle("SuperAdminScene");
             primaryStage.show();
@@ -479,7 +519,7 @@ public class SuperAdminScene {
         gridModif.add(btnCancel, 2, 5);
 
         Scene subScene = new Scene(gridModif, 800, 500);
-        subScene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+        subScene.getStylesheets().add(getClass().getResource("styleSuperAdmin.css").toExternalForm());
         stage.setScene(subScene);
         stage.setTitle("Modifier stagiaire");
         stage.show();

@@ -33,11 +33,11 @@ public class AddRaf {
 
 
         do {
-            // On commence au dÃ©but du raf (la racine de l'arbre binaire)
+            // On commence au début du raf (la racine de l'arbre binaire)
             raf.seek(0);
-            // On affecte Ã  la variable String 'parent' ce qu'on lit dans le raf (n+p de la racine)
+            // On affecte à la variable String 'parent' ce qu'on lit dans le raf (n+p de la racine)
             parent = String.valueOf(raf.readChar());
-            // On utilise la mÃ©thode compareTo pour voir si 'ajout' est plus petit ou plus grand que 'enfant'
+            // On utilise la méthode compareTo pour voir si 'ajout' est plus petit ou plus grand que 'enfant'
             test = ajout.compareTo(parent);
             // Si 'enfant' est plus petit
             if (test < 0) {
@@ -68,7 +68,7 @@ public class AddRaf {
                     System.out.println(raf.readChar());
                     raf.seek(raf.length());
                     raf.writeChars(ajout);
-                    System.out.println("on Ã©crit le prochain Ã  la suite du raf");
+                    System.out.println("on écrit le prochain à la suite du raf");
                     wrote = true;
                 }
             }

@@ -73,7 +73,7 @@ public class AccueilScene {
          */
 
         //Cr?ation du bouton User avec l'?v?nement permettant la redirection vers son fichier//
-        Button btnUser = new Button("User");
+        Button btnUser = new Button("Utilisateur");
         btnUser.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -86,7 +86,7 @@ public class AccueilScene {
         });
 
         //Cr?ation du bouton Admin avec l'événement permettant la redirection vers son fichier//
-        Button btnAdmin = new Button("Admin");
+        Button btnAdmin = new Button("Administrateur");
         btnAdmin.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {

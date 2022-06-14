@@ -39,8 +39,8 @@ public class ConnexionScene {
 
         //////////////////// LABEL - TITRE DE LA SCENE CONNEXION //////////////////////////////
         /*
-        CrÃ©ation du titre du fichier en texte avec son style.
-        CrÃ©ation du formulaire de connexion avec le login et password.
+        Création du titre du fichier en texte avec son style.
+        Création du formulaire de connexion avec le login et password.
          */
         Text titre = new Text("Connexion");
         titre.setFont(Font.font("Roboto", FontWeight.BOLD, 20));
@@ -53,17 +53,17 @@ public class ConnexionScene {
 
         ///////////////////////////// REDIRECTIONS PAGES ////////////////////////////////////
         /*
-        Pour faire apparaï¿½tre les diffï¿½rentes interfaces, on utilise des boutons afin que
-        l'administrateur puisse accï¿½der au fichier correspondant.
-        Les boutons sont placï¿½s dans une HBox.
-        Afin que l'administrateur puisse accï¿½der au fichier, il doit d'abord s'inscrire s'il n'a pas de compte
-        ou se connecter si son compte est crï¿½ï¿½.
+        Pour faire appara?tre les diff?rentes interfaces, on utilise des boutons afin que
+        l'administrateur puisse acc?der au fichier correspondant.
+        Les boutons sont plac?s dans une HBox.
+        Afin que l'administrateur puisse acc?der au fichier, il doit d'abord s'inscrire s'il n'a pas de compte
+        ou se connecter si son compte est cr??.
         Pour le SuperAdmin, il ne peut que se connecter via la page de connexion via ses identifiants, sinon il
-        ne peut accï¿½der au fichier correspondant.
+        ne peut acc?der au fichier correspondant.
          */
-        //Crï¿½ation du bouton de validation et du bouton de redirection
+        //Cr?ation du bouton de validation et du bouton de redirection
         // vers la page d'inscription s'il n'est pas inscrit//
-        Button btnValidation = new Button("Validez");
+        Button btnValidation = new Button("Valider");
         btnValidation.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -126,7 +126,7 @@ public class ConnexionScene {
                 }}
         });
 
-        Button btnRedirectionInscription = new Button("PremiÃ¨re connexion ");
+        Button btnRedirectionInscription = new Button("Première connexion ");
         btnRedirectionInscription.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -134,7 +134,7 @@ public class ConnexionScene {
             }
         });
 
-                Button btnRetourAccueil = new Button("DÃ©connexion");
+                Button btnRetourAccueil = new Button("Déconnexion");
                 btnRetourAccueil.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
@@ -146,7 +146,7 @@ public class ConnexionScene {
 
                 ///////////////////////////// AFFICHAGE DES ELEMENTS //////////////////////////////////
         /*
-        On affiche tous les ï¿½lï¿½ments dans une GridPane, que l'on intï¿½gre dans une scï¿½ne et ensuite un stage.
+        On affiche tous les ?l?ments dans une GridPane, que l'on int?gre dans une sc?ne et ensuite un stage.
          */
         HBox hbBtnValidation = new HBox(10);
         hbBtnValidation.setAlignment(Pos.BOTTOM_RIGHT);

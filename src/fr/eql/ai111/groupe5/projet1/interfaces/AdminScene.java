@@ -2,6 +2,7 @@ package fr.eql.ai111.groupe5.projet1.interfaces;
 
 import fr.eql.ai111.groupe5.projet1.methodsback.Arbre;
 import fr.eql.ai111.groupe5.projet1.methodsback.Methods;
+import fr.eql.ai111.groupe5.projet1.methodsback.PDFReader;
 import fr.eql.ai111.groupe5.projet1.methodsback.Stagiaire;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -54,7 +55,7 @@ public class AdminScene {
 
             //////////////////// LABEL - TITRE DE LA SCENE ADMINSCENE //////////////////////////////
             /*
-             Crï¿½ation du titre du fichier en label avec son style.
+             Cr?ation du titre du fichier en label avec son style.
              Pour l'affichage, on utilise un AnchorPane.
             */
             Label label= new Label("ANNUAIRE STAGIAIRES");
@@ -69,14 +70,14 @@ public class AdminScene {
 
             ///////////////////////////// MENU DU FICHIER //////////////////////////////////////
         /*
-        Crï¿½ation du menuBar avec son menu et ses menusItems avec les ï¿½vï¿½nements liï¿½s :
-        Rechercher => redirection vers la page de recherche de critï¿½res.
+        Cr?ation du menuBar avec son menu et ses menusItems avec les ?v?nements li?s :
+        Rechercher => redirection vers la page de recherche de crit?res.
         ExportPDF => export du fichier en PDF.
         Retour => redirection vers la page d'accueil.
         Compte administrateur => permet de modifier ses propres identifiants.
         Documentation => consigne pour l'utilisation de l'application
         Quitter => quitter l'application.
-        Aprï¿½s avoir crï¿½ï¿½ le menuBar et les menuItems, on ajoute les menuItems au menu,
+        Apr?s avoir cr?? le menuBar et les menuItems, on ajoute les menuItems au menu,
         et le menu au menuBar.
         Pour l'affichage du menu, on l'inclut dans une BorderPane.
          */
@@ -87,14 +88,14 @@ public class AdminScene {
             Menu aideMenu = new Menu("Aide");
 
             //MenuItems du fichier//
-            MenuItem rechercherItem = new MenuItem("Rechercher");
+            MenuItem rechercherItem = new MenuItem("Recherche par critères");
             rechercherItem.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
                             new SearchMenuBarAdmin(primaryStage);
                     }
             });
-            MenuItem deconnexionItem = new MenuItem("DÃ©connexion");
+            MenuItem deconnexionItem = new MenuItem("Déconnexion");
             deconnexionItem.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
@@ -107,7 +108,7 @@ public class AdminScene {
                     @Override
                     public void handle(ActionEvent event) {
                             final Stage dialog = new Stage();
-                            Label label = new Label("Fichier ï¿½ exporter");
+                            Label label = new Label("Fichier ? exporter");
                             label.setFont(new Font("Montserrat", 20));
                             label.setOpacity(0.9);
                             label.setStyle("-fx-text-fill: black");
@@ -160,14 +161,14 @@ public class AdminScene {
 
                             Scene dialogScene = new Scene(grille, 500, 400);
                             dialog.setScene(dialogScene);
-                            dialogScene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+                            dialogScene.getStylesheets().add(getClass().getResource("styleAdmin.css").toExternalForm());
                             dialog.setTitle("Export fichier PDF");
                             dialog.show();
                     }
             });
             SeparatorMenuItem separator= new SeparatorMenuItem();
             MenuItem quitterItem = new MenuItem("Quitter");
-            // Spï¿½cifier un raccourci clavier au menuItem Quitter.
+            // Sp?cifier un raccourci clavier au menuItem Quitter.
             quitterItem.setAccelerator(KeyCombination.keyCombination("Ctrl+Q"));
             // Gestion du click sur le menuItem Quitter.
             quitterItem.setOnAction(new EventHandler<ActionEvent>() {
@@ -215,6 +216,17 @@ public class AdminScene {
 
             // MenuItem du menu Aide //
             MenuItem documentationItem = new MenuItem("Documentation");
+            documentationItem.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                            PDFReader pdfReader = new PDFReader();
+                            try {
+                                    pdfReader.openPdf();
+                            } catch (Exception e) {
+                                    throw new RuntimeException(e);
+                            }
+                    }
+            });
 
             //Ajout des menusItems au menu, et du menu au menuBar, affichage en BorderPane//
             fichierMenu.getItems().addAll(rechercherItem, deconnexionItem, exportPDFItem, separator, quitterItem);
@@ -229,26 +241,26 @@ public class AdminScene {
 
             ///////////////////////////// TABLE STAGIAIRE /////////////////////////////////
             /*
-            Pour faire apparaï¿½tre la liste des stagiaires, on inclut les donnï¿½es dans une table.
-            Pour se faire, on crï¿½ï¿½ 5 colonnes avec les informations requises
-            (nom, prï¿½nom, dï¿½partement,formation et annï¿½e), en divisant par cellule,
-            et on rï¿½cupï¿½re les donnï¿½es du fichier via la mï¿½thode observable liste.
+            Pour faire appara?tre la liste des stagiaires, on inclut les donn?es dans une table.
+            Pour se faire, on cr?? 5 colonnes avec les informations requises
+            (nom, pr?nom, d?partement,formation et ann?e), en divisant par cellule,
+            et on r?cup?re les donn?es du fichier via la m?thode observable liste.
             */
             TableView<Stagiaire> table = new TableView<Stagiaire>();
             table.setEditable(true);
             table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-            //Crï¿½ation des cinq colonnes de la table //
+            //Cr?ation des cinq colonnes de la table //
             TableColumn<Stagiaire, String> surnameCol = new TableColumn<Stagiaire, String>("Nom");
             surnameCol.setMinWidth(250);
-            //Spï¿½cifier comment remplir la donnï¿½e pour chaque cellule de cette colonne avec un "cell valu factory//
+            //Sp?cifier comment remplir la donn?e pour chaque cellule de cette colonne avec un "cell valu factory//
             surnameCol.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("surname"));
 
-            TableColumn<Stagiaire, String> nameCol = new TableColumn<Stagiaire, String>("Prï¿½nom");
+            TableColumn<Stagiaire, String> nameCol = new TableColumn<Stagiaire, String>("Prénom");
             nameCol.setMinWidth(250);
             nameCol.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("name"));
 
-            TableColumn<Stagiaire, Integer> deptCol = new TableColumn<Stagiaire, Integer>("Departement");
+            TableColumn<Stagiaire, Integer> deptCol = new TableColumn<Stagiaire, Integer>("Département");
             deptCol.setMinWidth(200);
             deptCol.setCellValueFactory(new PropertyValueFactory<Stagiaire, Integer>("dept"));
 
@@ -256,37 +268,65 @@ public class AdminScene {
             promoCol.setMinWidth(250);
             promoCol.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("promo"));
 
-            TableColumn<Stagiaire, Integer> yearCol = new TableColumn<Stagiaire, Integer>("Annï¿½e");
+            TableColumn<Stagiaire, Integer> yearCol = new TableColumn<Stagiaire, Integer>("Année");
             yearCol.setMinWidth(200);
             yearCol.setCellValueFactory(new PropertyValueFactory<Stagiaire,Integer>("year"));
 
-            //On ajoute les cinq colonnes ï¿½ la table//
+            //On ajoute les cinq colonnes ? la table//
             table.getColumns().addAll(surnameCol, nameCol, deptCol, promoCol, yearCol);
 
             //On remplit la table avec la liste observable//
             table.setItems(data);
             /////////////////////////////////////////////////////////////////////////////////
 
+            ///////////////////////////// RECHERCHE PAR NOM //////////////////////////////////////
+            TextField recherche = new TextField();
+            recherche.setPromptText("Veuillez entrer le nom à rechercher");
+            recherche.setPrefSize(150, 30);
 
+            Button btnRechercher = new Button("Rechercher");
+            btnRechercher.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                            try {
+                                    data = arbre.arbreParcoursSearch(1, recherche.getText().toUpperCase());
+                                    table.setItems(data);
+
+                            } catch (StringIndexOutOfBoundsException | IOException e) {
+                                    try {
+                                            data = arbre.arbreParcours();
+                                    } catch (IOException ex) {
+                                            throw new RuntimeException(ex);
+                                    }
+                                    table.setItems(data);
+                            }
+
+                    }
+            });
+            HBox hbox1 = new HBox();
+            hbox1.setSpacing(2);
+            hbox1.setAlignment(Pos.TOP_LEFT);
+            hbox1.getChildren().addAll(recherche, btnRechercher);
+            //////////////////////////////////////////////////////////////////////////////////////
 
             ///////////////////////////// AJOUT DU STAGIAIRE //////////////////////////////////
                 /*
-                Crï¿½ation de des champs et du bouton d'ajout pour ajouter un stagiaire ï¿½ la liste.
+                Cr?ation de des champs et du bouton d'ajout pour ajouter un stagiaire ? la liste.
                 On les inclut dans une HBox.
                 */
             //Creation champs de rajout//
             TextField surname = new TextField();
             surname.setPromptText("Nom");
             TextField name = new TextField();
-            name.setPromptText("PrÃ©nom");
+            name.setPromptText("Prénom");
             TextField dept = new TextField();
-            dept.setPromptText("DÃ©partement");
+            dept.setPromptText("Département");
             TextField promo = new TextField();
             promo.setPromptText("Promotion");
             TextField year = new TextField();
-            year.setPromptText("AnnÃ©e");
+            year.setPromptText("Année");
 
-            //Creation du bouton avec l'Ã©vÃ¨nement et sa mÃ©thode de confirmation via une alerte. //
+            //Creation du bouton avec l'évènement et sa méthode de confirmation via une alerte. //
             Button btnAjouter = new Button("Ajouter");
             btnAjouter.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
@@ -323,9 +363,9 @@ public class AdminScene {
 
 
             ///////////////////// MODIFICATION ET/OU SUPPRESSION DU STAGIAIRE ////////////////
-            /* Pour faciliter la gestion du stagiaire, un context menu a ï¿½tï¿½ crï¿½ï¿½ permettant
+            /* Pour faciliter la gestion du stagiaire, un context menu a ?t? cr?? permettant
             en faisant un clic-droit sur la liste des stagiaires,  de modifier ou supprimer
-            le stagiaire sï¿½lectionnï¿½.
+            le stagiaire s?lectionn?.
             */
             // ContextMenu et ses MenuItems //
             ContextMenu contextMenu = new ContextMenu();
@@ -382,14 +422,14 @@ public class AdminScene {
 
             ///////////////////////////// AFFICHAGE DES ELEMENTS //////////////////////////////////
                 /*
-                On affiche tous les ï¿½lï¿½ments dans une VBox, que l'on intï¿½gre dans une scï¿½ne et ensuite un stage.
+                On affiche tous les ?l?ments dans une VBox, que l'on int?gre dans une sc?ne et ensuite un stage.
                 */
             VBox vbox = new VBox();
             vbox.setSpacing(5);
             vbox.setPadding(new Insets(0, 0, 20, 0));
-            vbox.getChildren().addAll(menuBar, label, table, hbox);
+            vbox.getChildren().addAll(menuBar, label, hbox1, table, hbox);
             Scene admin = new Scene(vbox);
-            admin.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+            admin.getStylesheets().add(getClass().getResource("styleAdmin.css").toExternalForm());
             primaryStage.setScene(admin);
             primaryStage.setTitle("AdminScene");
             primaryStage.show();
@@ -402,7 +442,7 @@ public class AdminScene {
 
                 // Texte sans en-t?te
                 alert.setHeaderText(null);
-                alert.setContentText("Votre stagiaire a bien ï¿½tï¿½ enregistrï¿½!");
+                alert.setContentText("Votre stagiaire a bien ?t? enregistr?!");
                 alert.showAndWait();
         }
         private boolean confirmationSuppression() {
@@ -466,7 +506,7 @@ public class AdminScene {
                 gridModif.add(btnCancel, 2, 5);
 
                 Scene subScene = new Scene(gridModif, 800, 500);
-                subScene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+                subScene.getStylesheets().add(getClass().getResource("styleAdmin.css").toExternalForm());
                 stage.setScene(subScene);
                 stage.setTitle("Modifier stagiaire");
                 stage.show();
@@ -545,13 +585,13 @@ public class AdminScene {
                         titleLabel.setFont(Font.font("Roboto", FontWeight.BOLD, 20));
                         Label surnameLabel = new Label("Nom");
                         TextField newSurname = new TextField(oldSurname);
-                        Label nameLabel = new Label("PrÃ©nom");
+                        Label nameLabel = new Label("Prénom");
                         TextField newName = new TextField(oldName);
                         Label loginLabel = new Label("Identifiant");
                         TextField newLogin = new TextField(oldLogin.substring(0, oldLogin.length() - 4));
                         Label newPwLabel = new Label("Nouveau mot de passe");
                         TextField newPw = new TextField();
-                        Label verifPwLabel = new Label("VÃ©rification du mot de passe");
+                        Label verifPwLabel = new Label("Vérification du mot de passe");
                         TextField verifPw = new TextField();
 
                         Button btnValidate = new Button("Valider");
@@ -581,7 +621,7 @@ public class AdminScene {
                         gridModif2.add(hboxBtn, 1, 6);
 
                         Scene subModifScene = new Scene(gridModif2);
-                        subModifScene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+                        subModifScene.getStylesheets().add(getClass().getResource("styleAdmin.css").toExternalForm());
                         stage.setScene(subModifScene);
                         stage.setTitle("Modification des identifiants");
                         stage.show();
