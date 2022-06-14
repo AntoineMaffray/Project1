@@ -72,7 +72,7 @@ public class SuperAdminStagiairesDesactives {
         //MenuBar et Menus//
         MenuBar menuBar = new MenuBar();
         Menu fichierMenu = new Menu("Fichier");
-        Menu compteAdminMenu = new Menu("Gestion des comptes administrateurs");
+        Menu compteAdminMenu = new Menu("Administrateur");
         Menu aideMenu = new Menu("Aide");
 
         //MenuItems du fichier//
@@ -193,7 +193,7 @@ public class SuperAdminStagiairesDesactives {
         });
 
         // Création du MenuItem du menu Compte Admin
-        MenuItem gestionAdminMenu = new MenuItem("Gestion de l'administrateur");
+        MenuItem gestionAdminMenu = new MenuItem("Gestion des administrateurs");
         gestionAdminMenu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -223,7 +223,7 @@ public class SuperAdminStagiairesDesactives {
             public void handle(ActionEvent event) {
                 PDFReader pdfReader = new PDFReader();
                 try {
-                    pdfReader.openPdf();
+                    pdfReader.openPdfSuperAdmin();
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -352,10 +352,10 @@ public class SuperAdminStagiairesDesactives {
                 vbox.setSpacing(5);
                 vbox.setPadding(new Insets(0, 0, 20, 0));
                 vbox.getChildren().addAll(menuBar, label, tableDeactivated);
-                Scene supAdminStagiaireDesactive = new Scene(vbox);
+                Scene supAdminStagiaireDesactive = new Scene(vbox, 1200,700);
                 supAdminStagiaireDesactive.getStylesheets().add(getClass().getResource("styleSuperAdmin.css").toExternalForm());
                 primaryStage.setScene(supAdminStagiaireDesactive);
-                primaryStage.setTitle("SuperAdminScene");
+                primaryStage.setTitle("The EQL Book - Mode Super Administrateur");
                 primaryStage.show();
             }
         ////////////////////////////////////////////////////////////////////////////////////////

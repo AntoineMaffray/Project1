@@ -64,7 +64,7 @@ public class ConnexionScene {
         //Cr?ation du bouton de validation et du bouton de redirection
         // vers la page d'inscription s'il n'est pas inscrit//
         Button btnValidation = new Button("Valider");
-        btnValidation.setOnAction(new EventHandler<ActionEvent>() {
+        EventHandler ok = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
                 User user = new User(loginTextField.getText());
@@ -124,7 +124,9 @@ public class ConnexionScene {
                         idendifiantsIncorrects();
                     }
                 }}
-        });
+        };
+        btnValidation.setOnAction(ok);
+        pswdPasswordField.setOnAction(ok);
 
         Button btnRedirectionInscription = new Button("Première connexion ");
         btnRedirectionInscription.setOnAction(new EventHandler<ActionEvent>() {
@@ -177,7 +179,7 @@ public class ConnexionScene {
         Scene connexion = new Scene(grille, 400, 350);
         connexion.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         primaryStage.setScene(connexion);
-        primaryStage.setTitle("Connexion");
+        primaryStage.setTitle("The EQL Book - Connexion");
         primaryStage.show();
         }
     ////////////////////////////////////////////////////////////////////////////////////////

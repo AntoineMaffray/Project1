@@ -43,7 +43,7 @@ public class InscriptionScene {
         TextField loginTextField = new TextField("");
         Label nom = new Label("Nom:");
         TextField nomTextField = new TextField("");
-        Label prenom = new Label("Pr?nom :");
+        Label prenom = new Label("Prénom :");
         TextField prenomTextField = new TextField("");
         Label pswd = new Label("Mot de passe :");
         PasswordField pswdPasswordField = new PasswordField();
@@ -125,7 +125,7 @@ public class InscriptionScene {
         inscription.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
 
         primaryStage.setScene(inscription);
-        primaryStage.setTitle("Inscription");
+        primaryStage.setTitle("The EQL Book - Inscription");
         primaryStage.show();
     }
         ////////////////////////////////////////////////////////////////////////////////////////

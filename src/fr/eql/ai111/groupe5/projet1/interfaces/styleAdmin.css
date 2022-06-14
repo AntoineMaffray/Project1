@@ -5,7 +5,7 @@
  * to the root node of the Scene instance
  */
 .root{
-    -fx-background-image: url(images/fondsPleinAdmin.jpeg);
+    -fx-background-image: url(images/fondsPleinAdmin.jpg);
     -fx-background-size: cover;
 }
 

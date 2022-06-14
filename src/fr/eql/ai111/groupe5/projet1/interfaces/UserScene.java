@@ -75,14 +75,14 @@ public class UserScene {
         Menu aideMenu = new Menu("Aide");
 
         //MenuItems du fichier//
-        MenuItem rechercherItem = new MenuItem("Rechercher");
+        MenuItem rechercherItem = new MenuItem("Recherche par critères");
         rechercherItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 new SearchMenuBarUser(primaryStage);
             }
         });
-        MenuItem retourAccueilItem = new MenuItem("Déconnexion");
+        MenuItem retourAccueilItem = new MenuItem("Retour page accueil");
         retourAccueilItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -170,7 +170,7 @@ public class UserScene {
             public void handle(ActionEvent event) {
                 PDFReader pdfReader = new PDFReader();
                 try {
-                    pdfReader.openPdf();
+                    pdfReader.openPdfUser();
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -229,7 +229,7 @@ public class UserScene {
 
         ///////////////////////////// RECHERCHE PAR NOM //////////////////////////////////////
         TextField recherche = new TextField();
-        recherche.setPromptText("Veuillez entrer le nom à rechercher");
+        recherche.setPromptText("Nom à rechercher");
         recherche.setPrefSize(150, 30);
 
         Button btnRechercher = new Button("Rechercher");
@@ -253,6 +253,7 @@ public class UserScene {
         });
         HBox hbox1 = new HBox();
         hbox1.setSpacing(2);
+        hbox1.setPadding(new Insets(0,0,0,20));
         hbox1.setAlignment(Pos.TOP_LEFT);
         hbox1.getChildren().addAll(recherche, btnRechercher);
         //////////////////////////////////////////////////////////////////////////////////////
@@ -307,6 +308,7 @@ public class UserScene {
         });
         HBox hbox = new HBox();
         hbox.setSpacing(5);
+        hbox.setPadding(new Insets(0,20,0,20));
         hbox.setAlignment(Pos.CENTER);
         hbox.getChildren().addAll(surname, name, dept, promo, year, btnAjouter);
         ////////////////////////////////////////////////////////////////////////////////////////
@@ -319,10 +321,10 @@ public class UserScene {
         vbox.setSpacing(5);
         vbox.setPadding(new Insets(0, 0, 20, 0));
         vbox.getChildren().addAll(menuBar, label, hbox1, table, hbox);
-        Scene user = new Scene(vbox);
+        Scene user = new Scene(vbox, 1200,700);
         user.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         primaryStage.setScene(user);
-        primaryStage.setTitle("UserScene");
+        primaryStage.setTitle("The EQL Book - Mode Utilisateur");
         primaryStage.show();
         }
         ////////////////////////////////////////////////////////////////////////////////////////

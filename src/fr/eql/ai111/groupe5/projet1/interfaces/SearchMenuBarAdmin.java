@@ -32,9 +32,15 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class SearchMenuBarAdmin {
@@ -206,6 +212,40 @@ public class SearchMenuBarAdmin {
         // MenuItem du menu Mon compte //
         MenuItem modifierItem = new MenuItem("Modifier mes identifiants");
 
+        modifierItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                String oldLogin = "";
+                try {
+                    File file = new File("C://theEqlbook/AdminInfo/Persistance/Login.txt");
+                    FileReader fr = new FileReader(file);
+                    BufferedReader br = new BufferedReader(fr);
+                    oldLogin = br.readLine() + ".txt";
+                    br.close();
+                    fr.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+                File fileLogin = new File("C://theEqlbook/AdminInfo/"+ oldLogin);
+                FileReader frl = null;
+                try {
+                    frl = new FileReader(fileLogin);
+                    BufferedReader brl = new BufferedReader(frl);
+                    String oldPassword = brl.readLine();
+                    String oldSurname = brl.readLine();
+                    String oldName = brl.readLine();
+                    brl.close();
+                    frl.close();
+                    modifFormAdmin(new Stage(), oldSurname, oldName, oldLogin, oldPassword);
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
         // MenuItem du menu Aide //
         MenuItem documentationItem = new MenuItem("Documentation");
         documentationItem.setOnAction(new EventHandler<ActionEvent>() {
@@ -213,7 +253,7 @@ public class SearchMenuBarAdmin {
             public void handle(ActionEvent event) {
                 PDFReader pdfReader = new PDFReader();
                 try {
-                    pdfReader.openPdf();
+                    pdfReader.openPdfAdmin();
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -282,6 +322,7 @@ public class SearchMenuBarAdmin {
         //Cr?ation des champs de recherches, de leur apparition/disparition//
         HBox hbox = new HBox();
         hbox.setSpacing(10);
+        hbox.setPadding(new Insets(0, 0, 0, 20));
         ObservableList<String> values = FXCollections.observableArrayList
                 ("Nom", "Prénom", "Département", "Formation", "Année");
         TextField criterionField1 = new TextField();
@@ -384,6 +425,9 @@ public class SearchMenuBarAdmin {
         connectedComboBox.addComboBox(combo5);
 
         Button btnRechercher = new Button("Rechercher");
+        HBox hboxBtn = new HBox();
+        hboxBtn.setPadding(new Insets(0, 0, 0, 20));
+        hboxBtn.getChildren().add(btnRechercher);
         /////////////////////////////////////////////////////////////////////////////////
 
 
@@ -394,69 +438,58 @@ public class SearchMenuBarAdmin {
         VBox search = new VBox();
         search.setSpacing(5);
         search.setPadding(new Insets(0, 0, 20, 0));
-        search.getChildren().addAll(menuBar, label, hbox, btnRechercher, table);
-        Scene searchScene = new Scene(search);
+        search.getChildren().addAll(menuBar, label, hbox, hboxBtn, table);
+        Scene searchScene = new Scene(search, 1200,700);
         search.getStylesheets().add(getClass().getResource("styleAdmin.css").toExternalForm());
         primaryStage.setScene(searchScene);
-        primaryStage.setTitle("SearchScene");
+        primaryStage.setTitle("The EQL Book - Mode Administrateur");
         primaryStage.show();
         ////////////////////////////////////////////////////////////////////////////////////////
 
 
         ///////////////////////////// METHODE DE TRI SIMPLE //////////////////////////////////
         /*
-        L'?v?nement est plac?e ? la fin afin qu'il puisse prendre en compte tous les ?l?ments pr?c?dents.
+        L'évènement est placée à la fin afin qu'il puisse prendre en compte tous les ?l?ments pr?c?dents.
          */
         EventHandler cs = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                try {
-                    int criterion1 = conversionCriterion(combo1.getValue().toString());
-                    String search1 = criterionField1.getText();
-                    int criterion2;
-                    if (combo2.getValue() == null){
-                        criterion2 = 0;
-                    } else{
-                        criterion2 = conversionCriterion(combo2.getValue().toString());
-                    }
-                    String search2 = criterionField2.getText();
-                    int criterion3;
-                    if(combo3.getValue() == null){
-                        criterion3 = 0;
-                    } else {
-                        criterion3 = conversionCriterion(combo3.getValue().toString());
-                    }
-                    String search3 = criterionField3.getText();
+                int criterion1 = conversionCriterion(combo1.getValue().toString());
+                String search1 = criterionField1.getText();
+                int criterion2;
+                if (combo2.getValue() == null){
+                    criterion2 = 0;
+                } else{
+                    criterion2 = conversionCriterion(combo2.getValue().toString());
+                }
+                String search2 = criterionField2.getText();
+                int criterion3;
+                if(combo3.getValue() == null){
+                    criterion3 = 0;
+                } else {
+                    criterion3 = conversionCriterion(combo3.getValue().toString());
+                }
+                String search3 = criterionField3.getText();
 
-                    int criterion4;
-                    if(combo4.getValue() == null){
-                        criterion4 = 0;
-                    } else {
-                        criterion4 = conversionCriterion(combo4.getValue().toString());
-                    }
-                    String search4 = criterionField4.getText();
-                    int criterion5;
-                    if(combo5.getValue() == null){
-                        criterion5 = 0;
-                    } else {
-                        criterion5 = conversionCriterion(combo5.getValue().toString());
-                    }
-                    String search5 = criterionField5.getText();
+                int criterion4;
+                if(combo4.getValue() == null){
+                    criterion4 = 0;
+                } else {
+                    criterion4 = conversionCriterion(combo4.getValue().toString());
+                }
+                String search4 = criterionField4.getText();
+                int criterion5;
+                if(combo5.getValue() == null){
+                    criterion5 = 0;
+                } else {
+                    criterion5 = conversionCriterion(combo5.getValue().toString());
+                }
+                String search5 = criterionField5.getText();
+
+                try {
                     data = triSimple.searchByCriterion(criterion1, search1, criterion2, search2, criterion3, search3, criterion4,
                             search4, criterion5, search5);
-                } catch (RAFException e) {
-                    try {
-                        data = arbre.arbreParcours();
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                } catch (IOException e) {
-                    try {
-                        data = arbre.arbreParcours();
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                } catch (StringIndexOutOfBoundsException e){
+                } catch (StringIndexOutOfBoundsException | RAFException | IOException e){
                     try {
                         data = arbre.arbreParcours();
                     } catch (IOException ex) {
@@ -480,16 +513,16 @@ public class SearchMenuBarAdmin {
             case "Nom":
                 criterionConvert = 1;
                 break;
-            case "Pr?nom":
+            case "Prénom":
                 criterionConvert = 2;
                 break;
-            case "D?partement":
+            case "Département":
                 criterionConvert = 3;
                 break;
             case "Formation":
                 criterionConvert = 4;
                 break;
-            case "Ann?e":
+            case "Année":
                 criterionConvert = 5;
                 break;
             default:
@@ -497,5 +530,109 @@ public class SearchMenuBarAdmin {
                 break;
         }
         return criterionConvert;
+    }
+    public void modifFormAdmin (Stage stage, String oldSurname, String oldName, String oldLogin, String oldPassword)
+            throws IOException {
+        try {
+            Label titleLabel = new Label("Modification du compte");
+            titleLabel.setFont(Font.font("Roboto", FontWeight.BOLD, 20));
+            Label surnameLabel = new Label("Nom");
+            TextField newSurname = new TextField(oldSurname);
+            Label nameLabel = new Label("Prénom");
+            TextField newName = new TextField(oldName);
+            Label loginLabel = new Label("Identifiant");
+            TextField newLogin = new TextField(oldLogin.substring(0, oldLogin.length() - 4));
+            Label newPwLabel = new Label("Nouveau mot de passe");
+            TextField newPw = new TextField();
+            Label verifPwLabel = new Label("Vérification du mot de passe");
+            TextField verifPw = new TextField();
+
+            Button btnValidate = new Button("Valider");
+            Button btnCancel = new Button("Annuler");
+            HBox hboxBtn = new HBox();
+            hboxBtn.getChildren().addAll(btnValidate, btnCancel);
+            hboxBtn.setSpacing(50);
+            hboxBtn.setAlignment(Pos.CENTER_RIGHT);
+
+            GridPane gridModif2 = new GridPane();
+            gridModif2.setAlignment(Pos.TOP_CENTER);
+            gridModif2.setVgap(15);
+            gridModif2.setHgap(20);
+            gridModif2.setPadding(new Insets(10, 10, 10, 10));
+
+            gridModif2.add(titleLabel, 0, 0, 2, 1);
+            gridModif2.add(surnameLabel, 0, 1);
+            gridModif2.add(newSurname, 1, 1);
+            gridModif2.add(nameLabel, 0, 2);
+            gridModif2.add(newName, 1, 2);
+            gridModif2.add(loginLabel, 0, 3);
+            gridModif2.add(newLogin, 1, 3);
+            gridModif2.add(newPwLabel, 0, 4);
+            gridModif2.add(newPw, 1, 4);
+            gridModif2.add(verifPwLabel, 0, 5);
+            gridModif2.add(verifPw, 1, 5);
+            gridModif2.add(hboxBtn, 1, 6);
+
+            Scene subModifScene = new Scene(gridModif2);
+            subModifScene.getStylesheets().add(getClass().getResource("styleAdmin.css").toExternalForm());
+            stage.setScene(subModifScene);
+            stage.setTitle("Modification des identifiants");
+            stage.show();
+
+
+            btnCancel.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    stage.close();
+                }
+            });
+            btnValidate.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    if (oldSurname != newSurname.getText() && oldName != newName.getText() && oldLogin != newLogin.getText()
+                            && oldPassword != newPw.getText()) {
+
+                        if (newPw.getText().equals(verifPw.getText())) {
+                            File loginFileX = new File("C://theEQLBook/AdminInfo/" + newLogin.getText() + ".txt");
+                            try {
+                                loginFileX.createNewFile();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                            try {
+                                FileWriter frX = new FileWriter(loginFileX);
+                                BufferedWriter bwX = new BufferedWriter(frX);
+                                bwX.write(methods.hashage(newPw.getText()));
+                                bwX.newLine();
+                                bwX.write(newSurname.getText());
+                                bwX.newLine();
+                                bwX.write(newName.getText());
+                                bwX.newLine();
+                                bwX.write("Admin");
+                                bwX.close();
+                                frX.close();
+                                File toRemove = new File("C://theEQLBook/AdminInfo/" + oldLogin + ".txt");
+                                toRemove.delete();
+                            } catch (FileNotFoundException e) {
+                                throw new RuntimeException(e);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        } else {
+                            System.out.println("Passwords non identiques.");
+                        }
+                    } else if (oldSurname == newSurname.getText() && oldName == newName.getText() && oldLogin == newLogin.getText()
+                            && oldPassword == newPw.getText()) {
+                        System.out.println("Informations identiques, compte non modifi?.");
+                    }
+                    File filetoDelete = new File("C://theEQLBook/AdminInfo/" + oldLogin + ".txt");
+                    filetoDelete.delete();
+                    stage.close();
+                }
+            });
+
+        } catch (StringIndexOutOfBoundsException e) {
+            // popup ? faire identifiant pas encore activ?
+        }
     }
 }

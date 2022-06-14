@@ -95,7 +95,7 @@ public class SearchMenuBarUser {
 //                    new SearchMenuBarUser(primaryStage);
             }
         });
-        MenuItem retourPagePrincipaleItem = new MenuItem("Retour page principale");
+        MenuItem retourPagePrincipaleItem = new MenuItem("Retour page précédente");
         retourPagePrincipaleItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -107,7 +107,7 @@ public class SearchMenuBarUser {
             }
         });
 
-        MenuItem deconnexionItem = new MenuItem("Déconnexion");
+        MenuItem deconnexionItem = new MenuItem("Retour page accueil");
         deconnexionItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -192,7 +192,7 @@ public class SearchMenuBarUser {
             public void handle(ActionEvent event) {
                 PDFReader pdfReader = new PDFReader();
                 try {
-                    pdfReader.openPdf();
+                    pdfReader.openPdfUser();
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -260,6 +260,7 @@ public class SearchMenuBarUser {
         //Cr?ation des champs de recherches, de leur apparition/disparition//
         HBox hbox = new HBox();
         hbox.setSpacing(10);
+        hbox.setPadding(new Insets(0, 0, 0, 20));
         ObservableList<String> values = FXCollections.observableArrayList
                 ("Nom", "Prénom", "Département", "Formation", "Année");
         TextField criterionField1 = new TextField();
@@ -363,6 +364,9 @@ public class SearchMenuBarUser {
 
 
         Button btnRechercher = new Button("Rechercher");
+        HBox hboxBtn = new HBox();
+        hboxBtn.setPadding(new Insets(0, 0, 0, 20));
+        hboxBtn.getChildren().add(btnRechercher);
         /////////////////////////////////////////////////////////////////////////////////
 
 
@@ -373,11 +377,11 @@ public class SearchMenuBarUser {
         VBox search = new VBox();
         search.setSpacing(5);
         search.setPadding(new Insets(0, 0, 20, 0));
-        search.getChildren().addAll(menuBar, label, hbox, btnRechercher, table);
-        Scene searchScene = new Scene(search);
+        search.getChildren().addAll(menuBar, label, hbox, hboxBtn, table);
+        Scene searchScene = new Scene(search, 1200,700);
         search.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         primaryStage.setScene(searchScene);
-        primaryStage.setTitle("SearchScene");
+        primaryStage.setTitle("The EQL Book - Mode Utilisateur");
         primaryStage.show();
         ////////////////////////////////////////////////////////////////////////////////////////
 
@@ -424,25 +428,14 @@ public class SearchMenuBarUser {
                 try {
                     data = triSimple.searchByCriterion(criterion1, search1, criterion2, search2, criterion3, search3, criterion4,
                             search4, criterion5, search5);
-                } catch (RAFException e) {
+                } catch (StringIndexOutOfBoundsException | RAFException | IOException e){
                     try {
                         data = arbre.arbreParcours();
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
-                    }
-                } catch (IOException e) {
-                    try {
-                        data = arbre.arbreParcours();
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                } catch (StringIndexOutOfBoundsException e){
-                    try {
-                        data = arbre.arbreParcours();
-                    } catch (IOException ex) {
-                        throw new RuntimeException(e);
                     }
                 }
+                table.setItems(data);
             }};
         btnRechercher.setOnAction(cs);
         criterionField1.setOnAction(cs);

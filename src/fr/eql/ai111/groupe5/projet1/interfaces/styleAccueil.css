@@ -5,7 +5,7 @@
  * to the root node of the Scene instance
  */
 .root{
-    -fx-background-image: url(images/fondsPleinSuperAdmin.jpg);
+    -fx-background-image: url(images/FondLogo.jpg);
     -fx-background-size: cover;
 }
 
@@ -143,4 +143,3 @@
 .button:hover {
     -fx-background-color: linear-gradient(#F5F5DC, #DB7093);
     }
-

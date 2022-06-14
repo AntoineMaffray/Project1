@@ -84,11 +84,11 @@ public class SuperAdminScene {
             //MenuBar et Menus//
             MenuBar menuBar = new MenuBar();
             Menu fichierMenu = new Menu("Fichier");
-            Menu compteAdminMenu = new Menu("Gestion des comptes administrateurs");
+            Menu compteAdminMenu = new Menu("Administrateur");
             Menu aideMenu = new Menu("Aide");
 
             //MenuItems du fichier//
-            MenuItem rechercherItem = new MenuItem("Rechercher");
+            MenuItem rechercherItem = new MenuItem("Recherche par critères");
             rechercherItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -187,7 +187,7 @@ public class SuperAdminScene {
 
 
             // Création du MenuItem du menu Compte Admin
-            MenuItem gestionAdminMenu = new MenuItem("Gestion de l'administrateur");
+            MenuItem gestionAdminMenu = new MenuItem("Gestion des administrateurs");
             gestionAdminMenu.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
@@ -217,7 +217,7 @@ public class SuperAdminScene {
                 public void handle(ActionEvent event) {
                     PDFReader pdfReader = new PDFReader();
                     try {
-                        pdfReader.openPdf();
+                        pdfReader.openPdfSuperAdmin();
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
@@ -277,7 +277,7 @@ public class SuperAdminScene {
 
             ///////////////////////////// RECHERCHE PAR NOM //////////////////////////////////////
         TextField recherche = new TextField();
-        recherche.setPromptText("Veuillez entrer le nom à rechercher");
+        recherche.setPromptText("Nom à rechercher");
         recherche.setPrefSize(150, 30);
 
         Button btnRechercher = new Button("Rechercher");
@@ -300,6 +300,7 @@ public class SuperAdminScene {
             }
         });
         HBox hbox1 = new HBox();
+        hbox1.setPadding(new Insets(0,0,0,20));
         hbox1.setSpacing(2);
         hbox1.setAlignment(Pos.TOP_LEFT);
         hbox1.getChildren().addAll(recherche, btnRechercher);
@@ -414,6 +415,7 @@ public class SuperAdminScene {
             });
             HBox hbox = new HBox();
             hbox.setSpacing(10);
+            hbox.setPadding(new Insets(0,20,0,20));
             hbox.getChildren().addAll(surname, name, dept, promo, year, btnAjouter);
         ////////////////////////////////////////////////////////////////////////////////////////
 
@@ -429,10 +431,10 @@ public class SuperAdminScene {
             vbox.setSpacing(5);
             vbox.setPadding(new Insets(0, 0, 20, 0));
             vbox.getChildren().addAll(menuBar, label, hbox1, table, hbox);
-            Scene supAdmin = new Scene(vbox);
+            Scene supAdmin = new Scene(vbox, 1200,700);
             supAdmin.getStylesheets().add(getClass().getResource("styleSuperAdmin.css").toExternalForm());
             primaryStage.setScene(supAdmin);
-            primaryStage.setTitle("SuperAdminScene");
+            primaryStage.setTitle("The EQL Book - Mode Super Administrateur");
             primaryStage.show();
         }
         ////////////////////////////////////////////////////////////////////////////////////////
@@ -467,7 +469,7 @@ public class SuperAdminScene {
             boolean status = false;
 
             if (option.get() == null) {
-                label.setText("Aucun utilisateur n'a ?t? s?lectionn?");
+                label.setText("Aucun utilisateur n'a été sélectionné");
                 status = false;
             } else if (option.get() == ButtonType.OK) {
                 label.setText("Utilisateur supprimé!");
@@ -484,41 +486,49 @@ public class SuperAdminScene {
         }
 
 
-    private void modifFormStagiaire (Stage stage, String oldSurname, String oldName, String oldDept,
-                                     String oldPromo, String oldYear, String newAdd){
+    public void modifFormStagiaire (Stage stage, String oldSurname, String oldName, String oldDept,
+                                    String oldPromo, String oldYear, String newAdd){
 
-        Label surnameLabel = new Label();
+        Text titre = new Text("Modification du stagiaire");
+        titre.setFont(Font.font("Roboto", FontWeight.BOLD, 20));
+
+        Label surnameLabel = new Label("Nom : ");
         TextField newSurname = new TextField(oldSurname);
-        Label nameLabel = new Label();
+        Label nameLabel = new Label("Prénom : ");
         TextField newName = new TextField(oldName);
-        Label deptLabel = new Label();
+        Label deptLabel = new Label("Département : ");
         TextField newDept = new TextField(oldDept);
-        Label promoLabel = new Label();
+        Label promoLabel = new Label("Formation : ");
         TextField newPromo = new TextField(oldPromo);
-        Label yearLabel = new Label();
+        Label yearLabel = new Label("Année : ");
         TextField newYear = new TextField(oldYear);
         Button btnValidate = new Button("Valider");
         Button btnCancel = new Button("Annuler");
 
+        HBox hboxBtn = new HBox();
+        hboxBtn.setSpacing(30);
+        hboxBtn.setPadding(new Insets(0,20,0,20));
+        hboxBtn.setAlignment(Pos.CENTER);
+        hboxBtn.getChildren().addAll(btnValidate, btnCancel);
         GridPane gridModif = new GridPane();
         gridModif.setAlignment(Pos.CENTER);
         gridModif.setVgap(10);
         gridModif.setHgap(10);
         gridModif.setPadding(new Insets(5,5,5,5));
-        gridModif.add(surnameLabel, 0, 0);
-        gridModif.add(newSurname, 1, 0);
-        gridModif.add(nameLabel, 0, 1);
-        gridModif.add(newName, 1, 1);
-        gridModif.add(deptLabel, 0, 2);
-        gridModif.add(newDept, 1, 2);
-        gridModif.add(promoLabel, 0, 3);
-        gridModif.add(newPromo, 1, 3);
-        gridModif.add(yearLabel, 0, 4);
-        gridModif.add(newYear, 1, 4);
-        gridModif.add(btnValidate, 1, 5);
-        gridModif.add(btnCancel, 2, 5);
+        gridModif.add(titre, 0, 0,2,1);
+        gridModif.add(surnameLabel, 0, 1);
+        gridModif.add(newSurname, 1, 1);
+        gridModif.add(nameLabel, 0, 2);
+        gridModif.add(newName, 1, 2);
+        gridModif.add(deptLabel, 0, 3);
+        gridModif.add(newDept, 1, 3);
+        gridModif.add(promoLabel, 0, 4);
+        gridModif.add(newPromo, 1, 4);
+        gridModif.add(yearLabel, 0, 5);
+        gridModif.add(newYear, 1, 5);
+        gridModif.add(hboxBtn, 1, 6);
 
-        Scene subScene = new Scene(gridModif, 800, 500);
+        Scene subScene = new Scene(gridModif, 600, 300);
         subScene.getStylesheets().add(getClass().getResource("styleSuperAdmin.css").toExternalForm());
         stage.setScene(subScene);
         stage.setTitle("Modifier stagiaire");

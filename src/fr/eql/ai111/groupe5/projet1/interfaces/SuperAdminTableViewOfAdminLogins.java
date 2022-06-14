@@ -84,7 +84,7 @@ public class SuperAdminTableViewOfAdminLogins {
             //MenuBar et Menus//
             MenuBar menuBar = new MenuBar();
             Menu fichierMenu = new Menu("Fichier");
-            Menu compteAdminMenu = new Menu("Gestion des comptes administrateurs");
+            Menu compteAdminMenu = new Menu("Administrateur");
             Menu aideMenu = new Menu("Aide");
 
         //MenuItems du fichier//
@@ -185,19 +185,12 @@ public class SuperAdminTableViewOfAdminLogins {
             @Override
             public void handle(ActionEvent event) {
                 Platform.exit();
-//                File delete = new File ("Identifiants/Persistance/Login.txt");
-//                boolean isDeleted = delete.delete();
-//                if (isDeleted) {
-//                    System.out.println("Le fichier a bien ?t? supprim?");
-//                } else {
-//                    System.out.println("Le fichier a bien ?t? cr??");
-//                }
             }
         });
 
 
         // Cr?ation du MenuItem du menu Compte Admin
-        MenuItem gestionAdminMenu = new MenuItem("Gestion de l'administrateur");
+        MenuItem gestionAdminMenu = new MenuItem("Gestion des administrateurs");
         gestionAdminMenu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -229,7 +222,7 @@ public class SuperAdminTableViewOfAdminLogins {
             public void handle(ActionEvent event) {
                 PDFReader pdfReader = new PDFReader();
                 try {
-                    pdfReader.openPdf();
+                    pdfReader.openPdfSuperAdmin();
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -292,7 +285,7 @@ public class SuperAdminTableViewOfAdminLogins {
 
         //Creation du bouton avec l'événement et sa méthode de confirmation via une alerte. //
         Button btnNewLogin = new Button("Nouveau login");
-        btnNewLogin.setOnAction(new EventHandler<ActionEvent>() {
+        EventHandler nl = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 try {
@@ -307,7 +300,9 @@ public class SuperAdminTableViewOfAdminLogins {
                     throw new RuntimeException(e);
                 }
             }
-        });
+        };
+        btnNewLogin.setOnAction(nl);
+        login.setOnAction(nl);
 
         HBox hbox = new HBox();
         hbox.setSpacing(5);
@@ -359,10 +354,8 @@ public class SuperAdminTableViewOfAdminLogins {
             public void handle(ActionEvent event) {
                 String toDelete = table.getSelectionModel().getSelectedItem().getLogin();
                 File filetoDelete = new File("C://theEqlbook/AdminInfo/" + toDelete + ".txt");
-                System.out.println(toDelete+".txt");
                 filetoDelete.delete();
                 if (filetoDelete.exists() == false){
-                    System.out.println("file deleted");
                 }else{
                 }
                 try {
@@ -386,11 +379,9 @@ public class SuperAdminTableViewOfAdminLogins {
         vbox.setPadding(new Insets(0, 0, 20, 0));
         vbox.getChildren().addAll(menuBar, label, table, hbox);
 
-        Scene scene = new Scene(vbox);
+        Scene scene = new Scene(vbox, 1200,700);
         scene.getStylesheets().add(getClass().getResource("styleSuperAdmin.css").toExternalForm());
-        primaryStage.setTitle("Gestion des Administrateurs");
-        primaryStage.setWidth(1250);
-        primaryStage.setHeight(800);
+        primaryStage.setTitle("The EQL Book - Mode Super Administrateur");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -445,6 +436,13 @@ public class SuperAdminTableViewOfAdminLogins {
             stage.setTitle("Modification du compte Administrateur");
             stage.show();
 
+            btnCancel.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    stage.close();
+                }
+            });
+
             btnValidate.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
@@ -478,11 +476,9 @@ public class SuperAdminTableViewOfAdminLogins {
                                 throw new RuntimeException(e);
                             }
                         } else {
-                            System.out.println("Passwords non identiques.");
                         }
                     } else if (oldSurname == newSurname.getText() && oldName == newName.getText() && oldLogin == newLogin.getText()
                             && oldPassword == newPw.getText()) {
-                        System.out.println("Informations identiques, compte non modifi?.");
                     }
                     try {
                         dataLogin = methodsConnexion.createUserList();

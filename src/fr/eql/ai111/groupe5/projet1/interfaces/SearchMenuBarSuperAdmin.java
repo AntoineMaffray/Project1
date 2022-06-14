@@ -99,7 +99,7 @@ public class SearchMenuBarSuperAdmin {
         //MenuBar et Menus//
         MenuBar menuBar = new MenuBar();
         Menu fichierMenu = new Menu("Fichier");
-        Menu compteAdminMenu = new Menu("Gestion des comptes administrateurs");
+        Menu compteAdminMenu = new Menu("Administrateur");
         Menu aideMenu = new Menu("Aide");
 
         //MenuItems du fichier//
@@ -212,7 +212,7 @@ public class SearchMenuBarSuperAdmin {
 
 
         // Cr?ation du MenuItem du menu Compte Admin
-        MenuItem gestionAdminMenu = new MenuItem("Gestion de l'administrateur");
+        MenuItem gestionAdminMenu = new MenuItem("Gestion des administrateurs");
         gestionAdminMenu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -242,7 +242,7 @@ public class SearchMenuBarSuperAdmin {
             public void handle(ActionEvent event) {
                 PDFReader pdfReader = new PDFReader();
                 try {
-                    pdfReader.openPdf();
+                    pdfReader.openPdfSuperAdmin();
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -311,6 +311,7 @@ public class SearchMenuBarSuperAdmin {
         //Cr?ation des champs de recherches, de leur apparition/disparition//
         HBox hbox = new HBox();
         hbox.setSpacing(10);
+        hbox.setPadding(new Insets(0, 0, 0, 20));
         ObservableList<String> values = FXCollections.observableArrayList
                 ("Nom", "Prénom", "Département", "Formation", "Année");
         TextField criterionField1 = new TextField();
@@ -413,6 +414,9 @@ public class SearchMenuBarSuperAdmin {
         connectedComboBox.addComboBox(combo5);
 
         Button btnRechercher = new Button("Rechercher");
+        HBox hboxBtn = new HBox();
+        hboxBtn.setPadding(new Insets(0, 0, 0, 20));
+        hboxBtn.getChildren().add(btnRechercher);
         /////////////////////////////////////////////////////////////////////////////////
 
 
@@ -423,11 +427,11 @@ public class SearchMenuBarSuperAdmin {
         VBox search = new VBox();
         search.setSpacing(5);
         search.setPadding(new Insets(0, 0, 20, 0));
-        search.getChildren().addAll(menuBar, label, hbox, btnRechercher, table);
-        Scene searchScene = new Scene(search);
+        search.getChildren().addAll(menuBar, label, hbox, hboxBtn, table);
+        Scene searchScene = new Scene(search, 1200,700);
         search.getStylesheets().add(getClass().getResource("styleSuperAdmin.css").toExternalForm());
         primaryStage.setScene(searchScene);
-        primaryStage.setTitle("SearchScene");
+        primaryStage.setTitle("The EQL Book - Mode Super Administrateur");
         primaryStage.show();
         ////////////////////////////////////////////////////////////////////////////////////////
 
@@ -474,25 +478,14 @@ public class SearchMenuBarSuperAdmin {
                 try {
                     data = triSimple.searchByCriterion(criterion1, search1, criterion2, search2, criterion3, search3, criterion4,
                             search4, criterion5, search5);
-                } catch (RAFException e) {
-                    try {
-                        data = arbre.arbreParcours();
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                } catch (IOException e) {
-                    try {
-                        data = arbre.arbreParcours();
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                } catch (StringIndexOutOfBoundsException e){
+                } catch (StringIndexOutOfBoundsException | RAFException | IOException e){
                     try {
                         data = arbre.arbreParcours();
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
                     }
                 }
+                table.setItems(data);
             }};
         btnRechercher.setOnAction(cs);
         criterionField1.setOnAction(cs);
@@ -509,16 +502,16 @@ public class SearchMenuBarSuperAdmin {
             case "Nom":
                 criterionConvert = 1;
                 break;
-            case "Pr?nom":
+            case "Prénom":
                 criterionConvert = 2;
                 break;
-            case "D?partement":
+            case "Département":
                 criterionConvert = 3;
                 break;
             case "Formation":
                 criterionConvert = 4;
                 break;
-            case "Ann?e":
+            case "Année":
                 criterionConvert = 5;
                 break;
             default:

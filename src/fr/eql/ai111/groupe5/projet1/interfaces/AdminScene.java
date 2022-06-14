@@ -108,7 +108,7 @@ public class AdminScene {
                     @Override
                     public void handle(ActionEvent event) {
                             final Stage dialog = new Stage();
-                            Label label = new Label("Fichier ? exporter");
+                            Label label = new Label("Fichier à exporter");
                             label.setFont(new Font("Montserrat", 20));
                             label.setOpacity(0.9);
                             label.setStyle("-fx-text-fill: black");
@@ -221,7 +221,7 @@ public class AdminScene {
                     public void handle(ActionEvent event) {
                             PDFReader pdfReader = new PDFReader();
                             try {
-                                    pdfReader.openPdf();
+                                    pdfReader.openPdfAdmin();
                             } catch (Exception e) {
                                     throw new RuntimeException(e);
                             }
@@ -281,7 +281,7 @@ public class AdminScene {
 
             ///////////////////////////// RECHERCHE PAR NOM //////////////////////////////////////
             TextField recherche = new TextField();
-            recherche.setPromptText("Veuillez entrer le nom à rechercher");
+            recherche.setPromptText("Nom à rechercher");
             recherche.setPrefSize(150, 30);
 
             Button btnRechercher = new Button("Rechercher");
@@ -304,6 +304,7 @@ public class AdminScene {
                     }
             });
             HBox hbox1 = new HBox();
+            hbox1.setPadding(new Insets(0,0,0,20));
             hbox1.setSpacing(2);
             hbox1.setAlignment(Pos.TOP_LEFT);
             hbox1.getChildren().addAll(recherche, btnRechercher);
@@ -356,6 +357,7 @@ public class AdminScene {
             });
             HBox hbox = new HBox();
             hbox.setSpacing(10);
+            hbox.setPadding(new Insets(0,20,0,20));
             hbox.getChildren().addAll(surname, name, dept, promo, year, btnAjouter);
             ////////////////////////////////////////////////////////////////////////////////////////
 
@@ -428,10 +430,10 @@ public class AdminScene {
             vbox.setSpacing(5);
             vbox.setPadding(new Insets(0, 0, 20, 0));
             vbox.getChildren().addAll(menuBar, label, hbox1, table, hbox);
-            Scene admin = new Scene(vbox);
+            Scene admin = new Scene(vbox,1200,700);
             admin.getStylesheets().add(getClass().getResource("styleAdmin.css").toExternalForm());
             primaryStage.setScene(admin);
-            primaryStage.setTitle("AdminScene");
+            primaryStage.setTitle("The EQL Book - Mode Administrateur");
             primaryStage.show();
     }
         ////////////////////////////////////////////////////////////////////////////////////////
@@ -469,83 +471,52 @@ public class AdminScene {
         }
 
         public void modifFormStagiaire (Stage stage, String oldSurname, String oldName, String oldDept,
-                                         String oldPromo, String oldYear, String newAdd){
+                                        String oldPromo, String oldYear, String newAdd){
 
-                Text titre = new Text("Connexion");
+                Text titre = new Text("Modification du stagiaire");
                 titre.setFont(Font.font("Roboto", FontWeight.BOLD, 20));
 
-                Label surnameLabel = new Label();
+                Label surnameLabel = new Label("Nom : ");
                 TextField newSurname = new TextField(oldSurname);
-                Label nameLabel = new Label();
+                Label nameLabel = new Label("Prénom : ");
                 TextField newName = new TextField(oldName);
-                Label deptLabel = new Label();
+                Label deptLabel = new Label("Département : ");
                 TextField newDept = new TextField(oldDept);
-                Label promoLabel = new Label();
+                Label promoLabel = new Label("Formation : ");
                 TextField newPromo = new TextField(oldPromo);
-                Label yearLabel = new Label();
+                Label yearLabel = new Label("Année : ");
                 TextField newYear = new TextField(oldYear);
                 Button btnValidate = new Button("Valider");
                 Button btnCancel = new Button("Annuler");
 
+                HBox hboxBtn = new HBox();
+                hboxBtn.setSpacing(30);
+                hboxBtn.setPadding(new Insets(0,20,0,20));
+                hboxBtn.setAlignment(Pos.CENTER);
+                hboxBtn.getChildren().addAll(btnValidate, btnCancel);
                 GridPane gridModif = new GridPane();
                 gridModif.setAlignment(Pos.CENTER);
                 gridModif.setVgap(10);
                 gridModif.setHgap(10);
                 gridModif.setPadding(new Insets(5,5,5,5));
-                gridModif.add(surnameLabel, 0, 0);
-                gridModif.add(newSurname, 1, 0);
-                gridModif.add(nameLabel, 0, 1);
-                gridModif.add(newName, 1, 1);
-                gridModif.add(deptLabel, 0, 2);
-                gridModif.add(newDept, 1, 2);
-                gridModif.add(promoLabel, 0, 3);
-                gridModif.add(newPromo, 1, 3);
-                gridModif.add(yearLabel, 0, 4);
-                gridModif.add(newYear, 1, 4);
-                gridModif.add(btnValidate, 1, 5);
-                gridModif.add(btnCancel, 2, 5);
+                gridModif.add(titre, 0, 0,2,1);
+                gridModif.add(surnameLabel, 0, 1);
+                gridModif.add(newSurname, 1, 1);
+                gridModif.add(nameLabel, 0, 2);
+                gridModif.add(newName, 1, 2);
+                gridModif.add(deptLabel, 0, 3);
+                gridModif.add(newDept, 1, 3);
+                gridModif.add(promoLabel, 0, 4);
+                gridModif.add(newPromo, 1, 4);
+                gridModif.add(yearLabel, 0, 5);
+                gridModif.add(newYear, 1, 5);
+                gridModif.add(hboxBtn, 1, 6);
 
-                Scene subScene = new Scene(gridModif, 800, 500);
+                Scene subScene = new Scene(gridModif, 600, 300);
                 subScene.getStylesheets().add(getClass().getResource("styleAdmin.css").toExternalForm());
                 stage.setScene(subScene);
                 stage.setTitle("Modifier stagiaire");
                 stage.show();
-
-//                public void modifFormAdmin (Stage stage, String login){
-//                        Label surnameLabel = new Label();
-//                        TextField newSurname = new TextField(oldSurname);
-//                        Label nameLabel = new Label();
-//                        TextField newName = new TextField(oldName);
-//                        Label deptLabel = new Label();
-//                        TextField newDept = new TextField(oldDept);
-//                        Label promoLabel = new Label();
-//                        TextField newPromo = new TextField(oldPromo);
-//                        Label yearLabel = new Label();
-//                        TextField newYear = new TextField(oldYear);
-//                        Button btnValidate = new Button("Valider");
-//                        Button btnCancel = new Button("Annuler");
-//
-//                        GridPane gridModif = new GridPane();
-//                        gridModif.setVgap(5);
-//                        gridModif.setHgap(5);
-//                        gridModif.setPadding(new Insets(5,5,5,5));
-//
-//                        gridModif.add(surnameLabel, 0, 0);
-//                        gridModif.add(newSurname, 1, 0);
-//                        gridModif.add(nameLabel, 0, 1);
-//                        gridModif.add(newName, 1, 1);
-//                        gridModif.add(deptLabel, 0, 2);
-//                        gridModif.add(newDept, 1, 2);
-//                        gridModif.add(promoLabel, 0, 3);
-//                        gridModif.add(newPromo, 1, 3);
-//                        gridModif.add(yearLabel, 0, 4);
-//                        gridModif.add(newYear, 1, 4);
-//                        gridModif.add(btnValidate, 1, 5);
-//                        gridModif.add(btnCancel, 2, 5);
-//
-//                        Scene subScene = new Scene(gridModif);
-//                        stage.setScene(subScene);
-//                        stage.show();
 
                 btnValidate.setOnAction(new EventHandler<ActionEvent>() {
                         @Override
