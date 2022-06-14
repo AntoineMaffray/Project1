@@ -388,7 +388,7 @@ public class SearchMenuBarUser {
 
         ///////////////////////////// METHODE DE TRI SIMPLE //////////////////////////////////
         /*
-        L'?v?nement est plac?e ? la fin afin qu'il puisse prendre en compte tous les ?l?ments pr?c?dents.
+        L'évènement est placée à la fin afin qu'il puisse prendre en compte tous les ?l?ments pr?c?dents.
          */
         EventHandler cs = new EventHandler<ActionEvent>() {
             @Override
@@ -424,10 +424,11 @@ public class SearchMenuBarUser {
                     criterion5 = conversionCriterion(combo5.getValue().toString());
                 }
                 String search5 = criterionField5.getText();
-
                 try {
                     data = triSimple.searchByCriterion(criterion1, search1, criterion2, search2, criterion3, search3, criterion4,
                             search4, criterion5, search5);
+                    System.out.println(criterion1+ search1+ criterion2+ search2+ criterion3+ search3+ criterion4+
+                            search4+ criterion5+ search5);
                 } catch (StringIndexOutOfBoundsException | RAFException | IOException e){
                     try {
                         data = arbre.arbreParcours();
@@ -453,16 +454,16 @@ public class SearchMenuBarUser {
                 case "Nom":
                     criterionConvert = 1;
                     break;
-                case "Pr?nom":
+                case "Prénom":
                     criterionConvert = 2;
                     break;
-                case "D?partement":
+                case "Département":
                     criterionConvert = 3;
                     break;
                 case "Formation":
                     criterionConvert = 4;
                     break;
-                case "Ann?e":
+                case "Année":
                     criterionConvert = 5;
                     break;
                 default:

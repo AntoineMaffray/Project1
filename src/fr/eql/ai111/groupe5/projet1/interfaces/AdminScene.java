@@ -5,6 +5,7 @@ import fr.eql.ai111.groupe5.projet1.methodsback.Methods;
 import fr.eql.ai111.groupe5.projet1.methodsback.PDFReader;
 import fr.eql.ai111.groupe5.projet1.methodsback.Stagiaire;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -391,8 +392,87 @@ public class AdminScene {
                             String oldPromo = table.getSelectionModel().getSelectedItem().getPromo().trim();
                             String oldYear = table.getSelectionModel().getSelectedItem().getYear().trim();
 
+                            Text titre = new Text("Modification du stagiaire");
+                            titre.setFont(Font.font("Roboto", FontWeight.BOLD, 20));
+
+                            Label surnameLabel = new Label("Nom : ");
+                            TextField newSurname = new TextField(oldSurname);
+                            Label nameLabel = new Label("Prénom : ");
+                            TextField newName = new TextField(oldName);
+                            Label deptLabel = new Label("Département : ");
+                            TextField newDept = new TextField(oldDept);
+                            Label promoLabel = new Label("Formation : ");
+                            TextField newPromo = new TextField(oldPromo);
+                            Label yearLabel = new Label("Année : ");
+                            TextField newYear = new TextField(oldYear);
+                            Button btnValidate = new Button("Valider");
+                            Button btnCancel = new Button("Annuler");
+
+                            HBox hboxBtn = new HBox();
+                            hboxBtn.setSpacing(30);
+                            hboxBtn.setPadding(new Insets(0,20,0,20));
+                            hboxBtn.setAlignment(Pos.CENTER);
+                            hboxBtn.getChildren().addAll(btnValidate, btnCancel);
+                            GridPane gridModif = new GridPane();
+                            gridModif.setAlignment(Pos.CENTER);
+                            gridModif.setVgap(10);
+                            gridModif.setHgap(10);
+                            gridModif.setPadding(new Insets(5,5,5,5));
+                            gridModif.add(titre, 0, 0,2,1);
+                            gridModif.add(surnameLabel, 0, 1);
+                            gridModif.add(newSurname, 1, 1);
+                            gridModif.add(nameLabel, 0, 2);
+                            gridModif.add(newName, 1, 2);
+                            gridModif.add(deptLabel, 0, 3);
+                            gridModif.add(newDept, 1, 3);
+                            gridModif.add(promoLabel, 0, 4);
+                            gridModif.add(newPromo, 1, 4);
+                            gridModif.add(yearLabel, 0, 5);
+                            gridModif.add(newYear, 1, 5);
+                            gridModif.add(hboxBtn, 1, 6);
+
+                            Scene subScene = new Scene(gridModif, 600, 300);
+                            subScene.getStylesheets().add(getClass().getResource("styleAdmin.css").toExternalForm());
+                            Stage substage = new Stage();
+                            substage.setScene(subScene);
+                            substage.setTitle("Modifier stagiaire");
+                            substage.show();
                             String newAdd = methods.createStringOneStagiaire(oldSurname, oldName, oldDept, oldPromo, oldYear);
-                            modifFormStagiaire(new Stage(), oldSurname, oldName, oldDept, oldPromo, oldYear, newAdd);
+                            btnCancel.setOnAction(new EventHandler<ActionEvent>() {
+                                    @Override
+                                    public void handle(ActionEvent event) {
+                                            substage.close();
+                                    }
+                            });
+
+                            btnValidate.setOnAction(new EventHandler<ActionEvent>() {
+                                    @Override
+                                    public void handle(ActionEvent event) {
+                                            String modifiedString = methods.createStringOneStagiaire(newSurname.getText(), newName.getText(), newDept.getText(),
+                                                    newPromo.getText(), newYear.getText());
+                                            if (methods.searchCharToChar(newAdd, modifiedString) != 0){
+                                                    try {
+                                                            arbre.arbreModification(newAdd,modifiedString);
+                                                    } catch (IOException e) {
+                                                            throw new RuntimeException(e);
+                                                    }
+                                                    substage.close();
+                                            } else {
+                                                    System.out.println("Le stagiaire n'a pas été modifié.");
+                                            }
+                                            ObservableList data2;
+                                            try {
+                                                    data2 = arbre.arbreParcours();
+                                            } catch (IOException e) {
+                                                    throw new RuntimeException(e);
+                                            }
+                                            boolean modification = confirmationModification();
+                                            if (modification){
+                                                    table.setItems(data2);
+                                            }
+                                    }
+                            });
+
                     }
             });
             supprimerStagiaire.setOnAction(new EventHandler<ActionEvent>() {
@@ -444,25 +524,47 @@ public class AdminScene {
 
                 // Texte sans en-t?te
                 alert.setHeaderText(null);
-                alert.setContentText("Votre stagiaire a bien ?t? enregistr?!");
+                alert.setContentText("Votre stagiaire a bien été enregistré!");
                 alert.showAndWait();
         }
         private boolean confirmationSuppression() {
             Label label = new Label();
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Supprimer l'utilisateur");
-                alert.setHeaderText("Etes-vous s?r de vouloir supprimer l'utilisateur?");
+                alert.setTitle("Supprimer le stagiaire");
+                alert.setHeaderText("Etes-vous s$ûr de vouloir supprimer le stagiaire?");
 
                 // option != null.
                 Optional<ButtonType> option = alert.showAndWait();
 
                 if (option.get() == null) {
-                        label.setText("Aucun utilisateur n'a ?t? s?lectionn?");
+                        label.setText("Aucun stagiaire n'a été sélectionné");
                 } else if (option.get() == ButtonType.OK) {
-                        label.setText("Utilisateur supprim?!");
+                        label.setText("Stagiaire supprimé!");
                         return true;
                 } else if (option.get() == ButtonType.CANCEL) {
-                        label.setText("Annul?");
+                        label.setText("Annulé");
+                        alert.close();
+                } else {
+                        label.setText("-");
+                }
+                return false;
+        }
+        private boolean confirmationModification() {
+                Label label = new Label();
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Modifier le stagiaire");
+                alert.setHeaderText("Etes-vous sûr de vouloir modifier le stagiaire?");
+
+                // option != null.
+                Optional<ButtonType> option = alert.showAndWait();
+
+                if (option.get() == null) {
+                        label.setText("Aucun stagiaire n'a été sélectionné.");
+                } else if (option.get() == ButtonType.OK) {
+                        label.setText("Stagiaire modifié!");
+                        return true;
+                } else if (option.get() == ButtonType.CANCEL) {
+                        label.setText("Annulé");
                         alert.close();
                 } else {
                         label.setText("-");
@@ -470,85 +572,6 @@ public class AdminScene {
                 return false;
         }
 
-        public void modifFormStagiaire (Stage stage, String oldSurname, String oldName, String oldDept,
-                                        String oldPromo, String oldYear, String newAdd){
-
-                Text titre = new Text("Modification du stagiaire");
-                titre.setFont(Font.font("Roboto", FontWeight.BOLD, 20));
-
-                Label surnameLabel = new Label("Nom : ");
-                TextField newSurname = new TextField(oldSurname);
-                Label nameLabel = new Label("Prénom : ");
-                TextField newName = new TextField(oldName);
-                Label deptLabel = new Label("Département : ");
-                TextField newDept = new TextField(oldDept);
-                Label promoLabel = new Label("Formation : ");
-                TextField newPromo = new TextField(oldPromo);
-                Label yearLabel = new Label("Année : ");
-                TextField newYear = new TextField(oldYear);
-                Button btnValidate = new Button("Valider");
-                Button btnCancel = new Button("Annuler");
-
-                HBox hboxBtn = new HBox();
-                hboxBtn.setSpacing(30);
-                hboxBtn.setPadding(new Insets(0,20,0,20));
-                hboxBtn.setAlignment(Pos.CENTER);
-                hboxBtn.getChildren().addAll(btnValidate, btnCancel);
-                GridPane gridModif = new GridPane();
-                gridModif.setAlignment(Pos.CENTER);
-                gridModif.setVgap(10);
-                gridModif.setHgap(10);
-                gridModif.setPadding(new Insets(5,5,5,5));
-                gridModif.add(titre, 0, 0,2,1);
-                gridModif.add(surnameLabel, 0, 1);
-                gridModif.add(newSurname, 1, 1);
-                gridModif.add(nameLabel, 0, 2);
-                gridModif.add(newName, 1, 2);
-                gridModif.add(deptLabel, 0, 3);
-                gridModif.add(newDept, 1, 3);
-                gridModif.add(promoLabel, 0, 4);
-                gridModif.add(newPromo, 1, 4);
-                gridModif.add(yearLabel, 0, 5);
-                gridModif.add(newYear, 1, 5);
-                gridModif.add(hboxBtn, 1, 6);
-
-                Scene subScene = new Scene(gridModif, 600, 300);
-                subScene.getStylesheets().add(getClass().getResource("styleAdmin.css").toExternalForm());
-                stage.setScene(subScene);
-                stage.setTitle("Modifier stagiaire");
-                stage.show();
-
-                btnValidate.setOnAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent event) {
-                                String modifiedString = methods.createStringOneStagiaire(newSurname.getText(), newName.getText(), newDept.getText(),
-                                        newPromo.getText(), newYear.getText());
-                                if (methods.searchCharToChar(newAdd, modifiedString) != 0){
-                                        try {
-                                                arbre.arbreModification(newAdd,modifiedString);
-                                        } catch (IOException e) {
-                                                throw new RuntimeException(e);
-                                        }
-                                        try {
-                                                data = arbre.arbreParcours();
-                                        } catch (IOException e) {
-                                                throw new RuntimeException(e);
-                                        }
-                                        table.setItems(data);
-                                        stage.close();
-                                } else {
-                                        System.out.println("Le stagiaire n'a pas ?t? modifi?.");
-                                }
-                        }
-                });
-
-                btnCancel.setOnAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent event) {
-                                stage.close();
-                        }
-                });
-        }
         public void modifFormAdmin (Stage stage, String oldSurname, String oldName, String oldLogin, String oldPassword)
                 throws IOException {
                 try {
