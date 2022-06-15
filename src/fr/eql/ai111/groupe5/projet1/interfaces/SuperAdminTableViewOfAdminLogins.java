@@ -327,8 +327,9 @@ public class SuperAdminTableViewOfAdminLogins {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
+                } else {
+                    comptePasEncoreCree();
                 }
-                comptePasEncoreCree();
             }
         });
 

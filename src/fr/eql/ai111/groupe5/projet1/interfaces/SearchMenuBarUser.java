@@ -407,13 +407,13 @@ public class SearchMenuBarUser {
                 }
                 table.setItems(data);
             }};
-        btnRechercher.setOnAction(cs);
 
-//        combo1.setOnKeyPressed(event -> {
-//            if (event.getCode() == KeyCode.ENTER) {
-//
-//            }
-//        }););
+        btnRechercher.setOnAction(cs);
+        criterionField1.setOnAction(cs);
+        criterionField2.setOnAction(cs);
+        criterionField3.setOnAction(cs);
+        criterionField4.setOnAction(cs);
+        criterionField5.setOnAction(cs);
 
         }
 
