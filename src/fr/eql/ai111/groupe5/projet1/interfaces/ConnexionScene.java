@@ -4,6 +4,7 @@ import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import fr.eql.ai111.groupe5.projet1.methodsback.Methods;
 import fr.eql.ai111.groupe5.projet1.methodsback.User;
 import fr.eql.ai111.groupe5.projet1.methodsback.UserDAO;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -14,7 +15,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
@@ -39,8 +39,8 @@ public class ConnexionScene {
 
         //////////////////// LABEL - TITRE DE LA SCENE CONNEXION //////////////////////////////
         /*
-        Création du titre du fichier en texte avec son style.
-        Création du formulaire de connexion avec le login et password.
+        Cr�ation du titre du fichier en texte avec son style.
+        Cr�ation du formulaire de connexion avec le login et password.
          */
         Text titre = new Text("Connexion");
         titre.setFont(Font.font("Roboto", FontWeight.BOLD, 20));
@@ -53,18 +53,18 @@ public class ConnexionScene {
 
         ///////////////////////////// REDIRECTIONS PAGES ////////////////////////////////////
         /*
-        Pour faire appara�tre les diff�rentes interfaces, on utilise des boutons afin que
-        l'administrateur puisse acc�der au fichier correspondant.
-        Les boutons sont plac�s dans une HBox.
-        Afin que l'administrateur puisse acc�der au fichier, il doit d'abord s'inscrire s'il n'a pas de compte
-        ou se connecter si son compte est cr��.
+        Pour faire appara?tre les diff?rentes interfaces, on utilise des boutons afin que
+        l'administrateur puisse acc?der au fichier correspondant.
+        Les boutons sont plac?s dans une HBox.
+        Afin que l'administrateur puisse acc?der au fichier, il doit d'abord s'inscrire s'il n'a pas de compte
+        ou se connecter si son compte est cr??.
         Pour le SuperAdmin, il ne peut que se connecter via la page de connexion via ses identifiants, sinon il
-        ne peut acc�der au fichier correspondant.
+        ne peut acc?der au fichier correspondant.
          */
-        //Cr�ation du bouton de validation et du bouton de redirection
+        //Cr?ation du bouton de validation et du bouton de redirection
         // vers la page d'inscription s'il n'est pas inscrit//
-        Button btnValidation = new Button("Validez");
-        EventHandler eventHandler = new EventHandler<ActionEvent>() {
+        Button btnValidation = new Button("Valider");
+        EventHandler ok = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
                 User user = new User(loginTextField.getText());
@@ -114,8 +114,8 @@ public class ConnexionScene {
                     }
                     if (verif.equals(methods.hashage(pswdPasswordField.getText()))) {
                         try {
+                            keepLoginWriting(loginTextField.getText());
                             new AdminScene(primaryStage);
-                            keepLoginWriting(user.getLogin());
                             messageBienvenue(user);
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
@@ -125,10 +125,10 @@ public class ConnexionScene {
                     }
                 }}
         };
-        btnValidation.setOnAction(eventHandler);
-        pswdPasswordField.setOnAction(eventHandler);
+        btnValidation.setOnAction(ok);
+        pswdPasswordField.setOnAction(ok);
 
-        Button btnRedirectionInscription = new Button("Première connexion ");
+        Button btnRedirectionInscription = new Button("Premi�re connexion ");
         btnRedirectionInscription.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -136,19 +136,19 @@ public class ConnexionScene {
             }
         });
 
-        Button btnRetourAccueil = new Button("Retour accueil");
-        btnRetourAccueil.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                new AccueilScene(primaryStage);
-            }
-        });
+                Button btnRetourAccueil = new Button("D�connexion");
+                btnRetourAccueil.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        new AccueilScene(primaryStage);
+                    }
+                });
                 //////////////////////////////////////////////////////////////////////////////////////
 
 
                 ///////////////////////////// AFFICHAGE DES ELEMENTS //////////////////////////////////
         /*
-        On affiche tous les �l�ments dans une GridPane, que l'on int�gre dans une sc�ne et ensuite un stage.
+        On affiche tous les ?l?ments dans une GridPane, que l'on int?gre dans une sc?ne et ensuite un stage.
          */
         HBox hbBtnValidation = new HBox(10);
         hbBtnValidation.setAlignment(Pos.BOTTOM_RIGHT);
@@ -179,7 +179,7 @@ public class ConnexionScene {
         Scene connexion = new Scene(grille, 400, 350);
         connexion.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         primaryStage.setScene(connexion);
-        primaryStage.setTitle("Connexion");
+        primaryStage.setTitle("The EQL Book - Connexion");
         primaryStage.show();
         }
     ////////////////////////////////////////////////////////////////////////////////////////
@@ -213,7 +213,7 @@ public class ConnexionScene {
         if (!keepLoginFolder.exists()){
             keepLoginFolder.mkdirs();
         }
-        File keepLoginFile = new File("c://theEqlBook/AdminInfo/Persistance/Login.txt");
+        File keepLoginFile = new File("C:/theEqlbook/AdminInfo/Persistance/Login.txt");
         if (keepLoginFile.exists()){
             keepLoginFile.delete();
             keepLoginFile.createNewFile();
@@ -221,13 +221,17 @@ public class ConnexionScene {
         FileWriter fw = new FileWriter(keepLoginFile);
         BufferedWriter bw = new BufferedWriter(fw);
         bw.write(login);
-        fw.close();
         bw.close();
+        fw.close();
     }
-    public void readKeepLogin(String login) throws FileNotFoundException {
-        File keepLogin = new File("c://theEqlBook/AdminInfo/Persistance/"+login+".txt");
-        boolean created = keepLogin.mkdir();
+    public String readKeepLogin() throws IOException {
+        File keepLogin = new File("c://theEqlBook/AdminInfo/Persistance/Login.txt");
         FileReader fr = new FileReader(keepLogin);
+        BufferedReader br = new BufferedReader(fr);
+        String login = br.readLine();
+        fr.close();
+        br.close();
+        return login;
     }
 }
 

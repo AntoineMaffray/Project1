@@ -43,7 +43,7 @@ public class InscriptionScene {
         TextField loginTextField = new TextField("");
         Label nom = new Label("Nom:");
         TextField nomTextField = new TextField("");
-        Label prenom = new Label("Pr?nom :");
+        Label prenom = new Label("Pr�nom :");
         TextField prenomTextField = new TextField("");
         Label pswd = new Label("Mot de passe :");
         PasswordField pswdPasswordField = new PasswordField();
@@ -125,11 +125,28 @@ public class InscriptionScene {
         inscription.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
 
         primaryStage.setScene(inscription);
-        primaryStage.setTitle("Inscription");
+        primaryStage.setTitle("The EQL Book - Inscription");
         primaryStage.show();
     }
         ////////////////////////////////////////////////////////////////////////////////////////
 
+
+
+    private void inscriptionUser(User user) {
+
+        /*
+         Si la m�thode 'createAccount' retourne false, alors le fichier utilisateur
+         n'as pas �t� cr�� car un autre portant le m�me nom (correspondant au login
+         entr�) existe d�j�.
+         */
+        boolean isCreated = dao.createAccount(user.getName(),
+                user.getSurname(),
+                user.getLogin(),
+                user.getPassword());
+        if (!isCreated) {
+            ;
+        }
+    }
 
 
     private void idendifiantsDejaCrees() {
@@ -145,20 +162,5 @@ public class InscriptionScene {
         return user.getLogin();
     }
 
-    private void inscriptionUser(User user) {
-
-        /*
-         Si la m?thode 'createAccount' retourne false, alors le fichier utilisateur
-         n'as pas ?t? cr?? car un autre portant le m?me nom (correspondant au login
-         entr?) existe d?j?.
-         */
-        boolean isCreated = dao.createAccount(user.getName(),
-                user.getSurname(),
-                user.getLogin(),
-                user.getPassword());
-        if (!isCreated) {
-            idendifiantsDejaCrees();
-        }
-    }
 
 }

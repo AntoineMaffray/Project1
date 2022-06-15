@@ -4,6 +4,10 @@ import fr.eql.ai111.groupe5.projet1.methodsback.Execute;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
+
 public class AnnuaireApplication extends Application {
 
     // La m?thode start permet l'ouverture de l'application //

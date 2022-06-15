@@ -1,0 +1,146 @@
+
+/*Adapted from Oracle JavaFX Documentation Home */
+
+/*The background style is applied to the .root style, which means it is applied
+ * to the root node of the Scene instance
+ */
+.root{
+    -fx-background-image: url(images/fondsPleinSuperAdmin.jpg);
+    -fx-background-size: cover;
+}
+
+* {
+	-fx-primary-color: #007acc;
+	-fx-secondary-color: #4B6EAF;
+	-fx-accent-color: #B6FF00;
+	-fx-grey-color: #b9b9b9;
+	-fx-light-grey-color: #d1d1d1;
+	-fx-lightest-grey-color: #F9F9FB;
+
+	-fx-focus-color: -fx-secondary-color;
+}
+
+.menu-bar {
+        -fx-background-color: white ;
+        -fx-opacity: 0.7;
+        -fx-border-width: 0.7;
+
+    }
+
+.menu-bar .label {
+        -fx-font-size: 14.0 pt;
+        -fx-font-family: "Arial";
+        -fx-text-fill: grey;
+        -fx-font-weight: bold;
+        -fx-padding: 10px;
+        -fx-opacity: 0.7;
+
+    }
+
+.menu-bar .menu-button:hover, .menu-bar .menu-button:focused, .menu-bar .menu-button:showing {
+        -fx-background: pink ;
+        -fx-opacity: 0.5;
+        -fx-text-fill: white;
+        -fx-opacity: 0.7;
+    }
+
+.menu-item {
+        -fx-text-fill: black;
+        -fx-background: darkgray ;
+        -fx-opacity: 0.7;
+    }
+
+.menu-item .label{
+        -fx-font-size: 14.0 pt;
+        -fx-text-fill: black;
+        -fx-opacity: 0.7;
+    }
+
+.menu-item .label:hover{
+        -fx-font-size: 14.0 pt;
+        -fx-background: black ;
+        -fx-text-fill: white;
+        -fx-opacity: 0.7;
+    }
+
+.context-menu {
+        -fx-background-color:white ;
+        -fx-border-width: 0.2px;
+        -fx-opacity: 1;
+        }
+
+.table-button {
+	-fx-background-color: -fx-primary-color;
+	-fx-cursor: hand;
+}
+.table-button:hover{
+	-fx-background-color: transparent;
+}
+
+.table-view {
+	-fx-border-color: transparent;
+	-fx-background-color: transparent; /* OR  -fx-background-insets: 0.0; */
+	-fx-padding : 20px;
+}
+.table-view .column-header-background,
+.table-view .column-header-background .filler,
+.table-view .corner {
+	-fx-background-color: transparent;
+}
+.table-view .column-header {
+	-fx-background-color: ivory;
+	-fx-border-color: -fx-grey-color;
+}
+.table-view .column-header .label{
+	-fx-font-weight: bold;
+	-fx-alignment: center-left;
+}
+/* This is just magic */
+.table-row-cell:filled {
+	-fx-background-color: transparent;
+	-fx-border-color: transparent -fx-lightest-grey-color -fx-lightest-grey-color -fx-lightest-grey-color, transparent;
+}
+.table-row-cell:empty {
+	-fx-background-color: transparent;
+}
+.table-row-cell:filled:hover {
+	-fx-background-color: ivory;
+}
+.table-row-cell:filled:selected:hover {
+	-fx-background-color: ivory;
+}
+.table-row-cell:filled:selected {
+  	-fx-background-color: #eaeaea;
+ 	-fx-background-insets: 0.0;
+	-fx-background-radius: 0.0;
+}
+.table-row-cell:filled:selected .table-cell {
+	-fx-text-fill: black;
+}
+.table-view .cell:filled{
+	-fx-cell-size: 40;
+	-fx-alignment: center-left;
+}
+.check-box-table-cell > .check-box:selected .box .mark {
+	-fx-background-color: white;
+}
+.check-box-table-cell > .check-box:selected .box{
+	-fx-background-color: -fx-accent-color;
+}
+.table-view .placeholder .label {
+	-fx-text-fill: red;
+	-fx-padding:20px;
+}
+
+.list-view .scroll-bar:horizontal .increment-arrow,
+.list-view .scroll-bar:horizontal .decrement-arrow,
+.list-view .scroll-bar:horizontal .increment-button,
+.list-view .scroll-bar:horizontal .decrement-button {
+    -fx-opacity: 0;
+    -fx-padding:-7;
+}
+
+.button:hover {
+    -fx-background-color: linear-gradient(#F5F5DC, #DB7093);
+    }
+

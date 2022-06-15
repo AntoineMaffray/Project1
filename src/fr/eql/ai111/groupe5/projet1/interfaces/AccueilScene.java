@@ -41,16 +41,8 @@ public class AccueilScene {
         Cr?ation du titre du fichier en label avec son style.
         Pour l'affichage, on utilise un AnchorPane.
          */
-        Label label = new Label("Bienvenue dans l'annuaire EQL BOOK! ");
-        label.setFont(new Font("Montserrat", 20));
-        label.setOpacity(0.9);
-        label.setStyle("-fx-text-fill: black");
-        label.setMaxWidth(Double.MAX_VALUE);
-        AnchorPane.setLeftAnchor(label, 0.0);
-        AnchorPane.setRightAnchor(label, 0.0);
-        label.setAlignment(Pos.CENTER);
 
-        Label label1 = new Label("Vous ?tes un :");
+        Label label1 = new Label("Vous êtes un :");
         label1.setFont(new Font("Montserrat", 20));
         label1.setOpacity(0.9);
         label1.setStyle("-fx-text-fill: black");
@@ -63,7 +55,7 @@ public class AccueilScene {
 
         ///////////////////////////// REDIRECTIONS PAGES /////////////////////////////////
         /*
-        Pour faire appara?tre les diff?rentes interfaces, on utilise des boutons afin que l'utilisateur
+        Pour faire apparaître les différentes interfaces, on utilise des boutons afin que l'utilisateur
         ou l'administrateur puisse acc?der au fichier correspondant.
         Les boutons sont plac?s dans une HBox.
         Afin que l'administrateur puisse acc?der au fichier, il doit d'abord s'inscrire s'il n'a pas de compte
@@ -72,8 +64,8 @@ public class AccueilScene {
         ne peut acc?der au fichier correspondant.
          */
 
-        //Cr?ation du bouton User avec l'?v?nement permettant la redirection vers son fichier//
-        Button btnUser = new Button("User");
+        //Cr?ation du bouton User avec l'évènement permettant la redirection vers son fichier//
+        Button btnUser = new Button("Utilisateur");
         btnUser.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -85,8 +77,8 @@ public class AccueilScene {
             }
         });
 
-        //Cr?ation du bouton Admin avec l'?v?nement permettant la redirection vers son fichier//
-        Button btnAdmin = new Button("Admin");
+        //Cr?ation du bouton Admin avec l'événement permettant la redirection vers son fichier//
+        Button btnAdmin = new Button("Administrateur");
         btnAdmin.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -118,15 +110,13 @@ public class AccueilScene {
         grille.setHgap(10);
         grille.setVgap(10);
         grille.setPadding(new Insets(5, 10, 5, 10));
-        grille.add(label, 2, 1);
-        grille.add(label1, 2, 2);
-        grille.add(hbBtnUser, 1, 4);
-        grille.add(hbBtnAdmin, 3, 4);
-
+        grille.add(label1, 2, 4);
+        grille.add(hbBtnUser, 1, 5);
+        grille.add(hbBtnAdmin, 3, 5);
         Scene accueil = new Scene(grille, 700, 400);
-        accueil.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+        accueil.getStylesheets().add(getClass().getResource("styleAccueil.css").toExternalForm());
         primaryStage.setScene(accueil);
-        primaryStage.setTitle("Accueil");
+        primaryStage.setTitle("The EQL Book - Accueil");
         primaryStage.show();
     }
     ////////////////////////////////////////////////////////////////////////////////////////

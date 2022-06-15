@@ -408,10 +408,10 @@ public class Arbre {
         }
         return listSearch;
     }
-    public List <Stagiaire> arbreParcoursSearch (int criterion, String search) throws IOException{
+    public ObservableList <Stagiaire> arbreParcoursSearch (int criterion, String search) throws IOException{
 
         Methods methods = new Methods();
-        List <Stagiaire> listSearch = new ArrayList<>();
+        ObservableList <Stagiaire> listSearch = FXCollections.observableArrayList();
 
         // Ouverture des différentes instances de lecture et éciture
         RandomAccessFile rafDataBase = new RandomAccessFile("C:/theEQLBook/Raf.bin", "rw");

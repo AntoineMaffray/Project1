@@ -1,6 +1,7 @@
 package fr.eql.ai111.groupe5.projet1.interfaces;
 import fr.eql.ai111.groupe5.projet1.methodsback.Arbre;
 import fr.eql.ai111.groupe5.projet1.methodsback.Methods;
+import fr.eql.ai111.groupe5.projet1.methodsback.PDFReader;
 import fr.eql.ai111.groupe5.projet1.methodsback.Stagiaire;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -31,7 +32,6 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class SuperAdminStagiairesDesactives {
@@ -72,7 +72,7 @@ public class SuperAdminStagiairesDesactives {
         //MenuBar et Menus//
         MenuBar menuBar = new MenuBar();
         Menu fichierMenu = new Menu("Fichier");
-        Menu compteAdminMenu = new Menu("Gestion des comptes administrateurs");
+        Menu compteAdminMenu = new Menu("Administrateur");
         Menu aideMenu = new Menu("Aide");
 
         //MenuItems du fichier//
@@ -83,8 +83,20 @@ public class SuperAdminStagiairesDesactives {
                 new SearchMenuBarSuperAdmin(primaryStage);
             }
         });
-        MenuItem retourAccueilItem = new MenuItem("Retour accueil");
-        retourAccueilItem.setOnAction(new EventHandler<ActionEvent>() {
+        MenuItem retourPagePrincipaleItem = new MenuItem("Retour page principale");
+        retourPagePrincipaleItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    new SuperAdminScene(primaryStage);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+        MenuItem deconnexionItem = new MenuItem("Déconnexion");
+        deconnexionItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 new AccueilScene(primaryStage);
@@ -96,7 +108,7 @@ public class SuperAdminStagiairesDesactives {
             @Override
             public void handle(ActionEvent event) {
                 final Stage dialog = new Stage();
-                Label label = new Label("Fichier ï¿½ exporter");
+                Label label = new Label("Veuillez entrer le nom du fichier à exporter");
                 label.setFont(new Font("Montserrat", 20));
                 label.setOpacity(0.9);
                 label.setStyle("-fx-text-fill: black");
@@ -147,7 +159,7 @@ public class SuperAdminStagiairesDesactives {
 
                 Scene dialogScene = new Scene(grille, 500, 400);
                 dialog.setScene(dialogScene);
-                dialogScene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+                dialogScene.getStylesheets().add(getClass().getResource("styleSuperAdmin.css").toExternalForm());
                 dialog.setTitle("Export fichier PDF");
                 dialog.show();
             }
@@ -164,9 +176,9 @@ public class SuperAdminStagiairesDesactives {
                 File delete = new File ("Identifiants/Persistance/Login.txt");
                 boolean isDeleted = delete.delete();
                 if (isDeleted) {
-                    System.out.println("Le fichier a bien ?t? supprim?");
+                    System.out.println("Le fichier a bien été supprimé");
                 } else {
-                    System.out.println("Le fichier a bien ?t? cr??");
+                    System.out.println("Le fichier a bien été créé.");
                 }
             }
         });
@@ -180,8 +192,8 @@ public class SuperAdminStagiairesDesactives {
             }
         });
 
-        // Cr?ation du MenuItem du menu Compte Admin
-        MenuItem gestionAdminMenu = new MenuItem("Gestion de l'administrateur");
+        // Création du MenuItem du menu Compte Admin
+        MenuItem gestionAdminMenu = new MenuItem("Gestion des administrateurs");
         gestionAdminMenu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -192,7 +204,7 @@ public class SuperAdminStagiairesDesactives {
                 }
             }
         });
-        MenuItem deleteAdminViewMenu = new MenuItem("Liste des administrateurs supprim?s");
+        MenuItem deleteAdminViewMenu = new MenuItem("Liste des administrateurs supprimés");
         deleteAdminViewMenu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -206,9 +218,20 @@ public class SuperAdminStagiairesDesactives {
 
         // MenuItems du menu Aide //
         MenuItem documentationItem = new MenuItem("Documentation");
+        documentationItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                PDFReader pdfReader = new PDFReader();
+                try {
+                    pdfReader.openPdfSuperAdmin();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
 
         // Ajouter les menuItems aux Menus
-        fichierMenu.getItems().addAll(rechercherItem, retourAccueilItem, exportPDFItem, separator, quitterItem);
+        fichierMenu.getItems().addAll(rechercherItem, retourPagePrincipaleItem, deconnexionItem, exportPDFItem, separator, quitterItem);
         compteAdminMenu.getItems().addAll(gestionAdminMenu, deleteAdminViewMenu);
         aideMenu.getItems().addAll(documentationItem);
         menuBar.getMenus().addAll(fichierMenu, compteAdminMenu, aideMenu);
@@ -234,11 +257,11 @@ public class SuperAdminStagiairesDesactives {
         //Sp?cifier comment remplir la donn?e pour chaque cellule de cette colonne avec un "cell valu factory//
         surnameCol.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("surname"));
 
-        TableColumn<Stagiaire, String> nameCol = new TableColumn<Stagiaire, String>("Prï¿½nom");
+        TableColumn<Stagiaire, String> nameCol = new TableColumn<Stagiaire, String>("Prénom");
         nameCol.setMinWidth(250);
         nameCol.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("name"));
 
-        TableColumn<Stagiaire, Integer> deptCol = new TableColumn<Stagiaire, Integer>("Departement");
+        TableColumn<Stagiaire, Integer> deptCol = new TableColumn<Stagiaire, Integer>("Département");
         deptCol.setMinWidth(200);
         deptCol.setCellValueFactory(new PropertyValueFactory<Stagiaire, Integer>("dept"));
 
@@ -246,20 +269,16 @@ public class SuperAdminStagiairesDesactives {
         promoCol.setMinWidth(250);
         promoCol.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("promo"));
 
-        TableColumn<Stagiaire, Integer> yearCol = new TableColumn<Stagiaire, Integer>("Annï¿½e");
+        TableColumn<Stagiaire, Integer> yearCol = new TableColumn<Stagiaire, Integer>("Année");
         yearCol.setMinWidth(200);
         yearCol.setCellValueFactory(new PropertyValueFactory<Stagiaire,Integer>("year"));
 
         //On ajoute les cinq colonnes ? la table//
         tableDeactivated.getColumns().addAll(surnameCol, nameCol, deptCol, promoCol, yearCol);
-        //On ajoute les cinq colonnes ï¿½ la table//
-        tableDeactivated.getColumns().addAll(surnameCol, nameCol, deptCol, promoCol, yearCol);
 
         //On remplit la table avec la liste observable//
         tableDeactivated.setItems(listDeactivated);
         /////////////////////////////////////////////////////////////////////////////////
-
-
 
         ///////////////////// REACTIVATION DU STAGIAIRE ////////////////
             /* Pour faciliter la gestion du stagiaire, un context menu a ?t? cr?? permettant
@@ -268,15 +287,16 @@ public class SuperAdminStagiairesDesactives {
             */
         // ContextMenu et ses MenuItems //
         ContextMenu contextMenu = new ContextMenu();
-        MenuItem reactivate = new MenuItem("R?activer");
-        contextMenu.getItems().add(reactivate);
+        MenuItem reactivate = new MenuItem("Réactiver");
+        MenuItem finalDelete = new MenuItem("Supprimer définitivement");
+        contextMenu.getItems().addAll(reactivate, finalDelete);
         tableDeactivated.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
             @Override
             public void handle(ContextMenuEvent event) {
                 contextMenu.show(tableDeactivated, event.getScreenX(), event.getScreenY());
             }
         });
-        // Item 1, "R?activers", du menu clic-droit
+        // Item 1, "Réactiver", du menu clic-droit
         reactivate.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
@@ -300,18 +320,42 @@ public class SuperAdminStagiairesDesactives {
 
         });
 
+        // Item 2, "Supprimer définitivement", du menu clic-droit
+        finalDelete.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    arbre.arbreDReactivation(methods.createStringOneStagiaire(tableDeactivated.getSelectionModel().getSelectedItem().getSurname(),
+                            tableDeactivated.getSelectionModel().getSelectedItem().getName(),
+                            tableDeactivated.getSelectionModel().getSelectedItem().getDept(),
+                            tableDeactivated.getSelectionModel().getSelectedItem().getPromo(),
+                            tableDeactivated.getSelectionModel().getSelectedItem().getYear()), "X");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                try {
+                    listDeactivated = arbre.arbreParcoursInv();
+                    tableDeactivated.setItems(listDeactivated);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+        });
+
             ///////////////////////////// AFFICHAGE DES ELEMENTS //////////////////////////////////
                 /*
-                On affiche tous les ?l?ments dans une VBox, que l'on int?gre dans une sc?ne et ensuite un stage.
+                On affiche tous les éléments dans une VBox, que l'on intègre dans une scène et ensuite un stage.
                 */
                 VBox vbox = new VBox();
                 vbox.setSpacing(5);
                 vbox.setPadding(new Insets(0, 0, 20, 0));
                 vbox.getChildren().addAll(menuBar, label, tableDeactivated);
-                Scene supAdminStagiaireDesactive = new Scene(vbox);
-                supAdminStagiaireDesactive.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+                Scene supAdminStagiaireDesactive = new Scene(vbox, 1200,700);
+                supAdminStagiaireDesactive.getStylesheets().add(getClass().getResource("styleSuperAdmin.css").toExternalForm());
                 primaryStage.setScene(supAdminStagiaireDesactive);
-                primaryStage.setTitle("SuperAdminScene");
+                primaryStage.setTitle("The EQL Book - Mode Super Administrateur");
                 primaryStage.show();
             }
         ////////////////////////////////////////////////////////////////////////////////////////

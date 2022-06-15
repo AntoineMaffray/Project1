@@ -3,6 +3,7 @@ package fr.eql.ai111.groupe5.projet1.interfaces;
 import fr.eql.ai111.groupe5.projet1.methodsback.Arbre;
 import fr.eql.ai111.groupe5.projet1.methodsback.Methods;
 import fr.eql.ai111.groupe5.projet1.methodsback.MethodsConnexion;
+import fr.eql.ai111.groupe5.projet1.methodsback.PDFReader;
 import fr.eql.ai111.groupe5.projet1.methodsback.Stagiaire;
 import fr.eql.ai111.groupe5.projet1.methodsback.User;
 import javafx.application.Platform;
@@ -32,6 +33,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 import java.io.BufferedWriter;
@@ -82,7 +84,7 @@ public class SuperAdminTableViewOfAdminLogins {
             //MenuBar et Menus//
             MenuBar menuBar = new MenuBar();
             Menu fichierMenu = new Menu("Fichier");
-            Menu compteAdminMenu = new Menu("Gestion des comptes administrateurs");
+            Menu compteAdminMenu = new Menu("Administrateur");
             Menu aideMenu = new Menu("Aide");
 
         //MenuItems du fichier//
@@ -93,8 +95,20 @@ public class SuperAdminTableViewOfAdminLogins {
                 new SearchMenuBarSuperAdmin(primaryStage);
             }
         });
-        MenuItem retourAccueilItem = new MenuItem("Retour accueil");
-        retourAccueilItem.setOnAction(new EventHandler<ActionEvent>() {
+        MenuItem retourPagePrincipaleItem = new MenuItem("Retour page principale");
+        retourPagePrincipaleItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    new SuperAdminScene(primaryStage);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+        MenuItem deconnexionItem = new MenuItem("D�connexion");
+        deconnexionItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 new AccueilScene(primaryStage);
@@ -159,33 +173,26 @@ public class SuperAdminTableViewOfAdminLogins {
 
                 Scene dialogScene = new Scene(grille, 500, 400);
                 dialog.setScene(dialogScene);
-                dialogScene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+                dialogScene.getStylesheets().add(getClass().getResource("styleSuperAdmin.css").toExternalForm());
                 dialog.setTitle("Export fichier PDF");
                 dialog.show();
             }
         });
         SeparatorMenuItem separator= new SeparatorMenuItem();
         MenuItem quitterItem = new MenuItem("Quitter");
-        // Sp?cifier un raccourci clavier au menuItem Quitter.
+        // Sp�cifier un raccourci clavier au menuItem Quitter.
         quitterItem.setAccelerator(KeyCombination.keyCombination("Ctrl+Q"));
         // Gestion du click sur le menuItem Quitter.
         quitterItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 Platform.exit();
-//                File delete = new File ("Identifiants/Persistance/Login.txt");
-//                boolean isDeleted = delete.delete();
-//                if (isDeleted) {
-//                    System.out.println("Le fichier a bien ?t? supprim?");
-//                } else {
-//                    System.out.println("Le fichier a bien ?t? cr??");
-//                }
             }
         });
 
 
         // Cr?ation du MenuItem du menu Compte Admin
-        MenuItem gestionAdminMenu = new MenuItem("Gestion de l'administrateur");
+        MenuItem gestionAdminMenu = new MenuItem("Gestion des administrateurs");
         gestionAdminMenu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -212,9 +219,20 @@ public class SuperAdminTableViewOfAdminLogins {
 
         // MenuItems du menu Aide //
         MenuItem documentationItem = new MenuItem("Documentation");
+        documentationItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                PDFReader pdfReader = new PDFReader();
+                try {
+                    pdfReader.openPdfSuperAdmin();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
 
         // Ajouter les menuItems aux Menus
-        fichierMenu.getItems().addAll(rechercherItem, retourAccueilItem, exportPDFItem, separator, quitterItem);
+        fichierMenu.getItems().addAll(rechercherItem, retourPagePrincipaleItem, deconnexionItem, exportPDFItem, separator, quitterItem);
         compteAdminMenu.getItems().addAll(gestionAdminMenu, deleteStagiairesViewMenu);
         aideMenu.getItems().addAll(documentationItem);
         menuBar.getMenus().addAll(fichierMenu, compteAdminMenu, aideMenu);
@@ -242,7 +260,7 @@ public class SuperAdminTableViewOfAdminLogins {
         ////Sp?cifier comment remplir la donn?e pour chaque cellule de cette colonne avec un "cell valu factory//
         surnameCol.setCellValueFactory(new PropertyValueFactory<>("surname"));
 
-        TableColumn<User, String> nameCol = new TableColumn<>("Pr?nom");
+        TableColumn<User, String> nameCol = new TableColumn<>("Pr�nom");
         nameCol.setMinWidth(250);
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
 
@@ -269,7 +287,7 @@ public class SuperAdminTableViewOfAdminLogins {
 
         //Creation du bouton avec l'�v�nement et sa m�thode de confirmation via une alerte. //
         Button btnNewLogin = new Button("Nouveau login");
-                EventHandler eventHandler = new EventHandler<ActionEvent>() {
+        EventHandler nl = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 try {
@@ -285,8 +303,8 @@ public class SuperAdminTableViewOfAdminLogins {
                 }
             }
         };
-        btnNewLogin.setOnAction(eventHandler);
-        login.setOnAction(eventHandler);
+        btnNewLogin.setOnAction(nl);
+        login.setOnAction(nl);
 
         HBox hbox = new HBox();
         hbox.setSpacing(5);
@@ -338,10 +356,8 @@ public class SuperAdminTableViewOfAdminLogins {
             public void handle(ActionEvent event) {
                 String toDelete = table.getSelectionModel().getSelectedItem().getLogin();
                 File filetoDelete = new File("C://theEqlbook/AdminInfo/" + toDelete + ".txt");
-                System.out.println(toDelete+".txt");
                 filetoDelete.delete();
                 if (filetoDelete.exists() == false){
-                    System.out.println("file deleted");
                 }else{
                 }
                 try {
@@ -365,11 +381,9 @@ public class SuperAdminTableViewOfAdminLogins {
         vbox.setPadding(new Insets(0, 0, 20, 0));
         vbox.getChildren().addAll(menuBar, label, table, hbox);
 
-        Scene scene = new Scene(vbox);
-        scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
-        primaryStage.setTitle("Gestion des Administrateurs");
-        primaryStage.setWidth(1250);
-        primaryStage.setHeight(800);
+        Scene scene = new Scene(vbox, 1200,700);
+        scene.getStylesheets().add(getClass().getResource("styleSuperAdmin.css").toExternalForm());
+        primaryStage.setTitle("The EQL Book - Mode Super Administrateur");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -380,6 +394,7 @@ public class SuperAdminTableViewOfAdminLogins {
             throws IOException {
         try {
             Label titleLabel = new Label("Modification du compte");
+            titleLabel.setFont(Font.font("Roboto", FontWeight.BOLD, 20));
             Label surnameLabel = new Label("Nom");
             TextField newSurname = new TextField(oldSurname);
             Label nameLabel = new Label("Pr�nom");
@@ -418,8 +433,17 @@ public class SuperAdminTableViewOfAdminLogins {
             gridModif2.add(hboxBtn, 1, 6);
 
             Scene subModifScene = new Scene(gridModif2);
+            subModifScene.getStylesheets().add(getClass().getResource("styleSuperAdmin.css").toExternalForm());
             stage.setScene(subModifScene);
+            stage.setTitle("Modification du compte Administrateur");
             stage.show();
+
+            btnCancel.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    stage.close();
+                }
+            });
 
             btnValidate.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
@@ -454,11 +478,9 @@ public class SuperAdminTableViewOfAdminLogins {
                                 throw new RuntimeException(e);
                             }
                         } else {
-                            System.out.println("Passwords non identiques.");
                         }
                     } else if (oldSurname == newSurname.getText() && oldName == newName.getText() && oldLogin == newLogin.getText()
                             && oldPassword == newPw.getText()) {
-                        System.out.println("Informations identiques, compte non modifi?.");
                     }
                     try {
                         dataLogin = methodsConnexion.createUserList();
